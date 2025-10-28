@@ -34,6 +34,7 @@ public class MyKeyboard implements KeyboardHandler {
         quit.setKey(KeyboardEvent.KEY_2);
         quit.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
 
+
         //add event to the keyboard
         keyboard.addEventListener(goRight);
         keyboard.addEventListener(goLeft);
@@ -73,5 +74,6 @@ public class MyKeyboard implements KeyboardHandler {
     public void setPaddle(Paddle paddle) {
         this.paddle = paddle;
     }
+
 
 }

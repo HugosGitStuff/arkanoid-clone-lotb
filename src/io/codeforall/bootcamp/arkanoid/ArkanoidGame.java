@@ -7,12 +7,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class ArkanoidGame {
+    private static int score;
     public static void main(String[] args) throws InterruptedException {
 
         MyKeyboard myKeyboard = new MyKeyboard();
         myKeyboard.init();
 
-        int score = 0;
+        score = 0;
         int level = 1;
         int FPS = 60;
         boolean gameOver = false;
@@ -20,14 +21,13 @@ public class ArkanoidGame {
         Blocks blocks;
         Clip wallHitClip;
 
-        //IntroPage intro = new IntroPage();
-
+        IntroPage intro = new IntroPage();
 
 //--------------------------------------------------------------------------
         //começa aqui o intro do texto
 
         Picture textIntro = new Picture(10, 10, "resources/text/textIntro.png");
-        //intro.delete();
+        intro.delete();
         textIntro.draw();
         Thread.sleep(1000);
 
@@ -35,9 +35,11 @@ public class ArkanoidGame {
         textIntro.delete();
         background.draw();
 
+
         Paddle paddle = new Paddle(425, 725);
         paddle.draw();
         myKeyboard.setPaddle(paddle);
+
 
         Ball ball = new Ball(425, 600, 3, 3);
 
@@ -161,8 +163,6 @@ public class ArkanoidGame {
 
                     Thread.sleep(20000);
                     System.exit(0);
-                    //
-
                 }
                 // level 1 - 32 blocks
                 // level 2  - 26 blocks
@@ -196,8 +196,6 @@ public class ArkanoidGame {
                     score += 10;
                     screenText.setScoreValue(score);
                 }
-
-//
 
                 if (ball.getY() >= 770) {
                     screenText.gameOverText();
