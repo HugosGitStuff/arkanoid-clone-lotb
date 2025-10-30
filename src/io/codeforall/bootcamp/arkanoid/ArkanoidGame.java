@@ -7,19 +7,18 @@ import java.io.File;
 import java.io.IOException;
 
 public class ArkanoidGame {
-    private static int score;
-    public static void main(String[] args) throws InterruptedException {
 
-        MyKeyboard myKeyboard = new MyKeyboard();
-        myKeyboard.init();
+    private int score = 0;
+    private int level = 1;
+    private int numBlocksRemoved = 0;
+    private Blocks blocks;
+    private Ball ball;
+    private final Grid newGrid;
+    private final ScreenAdditions screenText;
+    private final Paddle paddle;
 
-        score = 0;
-        int level = 1;
-        int FPS = 60;
-        boolean gameOver = false;
-        int numBlocksRemoved = 0;
-        Blocks blocks;
-        Clip wallHitClip;
+    public ArkanoidGame() throws InterruptedException {
+
 
         IntroPage intro = new IntroPage();
 
@@ -35,47 +34,55 @@ public class ArkanoidGame {
         textIntro.delete();
         background.draw();
 
+        MyKeyboard myKeyboard = new MyKeyboard();
+        myKeyboard.init();
 
-        Paddle paddle = new Paddle(425, 725);
+        newGrid = new Grid(8, 12);
+        newGrid.init();
+
+        paddle = new Paddle(425, 725, newGrid);
         paddle.draw();
         myKeyboard.setPaddle(paddle);
 
 
-        Ball ball = new Ball(425, 600, 3, 3);
+        ball = new Ball(425, 600, 3, 3);
 
-        Grid newGrid = new Grid(8, 12);
-        newGrid.init();
 
-        ScreenAdditions screenText = new ScreenAdditions(level, score);
+        screenText = new ScreenAdditions(level, score);
         screenText.initialText();
-        while (!gameOver) {
-            ball.draw();
-            blocks = new Blocks(newGrid, ball, level);
-            try {
-                screenText.countDown();
-            } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
-                throw new RuntimeException(e);
-            }
 
-            double drawInterval = 1000000000 / FPS;
-            double delta = 0;
-            long lastTime = System.nanoTime();
-            long currentTime;
-            long timer = 0; // Needed to check FPS
-            int drawCount = 0;// Needed to check FPS
-            boolean levelCleared = false;
+    }
 
-            while (!levelCleared) {
-                currentTime = System.nanoTime();
+    public void init() throws InterruptedException {
+        ball.draw();
+        blocks = new Blocks(newGrid, ball, level);
+        try {
+            screenText.countDown();
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
-                delta += (currentTime - lastTime) / drawInterval;
+        int FPS = 60;
+        double drawInterval = 1000000000 / FPS;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+        long timer = 0; // Needed to check FPS
+        int drawCount = 0;// Needed to check FPS
+        boolean levelCleared = false;
 
-                timer += (currentTime - lastTime);
+        while (!levelCleared) {
+            currentTime = System.nanoTime();
 
-                lastTime = currentTime;
+            delta += (currentTime - lastTime) / drawInterval;
 
-                if (delta >= 1){
-                    ball.update();
+            timer += (currentTime - lastTime);
+
+            lastTime = currentTime;
+
+            if (delta >= 1){
+                paddle.update();
+                ball.update();
 
                 for (int i = 0; i < blocks.getBlockMatrix().length; i++) {
                     for (int j = 0; j < blocks.getBlockMatrix()[i].length; j++) {
@@ -132,29 +139,11 @@ public class ArkanoidGame {
                 }
 
                 if (level == 1 && numBlocksRemoved == 32) {
-                    level++;
-                    numBlocksRemoved = 0;
-                    blocks.clear();
-                    ball.delete();
-                    Picture firstLevelPic = new Picture(10, 10, "resources/text/congratsFirstLevel.png");
-                    firstLevelPic.draw();
-                    Thread.sleep(2500);
-                    ball = new Ball(425, 600, 3, 3);
-                    screenText.setLevNum(level);
-                    firstLevelPic.delete();
-                    levelCleared = true;
+                    levelCleared = levelCleared();
+
                 } else if (level == 2 && numBlocksRemoved == 26) {
-                    level++;
-                    numBlocksRemoved = 0;
-                    blocks.clear();
-                    ball.delete();
-                    Picture secondLevelPic = new Picture(10, 10, "resources/text/congratsSecondLevel.png");
-                    secondLevelPic.draw();
-                    Thread.sleep(2500);
-                    ball = new Ball(425, 600, 3, 3);
-                    screenText.setLevNum(level);
-                    secondLevelPic.delete();
-                    levelCleared = true;
+                    levelCleared = levelCleared();
+                    
                 } else if (level == 3 && numBlocksRemoved == 30) {
                     Picture endPic = new Picture(10, 10, "resources/text/finalGame.png");
                     endPic.draw();
@@ -168,6 +157,7 @@ public class ArkanoidGame {
                 // level 2  - 26 blocks
                 // level 3  - 30 blocks
 
+                Clip wallHitClip;
                 if (ball.collidesWith(paddle)) {
                     try {
                         AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("resources/sfx/ball-hit-paddle.WAV"));
@@ -203,8 +193,33 @@ public class ArkanoidGame {
                     System.exit(0);
                 }
             }
-            }
         }
+    }
+
+    public static void main(String[] args) {
+        try {
+        ArkanoidGame arkanoidGame = new ArkanoidGame();
+        boolean gameOver = false;
+        while (!gameOver) {
+                arkanoidGame.init();
+        }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean levelCleared() throws InterruptedException {
+        level++;
+        numBlocksRemoved = 0;
+        blocks.clear();
+        ball.delete();
+        Picture firstLevelPic = new Picture(10, 10, "resources/text/congratsFirstLevel.png");
+        firstLevelPic.draw();
+        Thread.sleep(2500);
+        ball = new Ball(425, 600, 3, 3);
+        screenText.setLevNum(level);
+        firstLevelPic.delete();
+        return true;
     }
 }
 

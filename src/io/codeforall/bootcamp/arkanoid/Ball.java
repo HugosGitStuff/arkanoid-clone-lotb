@@ -52,7 +52,8 @@ public class Ball extends GameObject {
 
     public void paddleBounce(GameObject paddle){
         if (getY() + (getHeight() / 2) <= paddle.getY()) {
-            velocityY = Math.abs(velocityY) * -1;
+            velocityY = velocityY * -1;
+
         } else if (getX() <= paddle.getX() || getX() + getWidth() >= paddle.getX() + paddle.getWidth()){
             velocityX *= -1;
         }

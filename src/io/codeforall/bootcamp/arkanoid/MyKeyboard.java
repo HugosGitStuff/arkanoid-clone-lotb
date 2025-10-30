@@ -19,6 +19,9 @@ public class MyKeyboard implements KeyboardHandler {
         KeyboardEvent goLeft = new KeyboardEvent();
         KeyboardEvent start = new KeyboardEvent();
         KeyboardEvent quit = new KeyboardEvent();
+        KeyboardEvent rightRelease = new KeyboardEvent();
+        KeyboardEvent leftRelease = new KeyboardEvent();
+
 
         //set the key to the event
         //Right
@@ -34,23 +37,34 @@ public class MyKeyboard implements KeyboardHandler {
         quit.setKey(KeyboardEvent.KEY_2);
         quit.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
 
+        rightRelease.setKey(KeyboardEvent.KEY_RIGHT);
+        rightRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+
+        leftRelease.setKey(KeyboardEvent.KEY_LEFT);
+        leftRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+
 
         //add event to the keyboard
         keyboard.addEventListener(goRight);
         keyboard.addEventListener(goLeft);
         keyboard.addEventListener(start);
         keyboard.addEventListener(quit);
+        keyboard.addEventListener(rightRelease);
+        keyboard.addEventListener(leftRelease);
+
 
     }
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
         if (keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT) {
-            //System.out.println("go right");
-            paddle.moveRight();
+
+            paddle.setState(PaddleState.MOVING_RIGHT);
+
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT) {
-            //System.out.println("go left");
-            paddle.moveLeft();
+
+            paddle.setState(PaddleState.MOVING_LEFT);
+
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_1){
 
             //inserir metodo de dar restart ao jogo
@@ -69,11 +83,12 @@ public class MyKeyboard implements KeyboardHandler {
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
+        if (!(keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT) || !(keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT)) {
+            paddle.setState(PaddleState.NOT_MOVING);
+        }
     }
 
     public void setPaddle(Paddle paddle) {
         this.paddle = paddle;
     }
-
-
 }

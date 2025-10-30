@@ -4,47 +4,60 @@ import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Rectangle;
 import com.codeforall.simplegraphics.pictures.Picture;
 
+import java.util.Objects;
+
 public class Paddle extends GameObject {
 
-    private final double speed = 34;
     Rectangle rectangle;
+    private final double speed = 10;
+    private PaddleState state;
+    private final Grid grid;
 
-    public Paddle(double x, double y) {
+    public Paddle(double x, double y, Grid grid) {
+        this.grid = grid;
+        state = PaddleState.NOT_MOVING;
         this.x = x;
         this.y = y;
-        picture = new Picture(x,y, "resources/paddle/sting-dagger-paddel2.png");
+        picture = new Picture(this.x, this.y, "resources/paddle/sting-dagger-paddel2.png");
         width = 150;
         height = 22;
-        rectangle = new Rectangle(x,y + 5,width,height);
+        rectangle = new Rectangle(this.x, this.y, width, height);
         rectangle.setColor(Color.YELLOW);
     }
 
-    public void moveRight() {
-
-        if (picture.getMaxX() + (speed) <= 866){
-            rectangle.translate(speed, 0);
-            picture.translate(speed,0);
-            x += speed;
+    public void update() {
+        if (state == PaddleState.MOVING_RIGHT) {
+            if (getX() + getWidth() + (speed) <= grid.getX() + grid.getWidth()) {
+                x += speed;
+                rectangle.translate(speed, 0);
+                picture.translate(speed, 0);
+            }
+        } else if (state == PaddleState.MOVING_LEFT) {
+            if (picture.getX() - (speed) >= grid.getX() - 5) {
+                x -= speed;
+                rectangle.translate(-speed, 0);
+                picture.translate(-speed, 0);
+            }
         }
     }
 
-    public void moveLeft() {
-        // Check if left edge - movement stays within left boundary (10)
-        if (picture.getX() - (speed) >= 20) {
-            picture.translate(-speed, 0);
-            rectangle.translate(-speed,0);
-            x -= speed;
-        }
+    public void setState(PaddleState state) {
+       this.state = state;
     }
 
     @Override
     public void draw() {
         picture.draw();
-        //rectangle.draw();
+       // rectangle.draw();
     }
 
     @Override
-    public int getWidth() { return rectangle.getWidth();}
+    public int getWidth() {
+        return rectangle.getWidth();
+    }
+
     @Override
-    public int getHeight() { return rectangle.getHeight();}
+    public int getHeight() {
+        return rectangle.getHeight();
+    }
 }
