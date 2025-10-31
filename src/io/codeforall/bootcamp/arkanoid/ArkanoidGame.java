@@ -20,13 +20,13 @@ public class ArkanoidGame {
     public ArkanoidGame() throws InterruptedException {
 
 
-        IntroPage intro = new IntroPage();
+        //IntroPage intro = new IntroPage();
 
 //--------------------------------------------------------------------------
         //começa aqui o intro do texto
 
         Picture textIntro = new Picture(10, 10, "resources/text/textIntro.png");
-        intro.delete();
+       // intro.delete();
         textIntro.draw();
         Thread.sleep(1000);
 
@@ -51,6 +51,18 @@ public class ArkanoidGame {
         screenText = new ScreenAdditions(level, score);
         screenText.initialText();
 
+    }
+
+    public static void main(String[] args) {
+        try {
+        ArkanoidGame arkanoidGame = new ArkanoidGame();
+        boolean gameOver = false;
+        while (!gameOver) {
+                arkanoidGame.init();
+        }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void init() throws InterruptedException {
@@ -143,7 +155,7 @@ public class ArkanoidGame {
 
                 } else if (level == 2 && numBlocksRemoved == 26) {
                     levelCleared = levelCleared();
-                    
+
                 } else if (level == 3 && numBlocksRemoved == 30) {
                     Picture endPic = new Picture(10, 10, "resources/text/finalGame.png");
                     endPic.draw();
@@ -193,18 +205,6 @@ public class ArkanoidGame {
                     System.exit(0);
                 }
             }
-        }
-    }
-
-    public static void main(String[] args) {
-        try {
-        ArkanoidGame arkanoidGame = new ArkanoidGame();
-        boolean gameOver = false;
-        while (!gameOver) {
-                arkanoidGame.init();
-        }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 

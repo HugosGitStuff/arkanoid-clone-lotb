@@ -26,7 +26,7 @@ public class Grid {
     public void init() {
         this.field = new Rectangle(PADDING_LEFT, PADDING_TOP, cols * cellSizeX, rows * cellSizeY);
         this.field.setColor(Color.WHITE);
-        this.field.draw();
+        //this.field.draw();
     }
 
     public int getCellSizeX() {

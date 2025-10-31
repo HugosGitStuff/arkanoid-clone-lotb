@@ -6,6 +6,7 @@ import com.codeforall.simplegraphics.graphics.Text;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class ScreenAdditions {
     Text levNum;
@@ -90,6 +91,12 @@ public class ScreenAdditions {
         gameIsOver.setColor(Color.YELLOW);
         gameIsOver.draw();
 
+    }
+
+    public void scoreboard(LinkedList<String[]> savedScores){
+        String scoreboardLine = "";
+        for
+        Text positions = new Text(300, 250,);
     }
 
     public void setLevNum(int level){
