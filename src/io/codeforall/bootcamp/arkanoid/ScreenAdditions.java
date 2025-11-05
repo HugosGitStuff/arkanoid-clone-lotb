@@ -69,6 +69,14 @@ public class ScreenAdditions {
         countDown.delete();
     }
 
+    public void pressToExit() {
+        Text pressToExit = new Text(450, 770, "Press 2 to exit the game. Thank you for playing!");
+        pressToExit.grow(200, 20);
+        pressToExit.setColor(Color.YELLOW);
+
+        pressToExit.draw();
+    }
+
     public void finalScore(int score){
         Text finalScore = new Text(550, 120, "FINAL SCORE");
         finalScore.grow(50, 20);
@@ -78,13 +86,11 @@ public class ScreenAdditions {
         endScore.grow(50, 20);
         endScore.setColor(Color.YELLOW);
 
-        Text pressToExit = new Text(450, 770, "Press 2 to exit the game. Thank you for playing!");
-        pressToExit.grow(200, 20);
-        pressToExit.setColor(Color.YELLOW);
+        pressToExit();
 
         finalScore.draw();
         endScore.draw();
-        pressToExit.draw();
+
     }
 
     public void gameOverText(){
@@ -98,13 +104,17 @@ public class ScreenAdditions {
     public void scoreboard(ArrayList<String[]> savedScores){
         int x = 400;
         int y = 550;
+        Text scoreboardSign = new Text(600, 500, "SCOREBOARD");
+        scoreboardSign.grow(20, 20);
+        scoreboardSign.setColor(Color.YELLOW);
+        scoreboardSign.draw();
         if (savedScores.isEmpty()){
             System.out.println();
         } else {
              for (String[] score : savedScores){
                 Text positions = new Text(x, y, Arrays.stream(score).reduce("", (acc, elem) -> acc.concat(elem + "                    ")));
-                positions.setColor(Color.WHITE);
-                positions.grow(100,0);
+                positions.setColor(Color.YELLOW);
+                positions.grow(150,5);
                 positions.draw();
                 y += 15;
 

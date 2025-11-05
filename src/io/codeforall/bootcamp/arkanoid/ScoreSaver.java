@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ScoreSaver {
-    private int score;
     private ArrayList<String[]> savedScores;
 
-    public ScoreSaver(int score) {
-        this.score = score;
+    public ScoreSaver() {
         savedScores = new ArrayList<>();
     }
 
@@ -57,18 +55,11 @@ public class ScoreSaver {
 
         for (String[] savedScore : savedScores) {
 
-            writer.write(Arrays.stream(savedScore).reduce("", (acc, elem) -> acc + elem + "---"));
+            writer.write(Arrays.stream(savedScore).reduce("", (acc, elem) -> acc + elem + "-"));
             writer.write("\n");
 
         }
         writer.flush();
         writer.close();
     }
-
-//    public void execute(String filePath, String systemDate, String description) throws IOException {
-//        getSavedScores(filePath);
-//        updateScores(systemDate, description);
-//        saveToFile(filePath);
-//    }
-
 }

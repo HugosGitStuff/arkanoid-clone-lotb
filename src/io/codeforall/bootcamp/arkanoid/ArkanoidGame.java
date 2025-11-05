@@ -19,6 +19,7 @@ public class ArkanoidGame {
     private final ScreenAdditions screenText;
     private final Paddle paddle;
     private ScoreSaver scoreSaver;
+    private boolean gameOver;
 
     public ArkanoidGame() throws InterruptedException {
 
@@ -54,7 +55,7 @@ public class ArkanoidGame {
         screenText = new ScreenAdditions(level, score);
         screenText.initialText();
 
-        scoreSaver = new ScoreSaver(score);
+        scoreSaver = new ScoreSaver();
 
 
     }
@@ -62,9 +63,12 @@ public class ArkanoidGame {
     public static void main(String[] args) {
         try {
         ArkanoidGame arkanoidGame = new ArkanoidGame();
-        boolean gameOver = false;
-        while (!gameOver) {
+        arkanoidGame.setGameOver(false);
+        while (!arkanoidGame.isGameOver()) {
                 arkanoidGame.init();
+        }
+        while (true) {
+           arkanoidGame.gameOver();
         }
         } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
@@ -167,6 +171,9 @@ public class ArkanoidGame {
                     endPic.draw();
 
                     screenText.finalScore(score);
+                    screenText.scoreboard(scoreSaver.getSavedScores("resources/score/score.txt"));
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyy/MM/dd");
+                    scoreSaver.saveToFile("resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
 
                     Thread.sleep(20000);
                     System.exit(0);
@@ -206,12 +213,16 @@ public class ArkanoidGame {
                 }
 
                 if (ball.getY() >= 770) {
-                    screenText.gameOverText();
-                    Thread.sleep(2000);
-                    System.exit(0);
+                    gameOver = true;
+                    break;
                 }
             }
         }
+    }
+
+    public void gameOver() {
+        screenText.gameOverText();
+        screenText.pressToExit();
     }
 
     public boolean levelCleared(String levelPicPath) throws InterruptedException, IOException {
@@ -221,14 +232,19 @@ public class ArkanoidGame {
         ball.delete();
         Picture levelPic = new Picture(10, 10, levelPicPath);
         levelPic.draw();
-        screenText.scoreboard(scoreSaver.getSavedScores("resources/score/score.txt"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyy/MM/dd");
-        scoreSaver.saveToFile("resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
         Thread.sleep(2000);
         ball = new Ball(425, 600, 3, 3);
         screenText.setLevNum(level);
         levelPic.delete();
         return true;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 }
 
