@@ -1,56 +1,74 @@
 package io.codeforall.bootcamp.arkanoid;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 public class ScoreSaver {
     private int score;
-    private LinkedList<String[]> savedScores;
+    private ArrayList<String[]> savedScores;
 
     public ScoreSaver(int score) {
         this.score = score;
-        savedScores = new LinkedList<>();
+        savedScores = new ArrayList<>();
     }
 
-    public void getSavedScores(String filePath) throws IOException {
+    public ArrayList<String[]> getSavedScores(String filePath) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         for (int i = 0; i < 10; i++) {
-            String[] lines = reader.readLine().split("-");
-            if (Arrays.stream(lines).noneMatch(null)) {
-                savedScores.add(lines);
-            } else {
-                savedScores.add(new String[]{"","",""});
+            String line = reader.readLine();
+            if (line != null) {
+                String[] elements = line.split("-");
+
+                savedScores.add(elements);
             }
         }
         reader.close();
+        return savedScores;
     }
 
-    public void updateScores (String systemDate, String description){
-        for(int i = 0; i < savedScores.size(); i++){
-            if (score > Integer.parseInt(savedScores.get(i)[2])){
+    public ArrayList<String[]> updateScores(String systemDate, String description, int score) {
+        for (int i = 0; !savedScores.isEmpty() && i < savedScores.size(); i++) {
+
+            int savedScore = Integer.parseInt(savedScores.get(i)[2]);
+
+            if (score >= savedScore || savedScores.get(i) == null) {
+
+                if (savedScores.size() == 10){
+                    savedScores.remove(9);
+                }
+
                 savedScores.add(i, new String[]{systemDate, description, "" + score});
-                savedScores.remove(9);
-            } else if (score == Integer.parseInt(savedScores.get(i)[2]) && i + 1 < 10){
-                savedScores.add(i + 1, new String[]{systemDate, description, "" + score}  );
-                savedScores.remove(9);
+                return savedScores;
             }
         }
+
+        if (savedScores.isEmpty()) {
+
+            savedScores.addFirst(new String[]{systemDate, description, "" + score});
+
+        }
+        return savedScores;
     }
 
-    public void saveToFile(String filePath) throws IOException {
-        PrintWriter writer = new PrintWriter( new FileWriter(filePath));
+    public void saveToFile(String filePath, ArrayList<String[]> savedScores) throws IOException {
+
+        PrintWriter writer = new PrintWriter(new FileWriter(filePath));
+
         for (String[] savedScore : savedScores) {
-            writer.write(Arrays.stream(savedScore).reduce("", String::concat));
+
+            writer.write(Arrays.stream(savedScore).reduce("", (acc, elem) -> acc + elem + "---"));
+            writer.write("\n");
+
         }
         writer.flush();
         writer.close();
     }
 
-    public void execute (String filePath, String systemDate, String description) throws IOException {
-        getSavedScores(filePath);
-        updateScores(systemDate, description);
-        saveToFile(filePath);
-    }
+//    public void execute(String filePath, String systemDate, String description) throws IOException {
+//        getSavedScores(filePath);
+//        updateScores(systemDate, description);
+//        saveToFile(filePath);
+//    }
 
 }

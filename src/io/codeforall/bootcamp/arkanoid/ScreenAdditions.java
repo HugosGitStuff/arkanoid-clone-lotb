@@ -6,6 +6,8 @@ import com.codeforall.simplegraphics.graphics.Text;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class ScreenAdditions {
@@ -93,10 +95,21 @@ public class ScreenAdditions {
 
     }
 
-    public void scoreboard(LinkedList<String[]> savedScores){
-        String scoreboardLine = "";
-        for
-        Text positions = new Text(300, 250,);
+    public void scoreboard(ArrayList<String[]> savedScores){
+        int x = 400;
+        int y = 550;
+        if (savedScores.isEmpty()){
+            System.out.println();
+        } else {
+             for (String[] score : savedScores){
+                Text positions = new Text(x, y, Arrays.stream(score).reduce("", (acc, elem) -> acc.concat(elem + "                    ")));
+                positions.setColor(Color.WHITE);
+                positions.grow(100,0);
+                positions.draw();
+                y += 15;
+
+             }
+        }
     }
 
     public void setLevNum(int level){

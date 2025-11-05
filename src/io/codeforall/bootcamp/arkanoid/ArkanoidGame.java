@@ -5,6 +5,8 @@ import com.codeforall.simplegraphics.pictures.Picture;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ArkanoidGame {
 
@@ -16,19 +18,20 @@ public class ArkanoidGame {
     private final Grid newGrid;
     private final ScreenAdditions screenText;
     private final Paddle paddle;
+    private ScoreSaver scoreSaver;
 
     public ArkanoidGame() throws InterruptedException {
 
 
-        //IntroPage intro = new IntroPage();
+        IntroPage intro = new IntroPage();
 
 //--------------------------------------------------------------------------
         //começa aqui o intro do texto
 
         Picture textIntro = new Picture(10, 10, "resources/text/textIntro.png");
-       // intro.delete();
+        intro.delete();
         textIntro.draw();
-        Thread.sleep(1000);
+        Thread.sleep(10000);
 
         Picture background = new Picture(10, 10, "resources/gameBackground/background-final.png");
         textIntro.delete();
@@ -51,6 +54,9 @@ public class ArkanoidGame {
         screenText = new ScreenAdditions(level, score);
         screenText.initialText();
 
+        scoreSaver = new ScoreSaver(score);
+
+
     }
 
     public static void main(String[] args) {
@@ -60,12 +66,12 @@ public class ArkanoidGame {
         while (!gameOver) {
                 arkanoidGame.init();
         }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void init() throws InterruptedException {
+    public void init() throws InterruptedException, IOException {
         ball.draw();
         blocks = new Blocks(newGrid, ball, level);
         try {
@@ -151,10 +157,10 @@ public class ArkanoidGame {
                 }
 
                 if (level == 1 && numBlocksRemoved == 32) {
-                    levelCleared = levelCleared();
+                    levelCleared = levelCleared("resources/text/congratsFirstLevel.png");
 
                 } else if (level == 2 && numBlocksRemoved == 26) {
-                    levelCleared = levelCleared();
+                    levelCleared = levelCleared("resources/text/congratsSecondLevel.png");
 
                 } else if (level == 3 && numBlocksRemoved == 30) {
                     Picture endPic = new Picture(10, 10, "resources/text/finalGame.png");
@@ -208,17 +214,20 @@ public class ArkanoidGame {
         }
     }
 
-    public boolean levelCleared() throws InterruptedException {
+    public boolean levelCleared(String levelPicPath) throws InterruptedException, IOException {
         level++;
         numBlocksRemoved = 0;
         blocks.clear();
         ball.delete();
-        Picture firstLevelPic = new Picture(10, 10, "resources/text/congratsFirstLevel.png");
-        firstLevelPic.draw();
-        Thread.sleep(2500);
+        Picture levelPic = new Picture(10, 10, levelPicPath);
+        levelPic.draw();
+        screenText.scoreboard(scoreSaver.getSavedScores("resources/score/score.txt"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyy/MM/dd");
+        scoreSaver.saveToFile("resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
+        Thread.sleep(2000);
         ball = new Ball(425, 600, 3, 3);
         screenText.setLevNum(level);
-        firstLevelPic.delete();
+        levelPic.delete();
         return true;
     }
 }
