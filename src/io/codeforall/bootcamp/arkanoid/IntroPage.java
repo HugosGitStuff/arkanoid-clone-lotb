@@ -42,8 +42,12 @@ public class IntroPage implements MouseHandler, KeyboardHandler {
     private boolean finished = false;
 
     public IntroPage() {
-        background = new Picture(10, 10, "resources/introbackground/FinalIntroImageBackground.png");
+        background = new Picture(10, 10, "/introbackground/FinalIntroImageBackground.png");
         background.draw();
+
+        URL test = ArkanoidGame.class.getResource("/introbackground/FinalIntroImageBackground.png");
+        System.out.println("Image resource: " + test);
+        System.out.println("Image resource: " + ArkanoidGame.class.getResource("/introbackground/FinalIntroImageBackground.png"));
 
         // Buttons (adjust to align perfectly with your image)
         startBtn = new Rectangle(530, 400, 190, 40);
@@ -71,7 +75,7 @@ public class IntroPage implements MouseHandler, KeyboardHandler {
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
         mouse.addEventListener(MouseEventType.MOUSE_MOVED);
 
-        playMusic("resources/soundtrack/AncientShadowsRising.wav"); // 🎵 play your intro theme
+       // playMusic("/soundtrack/AncientShadowsRising.wav"); // 🎵 play your intro theme
 
         Keyboard keyboard = new Keyboard(this);
 
@@ -107,9 +111,13 @@ public class IntroPage implements MouseHandler, KeyboardHandler {
 
 
     private void playMusic(String path) {
+
+
+
         try {
-            URL file = getClass().getResource("/resources/soundtrack/AncientShadowsRising.wav");
+            URL file = getClass().getResource(path);
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(file.openStream()));
+
             musicClip = AudioSystem.getClip();
             musicClip.open(audioStream);
             musicClip.loop(Clip.LOOP_CONTINUOUSLY); // loop forever

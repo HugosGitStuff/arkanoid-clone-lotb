@@ -9,7 +9,6 @@ import com.codeforall.simplegraphics.mouse.MouseEventType;
 import com.codeforall.simplegraphics.mouse.MouseHandler;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 public class MyMouse implements MouseHandler {
@@ -20,12 +19,26 @@ public class MyMouse implements MouseHandler {
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
         mouse.addEventListener(MouseEventType.MOUSE_MOVED);
         buttons = new HashMap<>();
+        createButton(600, 750, "START");
+        createButton(600, 750, "CONTINUE");
+        createButton(600, 750, "RESTART");
+        createButton(600, 750, "QUIT");
     }
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         int x = (int) mouseEvent.getX();
         int y = (int) mouseEvent.getY();
+
+       if (isInside(buttons.get("start"), x, y)) {
+
+       } else if (isInside(buttons.get("continue"), x, y)) {
+
+       } else if (isInside(buttons.get("restart"), x, y)) {
+
+       } else if (isInside(buttons.get("quit"), x, y)) {
+
+       }
 
 
     }
@@ -37,6 +50,11 @@ public class MyMouse implements MouseHandler {
 
 
 
+    }
+
+    public boolean isInside(Button button, int x, int y) {
+        return x >= button.getX() && x <= button.getX() + button.getWidth() &&
+                y >= button.getY() && y <= button.getY() + button.getHeight();
     }
 
     public void createButton(int x, int y, String message) {
@@ -54,12 +72,16 @@ public class MyMouse implements MouseHandler {
     private class Button {
         private final Rectangle button;
         private final Text text;
+        private int width = 100;
+        private int height = 30;
+        private int x;
+        private int y;
 
 
         public Button(int x, int y, String message) {
-            int width = 100;
-            int height = 30;
-            button = new Rectangle(x, y, width, height);
+            this.x = x;
+            this.y = y;
+            button = new Rectangle(this.x, this.y, width, height);
             button.setColor(Color.LIGHT_GRAY);
 
             text = new Text(x, y, message);
@@ -77,6 +99,21 @@ public class MyMouse implements MouseHandler {
             text.draw();
         }
 
+        public int getWidth() {
+            return width;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
     }
 
 }

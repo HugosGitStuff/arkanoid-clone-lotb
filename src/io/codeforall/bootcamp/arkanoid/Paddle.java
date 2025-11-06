@@ -4,8 +4,6 @@ import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Rectangle;
 import com.codeforall.simplegraphics.pictures.Picture;
 
-import java.util.Objects;
-
 public class Paddle extends GameObject {
 
     Rectangle rectangle;
@@ -18,7 +16,7 @@ public class Paddle extends GameObject {
         state = PaddleState.NOT_MOVING;
         this.x = x;
         this.y = y;
-        picture = new Picture(this.x, this.y, "resources/paddle/sting-dagger-paddel2.png");
+        picture = new Picture(this.x, this.y, "/paddle/sting-dagger-paddel2.png");
         width = 150;
         height = 22;
         rectangle = new Rectangle(this.x, this.y, width, height);
@@ -52,12 +50,12 @@ public class Paddle extends GameObject {
     }
 
     @Override
-    public int getWidth() {
+    public double getWidth() {
         return rectangle.getWidth();
     }
 
     @Override
-    public int getHeight() {
+    public double getHeight() {
         return rectangle.getHeight();
     }
 }

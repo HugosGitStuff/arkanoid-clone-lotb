@@ -4,24 +4,24 @@ import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 public class ScreenAdditions {
     Text levNum;
     Text scoreValue;
-    Clip countDownSound;
 
-    public ScreenAdditions(int level, int score){
+    public ScreenAdditions(int level, int score) {
         levNum = new Text(970, 220, "" + level);
         scoreValue = new Text(965, 350, "" + score);
 
     }
 
-    public void initialText(){
+    public void initialText() {
         Text lev = new Text(970, 160, "Level ");
         Text highScore = new Text(960, 300, "SCORE");
 
@@ -41,32 +41,34 @@ public class ScreenAdditions {
     }
 
     public void countDown() throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException {
-        Text countDown = new Text(425, 400, "3");
+        Text countDown = new Text(450, 490, "3");
         countDown.grow(60, 60);
         countDown.setColor(Color.YELLOW);
         countDown.draw();
-        AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("resources/sfx/countdown-2.WAV"));
-        countDownSound = AudioSystem.getClip();
-        countDownSound.open(audioStream);
-        countDownSound.start();
+        runAudio("/sfx/countdown-1.WAV");
         Thread.sleep(1000);
-        AudioInputStream audioStream1 = AudioSystem.getAudioInputStream(new File("resources/sfx/countdown-2.WAV"));
-        countDownSound = AudioSystem.getClip();
-        countDownSound.open(audioStream1);
-        countDownSound.start();
+        runAudio("/sfx/countdown-1.WAV");
         countDown.setText("2");
         Thread.sleep(1000);
         countDown.setText("1");
-        AudioInputStream audioStream2 = AudioSystem.getAudioInputStream(new File("resources/sfx/countdown-2.WAV"));
-        countDownSound = AudioSystem.getClip();
-        countDownSound.open(audioStream2);
-        countDownSound.start();
+        runAudio("/sfx/countdown-1.WAV");
         Thread.sleep(1000);
-        AudioInputStream audioStream3 = AudioSystem.getAudioInputStream(new File("resources/sfx/countdown-final.WAV"));
-        countDownSound = AudioSystem.getClip();
-        countDownSound.open(audioStream3);
-        countDownSound.start();
+        runAudio("/sfx/countdown-final.WAV");
         countDown.delete();
+    }
+
+    public void runAudio(String filePath) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        try {
+            URL file = getClass().getResource(filePath);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(file.openStream()));
+
+            Clip audio = AudioSystem.getClip();
+            audio.open(audioStream);
+            audio.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            System.out.println("Error playing sound: " + e.getMessage());
+        }
+
     }
 
     public void pressToExit() {
@@ -77,7 +79,7 @@ public class ScreenAdditions {
         pressToExit.draw();
     }
 
-    public void finalScore(int score){
+    public void finalScore(int score) {
         Text finalScore = new Text(550, 120, "FINAL SCORE");
         finalScore.grow(50, 20);
         finalScore.setColor(Color.YELLOW);
@@ -93,7 +95,7 @@ public class ScreenAdditions {
 
     }
 
-    public void gameOverText(){
+    public void gameOverText() {
         Text gameIsOver = new Text(425, 400, "GAME OVER");
         gameIsOver.grow(200, 30);
         gameIsOver.setColor(Color.YELLOW);
@@ -101,28 +103,28 @@ public class ScreenAdditions {
 
     }
 
-    public void scoreboard(ArrayList<String[]> savedScores){
+    public void scoreboard(ArrayList<String[]> savedScores) {
         int x = 400;
         int y = 550;
         Text scoreboardSign = new Text(600, 500, "SCOREBOARD");
         scoreboardSign.grow(20, 20);
         scoreboardSign.setColor(Color.YELLOW);
         scoreboardSign.draw();
-        if (savedScores.isEmpty()){
+        if (savedScores.isEmpty()) {
             System.out.println();
         } else {
-             for (String[] score : savedScores){
+            for (String[] score : savedScores) {
                 Text positions = new Text(x, y, Arrays.stream(score).reduce("", (acc, elem) -> acc.concat(elem + "                    ")));
                 positions.setColor(Color.YELLOW);
-                positions.grow(150,5);
+                positions.grow(150, 5);
                 positions.draw();
                 y += 15;
 
-             }
+            }
         }
     }
 
-    public void setLevNum(int level){
+    public void setLevNum(int level) {
         levNum.setText("" + level);
     }
 

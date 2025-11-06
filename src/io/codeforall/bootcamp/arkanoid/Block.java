@@ -4,8 +4,10 @@ import com.codeforall.simplegraphics.graphics.Rectangle;
 import com.codeforall.simplegraphics.pictures.Picture;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class Block extends GameObject{
 
@@ -40,8 +42,10 @@ public class Block extends GameObject{
         if (health <= 0){
             dead = true;
             try {
-                AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("resources/sfx/ork_dyingsound.WAV"));
-                //AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+
+                URL file = getClass().getResource("/sfx/ork_dyingsound.WAV");
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(file.openStream()));
+
                 musicClip = AudioSystem.getClip();
                 musicClip.open(audioStream);
                 musicClip.start();
@@ -51,8 +55,10 @@ public class Block extends GameObject{
         }
         else{
             try {
-                AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(orcSoundPath));
-                //AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+
+                URL file = getClass().getResource(orcSoundPath);
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(file.openStream()));
+
                 musicClip = AudioSystem.getClip();
                 musicClip.open(audioStream);
                 musicClip.start();
@@ -85,11 +91,11 @@ public class Block extends GameObject{
         return y;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 

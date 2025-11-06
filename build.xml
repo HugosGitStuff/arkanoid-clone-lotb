@@ -14,7 +14,7 @@
 
         <!-- uncomment for projects with libs and resources-->
         <property name="lib.dir" value="lib" />
-        <property name="resources.dir" value="resources"/>
+        <property name="resources.dir" value="src/resources"/>
         <path id="classpath">
             <fileset dir="${lib.dir}" includes="**/*.jar" />
         </path>
@@ -45,8 +45,8 @@
             </manifest>
             <!-- uncomment for projects with libs and resources-->
             <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
-            <fileset dir=".">
-                <include name="**/${resources.dir}/**"/>
+            <fileset dir="${resources.dir}">
+                <include name="**/*"/>
             </fileset>
 
         </jar>

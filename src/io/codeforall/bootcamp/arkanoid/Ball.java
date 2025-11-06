@@ -9,14 +9,14 @@ public class Ball extends GameObject {
     private Ellipse bola;
 
 
-    public Ball(int x, int y, int velocityX, int velocityY) {
+    public Ball(double x, double y, int velocityX, int velocityY) {
         this.x = x;
         this.y = y;
         this.velocityX = velocityX;
         this.velocityY = velocityY;
         this.bola = new Ellipse(x, y, 20, 20);
         bola.setColor(Color.WHITE);
-        picture = new Picture(x, y, "resources/ball/arkanoid-ball.png");
+        picture = new Picture(x, y, "/ball/arkanoid-ball.png");
 
     }
 
@@ -69,6 +69,34 @@ public class Ball extends GameObject {
        return getY() - getVelocityY();
     }
 
+    public boolean collisionTopLeft(GameObject other){
+        return getX() <= other.getX() + other.getWidth() && getY() <= other.getY() + other.getHeight();
+    }
+
+    public boolean collisionTopRight(GameObject other){
+        return getX()  + getWidth() >= other.getX();
+    }
+
+    public boolean collisionBottomLeft (GameObject other){
+        return getX() <= other.getX() + other.getWidth() && getY() + getHeight() >= other.getY();
+    }
+
+    public boolean collisionBottomRight(GameObject other){
+        return getX() + getWidth() >= other.getX() && getY() + getHeight() >= other.getY();
+    }
+
+    public boolean collidesWith(GameObject other) {
+        return (collisionTopLeft(other) && collisionTopRight(other)) && (collisionBottomLeft(other) && collisionBottomRight(other));
+    }
+
+    public String checkWallCollision(Grid grid) {
+        if (x <= grid.getX()) return "left";
+        if (x + getWidth() >= grid.getWidth() + grid.getX()) return "right";
+        if (y <= grid.getY()) return "top";
+        if (y + getHeight() >= grid.getHeight()) return "bottom";
+        return null;
+    }
+
     @Override
     public void draw() {
         //bola.draw();
@@ -76,12 +104,12 @@ public class Ball extends GameObject {
     }
 
     @Override
-    public int getWidth() {
+    public double getWidth() {
         return bola.getWidth();
     }
 
     @Override
-    public int getHeight() {
+    public double getHeight() {
         return bola.getHeight();
     }
 

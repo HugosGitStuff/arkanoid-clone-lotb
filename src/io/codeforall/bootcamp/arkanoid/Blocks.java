@@ -29,24 +29,24 @@ public class Blocks extends GameObject {
         setMobLevels();
 
         if ( level == 1){
-        rollin = new Picture(400, 115, "resources/caracters/rollin.png");
+        rollin = new Picture(400, 115, "/caracters/rollin.png");
         rollin.draw();
-        legolas = new Picture(945, 530, "resources/avatars/legolas.png");
+        legolas = new Picture(945, 530, "/avatars/legolas.png");
         legolas.draw();
-        aragorn = new Picture(880, 530, "resources/avatars/aragorn.png");
+        aragorn = new Picture(880, 530, "/avatars/aragorn.png");
         aragorn.draw();
         }else if (level == 2){
-            kay = new Picture(385, 115, "resources/caracters/kay.png");
+            kay = new Picture(385, 115, "/caracters/kay.png");
         kay.draw();
 
-        rollin = new Picture(925, 560, "resources/caracters/rollin.png");
+        rollin = new Picture(925, 560, "/caracters/rollin.png");
         rollin.draw();
         } else if ( level == 3){
-            easter = new Picture(385, 115, "resources/caracters/easter.png");
+            easter = new Picture(385, 115, "/caracters/easter.png");
         easter.draw();
-        kay = new Picture(935, 560, "resources/caracters/kay.png");
+        kay = new Picture(935, 560, "/caracters/kay.png");
         kay.draw();
-        rollin = new Picture(895, 560, "resources/caracters/rollin.png");
+        rollin = new Picture(895, 560, "/caracters/rollin.png");
         rollin.draw();
         }
 
