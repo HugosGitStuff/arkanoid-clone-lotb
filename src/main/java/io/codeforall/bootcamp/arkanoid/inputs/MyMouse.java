@@ -23,6 +23,7 @@ public class MyMouse implements MouseHandler {
         createButton(600, 750, "CONTINUE");
         createButton(600, 750, "RESTART");
         createButton(600, 750, "QUIT");
+        createButton(600, 750, "PAUSE");
     }
 
     @Override

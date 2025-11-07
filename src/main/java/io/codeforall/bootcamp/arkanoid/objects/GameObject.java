@@ -28,5 +28,6 @@ public abstract class GameObject {
         return width;
     }
 
+    public void delete() {}
 
 }
