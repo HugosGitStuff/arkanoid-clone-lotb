@@ -6,9 +6,9 @@ public class CompletedLevelPage {
     private Picture background;
     private int score;
     private final String[] picturePaths = new String[] {
-            "src/resources/text/congratsFirstLevel.png",
-            "src/resources/text/congratsSecondLevel.png",
-            "src/resources/text/finalGame.png"};
+            "src/main/resources/text/congratsFirstLevel.png",
+            "src/main/resources/text/congratsSecondLevel.png",
+            "src/main/resources/text/finalGame.png"};
 
     public void executeLevel(int level) {
         background = new Picture(5, 5, picturePaths[level - 1]);

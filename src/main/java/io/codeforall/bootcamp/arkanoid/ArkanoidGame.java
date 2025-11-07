@@ -84,7 +84,7 @@ public class ArkanoidGame {
         intro.delete();
         textIntro.draw();
         try {
-            Thread.sleep(10000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -193,19 +193,19 @@ public class ArkanoidGame {
                     timer = 0;
                 }
 
-                if (level == 1 && numBlocksRemoved == 32) {
+                if (level == 1 && numBlocksRemoved == 1) {
                     levelCleared = levelCleared();
 
-                } else if (level == 2 && numBlocksRemoved == 26) {
+                } else if (level == 2 && numBlocksRemoved == 1) {
                     levelCleared = levelCleared();
 
-                } else if (level == 3 && numBlocksRemoved == 30) {
+                } else if (level == 3 && numBlocksRemoved == 1) {
                     completedLevelPage.executeLevel(level);
 
                     screenAddon.finalScore(score);
                    // screenAddon.scoreboard(scoreSaver.getSavedScores("/score/score.txt"));
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyy/MM/dd");
-                    scoreSaver.saveToFile("/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                    scoreSaver.saveToFile("src/main/resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
 
                     Thread.sleep(20000);
                     System.exit(0);

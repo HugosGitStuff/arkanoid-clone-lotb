@@ -43,7 +43,7 @@ public class ScoreSaver {
 
         if (savedScores.isEmpty()) {
 
-            savedScores.addFirst(new String[]{systemDate, description, "" + score});
+            savedScores.add(new String[]{systemDate, description, "" + score});
 
         }
         return savedScores;

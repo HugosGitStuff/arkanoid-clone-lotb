@@ -24,16 +24,22 @@ public class NameInputRetro  implements KeyboardHandler {
         instructionText.setColor(Color.YELLOW);
         instructionText.grow(150, 25);
         centerText(instructionText, 220);
-        instructionText.draw();
+
         // name text
         nameText = new Text(0, 0, "_");
         nameText.setColor(Color.YELLOW);
         nameText.grow(150, 25);
         centerText(nameText, 300);
+
+    }
+
+    public void drawInputText() {
+        instructionText.draw();
         nameText.draw();
         setupKeyboard();
         startCursorBlink();
     }
+
     private void setupKeyboard() {
         Keyboard keyboard = new Keyboard(this);
         // A–Z
@@ -71,7 +77,7 @@ public class NameInputRetro  implements KeyboardHandler {
             centerText(nameText, 300);
             return;
         }
-        if (key == KeyboardEvent.KEY_BACK_SLASH && !playerName.isEmpty()) {
+        if (key == KeyboardEvent.KEY_BACK_SLASH &&  playerName.length() > 0) {
             playerName.deleteCharAt(playerName.length() - 1);
         } else if (playerName.length() < 12) {
             if (key >= KeyboardEvent.KEY_A && key <= KeyboardEvent.KEY_Z) {
@@ -118,6 +124,7 @@ public class NameInputRetro  implements KeyboardHandler {
     public static void main(String[] args) throws InterruptedException {
         NameInputRetro input = new NameInputRetro();
         while (!input.isFinished()) {
+            input.drawInputText();
             Thread.sleep(100);
         }
         System.out.println("Player name: " + input.getPlayerName());
