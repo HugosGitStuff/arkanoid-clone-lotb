@@ -1,0 +1,17 @@
+io/codeforall/bootcamp/arkanoid/inputs/ScoreSaver.class
+io/codeforall/bootcamp/arkanoid/objects/blocks/Block.class
+io/codeforall/bootcamp/arkanoid/pages/IntroPage.class
+io/codeforall/bootcamp/arkanoid/inputs/NameInputRetro.class
+io/codeforall/bootcamp/arkanoid/ArkanoidGame.class
+io/codeforall/bootcamp/arkanoid/inputs/MyKeyboard.class
+io/codeforall/bootcamp/arkanoid/inputs/MyMouse$Button.class
+io/codeforall/bootcamp/arkanoid/inputs/ScreenAdditions.class
+io/codeforall/bootcamp/arkanoid/objects/paddle/PaddleState.class
+io/codeforall/bootcamp/arkanoid/pages/CompletedLevelPage.class
+io/codeforall/bootcamp/arkanoid/objects/blocks/Blocks.class
+io/codeforall/bootcamp/arkanoid/objects/grid/Grid.class
+io/codeforall/bootcamp/arkanoid/objects/paddle/Paddle.class
+io/codeforall/bootcamp/arkanoid/objects/GameObject.class
+io/codeforall/bootcamp/arkanoid/objects/ball/Ball.class
+io/codeforall/bootcamp/arkanoid/inputs/MyMouse.class
+io/codeforall/bootcamp/arkanoid/objects/blocks/BlockTypes.class

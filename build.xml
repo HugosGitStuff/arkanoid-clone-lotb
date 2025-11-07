@@ -14,7 +14,7 @@
 
         <!-- uncomment for projects with libs and resources-->
         <property name="lib.dir" value="lib" />
-        <property name="resources.dir" value="src/resources"/>
+        <property name="resources.dir" value="src/main/resources"/>
         <path id="classpath">
             <fileset dir="${lib.dir}" includes="**/*.jar" />
         </path>

@@ -1,0 +1,16 @@
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/ArkanoidGame.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/inputs/MyKeyboard.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/inputs/MyMouse.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/inputs/NameInputRetro.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/inputs/ScoreSaver.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/inputs/ScreenAdditions.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/objects/GameObject.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/objects/ball/Ball.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/objects/blocks/Block.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/objects/blocks/BlockTypes.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/objects/blocks/Blocks.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/objects/grid/Grid.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/objects/paddle/Paddle.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/objects/paddle/PaddleState.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/pages/CompletedLevelPage.java
+/Users/codecadet/workspace/projetos/projeto1/arkanoid-clode-team-sting/src/main/java/io/codeforall/bootcamp/arkanoid/pages/IntroPage.java
