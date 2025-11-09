@@ -14,15 +14,11 @@ public class ScreenAdditions {
     Text levNum;
     Text scoreValue;
 
-    public ScreenAdditions(int level, int score) {
-        levNum = new Text(970, 220, "" + level);
-        scoreValue = new Text(965, 350, "" + score);
-
-    }
-
     public void initialText() {
         Text lev = new Text(970, 160, "Level ");
+        levNum = new Text(970, 220, "1");
         Text highScore = new Text(960, 300, "SCORE");
+        scoreValue = new Text(965, 350,"0");
 
         lev.setColor(Color.YELLOW);
         lev.grow(30, 20);
@@ -123,11 +119,11 @@ public class ScreenAdditions {
         }
     }
 
-    public void setLevNum(int level) {
+    public void setLevel(int level) {
         levNum.setText("" + level);
     }
 
-    public void setScoreValue(int score) {
-        scoreValue.setText("" + score);
+    public void setScore(int score) {
+        scoreValue.setText( "" + score);
     }
 }

@@ -1,15 +1,20 @@
 package io.codeforall.bootcamp.arkanoid;
 
+import java.io.IOException;
+
 public class ArkanoidGame {
 
     public static void main(String[] args) {
         ArkanoidGame arkanoidGame = new ArkanoidGame();
-
-        arkanoidGame.bootstrap();
+        try {
+            arkanoidGame.bootstrap();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
-    public void bootstrap() {
+    public void bootstrap() throws IOException, InterruptedException {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.execute();
     }

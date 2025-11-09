@@ -12,14 +12,15 @@ import com.codeforall.simplegraphics.mouse.MouseEvent;
 import com.codeforall.simplegraphics.mouse.MouseEventType;
 import com.codeforall.simplegraphics.mouse.MouseHandler;
 import com.codeforall.simplegraphics.pictures.Picture;
-import io.codeforall.bootcamp.arkanoid.ArkanoidGame;
 
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 
-public class IntroPage implements MouseHandler, KeyboardHandler {
+public class IntroPage implements MouseHandler, KeyboardHandler{
+
+    private BreakPage breakPage;
 
     private Picture background;
     private Clip musicClip;
@@ -36,16 +37,12 @@ public class IntroPage implements MouseHandler, KeyboardHandler {
     private Color glowColor = new Color(255, 255, 180);   // lighter glow
 
 
-    private boolean waiting = true;
     private boolean finished = false;
 
-    public IntroPage() {
-        background = new Picture(10, 10, "/introbackground/FinalIntroImageBackground.png");
+    public void init() throws IOException, InterruptedException {
+        background = new Picture(10, 10, "introbackground/FinalIntroImageBackground.png");
         background.draw();
 
-        URL test = ArkanoidGame.class.getResource("/introbackground/FinalIntroImageBackground.png");
-        System.out.println("Image resource: " + test);
-        System.out.println("Image resource: " + ArkanoidGame.class.getResource("/introbackground/FinalIntroImageBackground.png"));
 
         // Buttons (adjust to align perfectly with your image)
         startBtn = new Rectangle(530, 400, 190, 40);
@@ -65,7 +62,7 @@ public class IntroPage implements MouseHandler, KeyboardHandler {
 //        styleText(optionsText);
 //        styleText(highScoresText);
 
-        drawButton( startText);
+        drawButton(startText);
 //        drawButton(optionsBtn, optionsText);
 //        drawButton(highScoresBtn, highScoresText);
 
@@ -73,7 +70,7 @@ public class IntroPage implements MouseHandler, KeyboardHandler {
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
         mouse.addEventListener(MouseEventType.MOUSE_MOVED);
 
-       // playMusic("/soundtrack/AncientShadowsRising.wav"); // 🎵 play your intro theme
+        // playMusic("/soundtrack/AncientShadowsRising.wav"); // 🎵 play your intro theme
 
         Keyboard keyboard = new Keyboard(this);
 
@@ -82,36 +79,25 @@ public class IntroPage implements MouseHandler, KeyboardHandler {
         spaceEvent.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         keyboard.addEventListener(spaceEvent);
 
-        // Keep program running until SPACE is pressed
-        while (waiting) {
-            // just idle to keep image on screen
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        while(!finished) {
+            Thread.sleep(50);
         }
 
-        //System.out.println("SPACE pressed! You can continue from here...");
+        delete();
 
     }
 
-    public void delete(){
+    public void delete() throws InterruptedException, IOException {
         background.delete();
-    }
 
+        breakPage.init();
+    }
 
     public boolean isFinished() {
         return finished;
     }
 
-
-
-
     private void playMusic(String path) {
-
-
-
         try {
             URL file = getClass().getResource(path);
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(file.openStream()));
@@ -142,37 +128,35 @@ public class IntroPage implements MouseHandler, KeyboardHandler {
         label.draw();
     }
 
-    private void drawButton( Text label) {
+    private void drawButton(Text label) {
 
         label.draw();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int x = (int)e.getX();
-        int y = (int)e.getY();
+        int x = (int) e.getX();
+        int y = (int) e.getY();
 
-        if (isInside(startBtn, x, y)) {
-            System.out.println("Start Game clicked!");
-        } else if (isInside(optionsBtn, x, y)) {
-            System.out.println("Options clicked!");
-        } else if (isInside(highScoresBtn, x, y)) {
-            System.out.println("High Scores clicked!");
-        }
+//        if (isInside(startBtn, x, y)) {
+//            System.out.println("Start Game clicked!");
+//        } else if (isInside(optionsBtn, x, y)) {
+//            System.out.println("Options clicked!");
+//        } else if (isInside(highScoresBtn, x, y)) {
+//            System.out.println("High Scores clicked!");
+//        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        int x = (int)e.getX();
-        int y = (int)e.getY();
+        int x = (int) e.getX();
+        int y = (int) e.getY();
 
         // Glow effect on hover
 //        handleHover(startBtn, startText, x, y);
 //        handleHover(optionsBtn, optionsText, x, y);
 //        handleHover(highScoresBtn, highScoresText, x, y);
     }
-
-
 
     private boolean isInside(Rectangle rect, int x, int y) {
         return x >= rect.getX() && x <= rect.getX() + rect.getWidth()
@@ -183,11 +167,15 @@ public class IntroPage implements MouseHandler, KeyboardHandler {
     @Override
     public void keyPressed(KeyboardEvent e) {
         if (e.getKey() == KeyboardEvent.KEY_SPACE) {
-            waiting = false;
+            finished = true;
         }
     }
 
     @Override
     public void keyReleased(KeyboardEvent e) {
+    }
+
+    public void setBreakPage(BreakPage breakPage) {
+        this.breakPage = breakPage;
     }
 }

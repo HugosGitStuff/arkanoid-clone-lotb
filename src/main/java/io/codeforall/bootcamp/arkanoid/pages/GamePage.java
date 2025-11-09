@@ -1,7 +1,6 @@
 package io.codeforall.bootcamp.arkanoid.pages;
 
 import com.codeforall.simplegraphics.pictures.Picture;
-import io.codeforall.bootcamp.arkanoid.Bootstrap;
 import io.codeforall.bootcamp.arkanoid.inputs.MyKeyboard;
 import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
 import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
@@ -17,8 +16,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class GamePage {
-    private Bootstrap bootstrap;
+public class GamePage implements Runnable{
     private Ball ball;
     private Paddle paddle;
     private Grid newGrid;
@@ -28,20 +26,16 @@ public class GamePage {
     private ScoreSaver scoreSaver;
     private boolean gameOver;
 
-    private Picture background;
+    private Thread gameThread;
 
     private int score = 0;
     private int level = 1;
     private int numBlocksRemoved = 0;
 
 
-    private CompletedLevelPage completedLevelPage;
+    private BreakPage breakPage;
 
-    public void init() throws InterruptedException, IOException {
-
-
-
-
+    public void init() {
         newGrid = new Grid(8, 12);
         newGrid.init();
 
@@ -52,7 +46,7 @@ public class GamePage {
 
         ball = new Ball(425, 600, 3, 3);
 
-        Picture background = new Picture(10, 10, "/gameBackground/background-final.png");
+        Picture background = new Picture(10, 10, "gameBackground/background-final.png");
 
         background.draw();
 
@@ -60,9 +54,16 @@ public class GamePage {
         blocks = new Blocks(newGrid, level);
         try {
             screenAddon.countDown();
-        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+
+    @Override
+    public void run() {
 
         int FPS = 60;
         double drawInterval = (double) 1000000000 / FPS;
@@ -82,6 +83,8 @@ public class GamePage {
 
             lastTime = currentTime;
 
+            screenAddon.initialText();
+
             if (delta >= 1){
                 paddle.update();
                 ball.update();
@@ -100,11 +103,11 @@ public class GamePage {
                                 if (wasAbove || wasBelow) {
                                     ball.bounce(wasAbove ? "top" : "bottom");
                                     score += 30;
-                                    screenAddon.setScoreValue(score);
+                                    screenAddon.setScore(score);
 
                                     if (blocks.removeBlock(i, j)) {
                                         score += block.getMaxHealth() * 100;
-                                        screenAddon.setScoreValue(score);
+                                        screenAddon.setScore(score);
                                         numBlocksRemoved++;
                                     }
 
@@ -112,11 +115,11 @@ public class GamePage {
                                     ball.bounce(wasLeft ? "left" : "right");
 
                                     score += 30;
-                                    screenAddon.setScoreValue(score);
+                                    screenAddon.setScore(score);
 
                                     if (blocks.removeBlock(i, j)) {
                                         score += block.getMaxHealth() * 100;
-                                        screenAddon.setScoreValue(score);
+                                        screenAddon.setScore(score);
                                         numBlocksRemoved++;
                                     }
 
@@ -141,13 +144,23 @@ public class GamePage {
                 }
 
                 if (level == 1 && numBlocksRemoved == 32) {
-                    levelCleared = levelCleared();
+                    try {
+                        levelCleared = levelCleared();
+                    } catch (InterruptedException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
 
                 } else if (level == 2 && numBlocksRemoved == 26) {
-                    levelCleared = levelCleared();
+                    try {
+                        levelCleared = levelCleared();
+                    } catch (InterruptedException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
 
                 } else if (level == 3 && numBlocksRemoved == 30) {
-                    completedLevelPage.executeLevel(level);
+                    breakPage.setLevel(level);
+                    try {
+                        breakPage.init();
 
                     screenAddon.finalScore(score);
                     // screenAddon.scoreboard(scoreSaver.getSavedScores("/score/score.txt"));
@@ -156,6 +169,9 @@ public class GamePage {
 
                     Thread.sleep(20000);
                     System.exit(0);
+                    } catch (IOException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 // level 1 - 32 blocks
                 // level 2  - 26 blocks
@@ -170,7 +186,7 @@ public class GamePage {
                     }
 
                     score += 20;
-                    screenAddon.setScoreValue(score);
+                    screenAddon.setScore(score);
                 }
                 if (ball.checkWallCollision(newGrid) != null) {
                     try {
@@ -181,7 +197,7 @@ public class GamePage {
                     String collision = ball.checkWallCollision(newGrid);
                     ball.bounce(collision);
                     score += 2;
-                    screenAddon.setScoreValue(score);
+                    screenAddon.setScore(score);
                 }
 
                 if (ball.getY() >= 770) {
@@ -191,19 +207,20 @@ public class GamePage {
             }
         }
     }
-    public boolean levelCleared() throws InterruptedException {
+    public boolean levelCleared() throws InterruptedException, IOException {
         numBlocksRemoved = 0;
         blocks.clear();
         ball.delete();
 
-        completedLevelPage = new CompletedLevelPage();
-        completedLevelPage.executeLevel(level);
+        breakPage = new BreakPage();
+        breakPage.setLevel(level);
+        breakPage.init();
 
         Thread.sleep(2000);
 
-        completedLevelPage.clear();
+        breakPage.clear();
         ball = new Ball(425, 600, 3, 3);
-        screenAddon.setLevNum(level);
+        screenAddon.setLevel(level);
         level++;
         return true;
     }
