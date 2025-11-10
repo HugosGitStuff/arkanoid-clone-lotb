@@ -1,6 +1,5 @@
 package io.codeforall.bootcamp.arkanoid;
 
-import com.codeforall.simplegraphics.graphics.Rectangle;
 import io.codeforall.bootcamp.arkanoid.inputs.MyKeyboard;
 import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
 import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
@@ -8,7 +7,6 @@ import io.codeforall.bootcamp.arkanoid.pages.BreakPage;
 import io.codeforall.bootcamp.arkanoid.pages.GamePage;
 import io.codeforall.bootcamp.arkanoid.pages.IntroPage;
 
-import javax.sound.sampled.Clip;
 import java.io.IOException;
 
 public class Bootstrap {

@@ -18,7 +18,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 
-public class IntroPage implements MouseHandler, KeyboardHandler{
+public class IntroPage extends AbstractPage implements MouseHandler, KeyboardHandler{
 
     private BreakPage breakPage;
 
@@ -70,7 +70,7 @@ public class IntroPage implements MouseHandler, KeyboardHandler{
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
         mouse.addEventListener(MouseEventType.MOUSE_MOVED);
 
-        // playMusic("/soundtrack/AncientShadowsRising.wav"); // 🎵 play your intro theme
+        playMusic("/soundtrack/AncientShadowsRising.wav");
 
         Keyboard keyboard = new Keyboard(this);
 
@@ -177,5 +177,17 @@ public class IntroPage implements MouseHandler, KeyboardHandler{
 
     public void setBreakPage(BreakPage breakPage) {
         this.breakPage = breakPage;
+    }
+
+
+
+    @Override
+    public void drawButtons() {
+
+    }
+
+    @Override
+    public void hideButtons() {
+
     }
 }

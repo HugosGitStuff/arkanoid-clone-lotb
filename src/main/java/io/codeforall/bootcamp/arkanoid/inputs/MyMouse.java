@@ -19,11 +19,12 @@ public class MyMouse implements MouseHandler {
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
         mouse.addEventListener(MouseEventType.MOUSE_MOVED);
         buttons = new HashMap<>();
-        createButton(600, 750, "START");
-        createButton(600, 750, "CONTINUE");
-        createButton(600, 750, "RESTART");
-        createButton(600, 750, "QUIT");
-        createButton(600, 750, "PAUSE");
+        createButton("START");
+        createButton("CONTINUE");
+        createButton("RESTART");
+        createButton("QUIT");
+        createButton("PAUSE");
+        createButton("SCORES");
     }
 
     @Override
@@ -58,28 +59,36 @@ public class MyMouse implements MouseHandler {
                 y >= button.getY() && y <= button.getY() + button.getHeight();
     }
 
-    public void createButton(int x, int y, String message) {
-        buttons.put(message.toLowerCase(), new Button(x, y, message));
+    public void createButton(String message) {
+        buttons.put(message.toLowerCase(), new Button(message));
     }
 
     public void drawButton(String message) {
-        buttons.get(message).draw();
+        buttons.get(message.toUpperCase()).draw();
     }
 
     public void hideButton(String message) {
-        buttons.get(message).hide();
+        buttons.get(message.toUpperCase()).hide();
+    }
+
+    public void setButtonPos(String message, int x, int y) {
+
     }
 
     private class Button {
-        private final Rectangle button;
-        private final Text text;
+        private Rectangle button;
+        private Text text;
         private int width = 100;
         private int height = 30;
         private int x;
         private int y;
+        private String message;
 
+        public Button(String message) {
+            this.message = message;
+        }
 
-        public Button(int x, int y, String message) {
+        public void init(int x, int y) {
             this.x = x;
             this.y = y;
             button = new Rectangle(this.x, this.y, width, height);

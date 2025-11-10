@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class GamePage implements Runnable{
+public class GamePage extends AbstractPage implements Runnable{
     private Ball ball;
     private Paddle paddle;
     private Grid newGrid;
@@ -26,39 +26,38 @@ public class GamePage implements Runnable{
     private ScoreSaver scoreSaver;
     private boolean gameOver;
 
-    private Thread gameThread;
+    private BreakPage breakPage;
 
-    private int score = 0;
-    private int level = 1;
+    private int score;
+    private int level;
     private int numBlocksRemoved = 0;
 
-
-    private BreakPage breakPage;
 
     public void init() {
         newGrid = new Grid(8, 12);
         newGrid.init();
 
-        paddle = new Paddle(425, 725, newGrid);
-        paddle.draw();
-        myKeyboard.setPaddle(paddle);
-
-
         ball = new Ball(425, 600, 3, 3);
 
         Picture background = new Picture(10, 10, "gameBackground/background-final.png");
-
         background.draw();
 
+        paddle = new Paddle(425, 725, newGrid);
+        myKeyboard.setPaddle(paddle);
+
+        paddle.draw();
         ball.draw();
         blocks = new Blocks(newGrid, level);
+        screenAddon.initialText();
+
         try {
             screenAddon.countDown();
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        gameThread = new Thread(this);
+
+        Thread gameThread = new Thread(this);
         gameThread.start();
     }
 
@@ -83,7 +82,6 @@ public class GamePage implements Runnable{
 
             lastTime = currentTime;
 
-            screenAddon.initialText();
 
             if (delta >= 1){
                 paddle.update();
@@ -137,11 +135,11 @@ public class GamePage implements Runnable{
                 delta--;
                 drawCount++;
 
-                if (timer >= 1000000000) {
-                    System.out.println("FPS: " + drawCount); // Show FPS on console
-                    drawCount = 0;
-                    timer = 0;
-                }
+//                if (timer >= 1000000000) {
+//                    System.out.println("FPS: " + drawCount); // Show FPS on console
+//                    drawCount = 0;
+//                    timer = 0;
+//                }
 
                 if (level == 1 && numBlocksRemoved == 32) {
                     try {
@@ -211,17 +209,13 @@ public class GamePage implements Runnable{
         numBlocksRemoved = 0;
         blocks.clear();
         ball.delete();
+        level++;
+        screenAddon.setLevel(level);
 
         breakPage = new BreakPage();
         breakPage.setLevel(level);
+        breakPage.setScore(score);
         breakPage.init();
-
-        Thread.sleep(2000);
-
-        breakPage.clear();
-        ball = new Ball(425, 600, 3, 3);
-        screenAddon.setLevel(level);
-        level++;
         return true;
     }
 
@@ -235,5 +229,23 @@ public class GamePage implements Runnable{
 
     public void setScoreSaver(ScoreSaver scoreSaver) {
         this.scoreSaver = scoreSaver;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    @Override
+    public void drawButtons() {
+
+    }
+
+    @Override
+    public void hideButtons() {
+
     }
 }
