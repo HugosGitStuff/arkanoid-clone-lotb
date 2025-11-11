@@ -1,11 +1,12 @@
 package io.codeforall.bootcamp.arkanoid.pages;
 
-import io.codeforall.bootcamp.arkanoid.inputs.MyMouse;
+public abstract class AbstractPage implements Page {
+//    private MyMouse myMouse;
 
-public abstract class AbstractPage {
-    private MyMouse mouse;
 
-    public abstract void drawButtons();
+    protected PageState state;
 
-    public abstract void hideButtons();
+    public void setState(PageState state) {
+        this.state = state;
+    }
 }

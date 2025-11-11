@@ -2,6 +2,7 @@ package io.codeforall.bootcamp.arkanoid.pages;
 
 import com.codeforall.simplegraphics.pictures.Picture;
 import io.codeforall.bootcamp.arkanoid.inputs.MyKeyboard;
+import io.codeforall.bootcamp.arkanoid.inputs.Mouse.MyMouse;
 import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
 import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
 import io.codeforall.bootcamp.arkanoid.objects.ball.Ball;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class GamePage extends AbstractPage implements Runnable{
+public class GamePage implements Runnable, Page {
     private Ball ball;
     private Paddle paddle;
     private Grid newGrid;
@@ -24,7 +25,10 @@ public class GamePage extends AbstractPage implements Runnable{
     private MyKeyboard myKeyboard;
     private ScreenAdditions screenAddon;
     private ScoreSaver scoreSaver;
+    private MyMouse myMouse;
     private boolean gameOver;
+    private PageState state;
+    private IntroPage intro;
 
     private BreakPage breakPage;
 
@@ -32,7 +36,7 @@ public class GamePage extends AbstractPage implements Runnable{
     private int level;
     private int numBlocksRemoved = 0;
 
-
+    @Override
     public void init() {
         newGrid = new Grid(8, 12);
         newGrid.init();
@@ -57,8 +61,26 @@ public class GamePage extends AbstractPage implements Runnable{
         }
 
 
-        Thread gameThread = new Thread(this);
-        gameThread.start();
+        while (!gameOver) {
+            switch (state) {
+                case RUNNING:
+                    drawButtons();
+                    Thread gameThread = new Thread(this);
+                    gameThread.start();
+                    break;
+                case PAUSE:
+                    try {
+                    myMouse.hideButton("pause");
+                    myMouse.drawButton("continue", 650, 600);
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                case QUIT:
+                    System.exit(0);
+            }
+        }
     }
 
     @Override
@@ -84,6 +106,11 @@ public class GamePage extends AbstractPage implements Runnable{
 
 
             if (delta >= 1){
+
+                if (state == PageState.QUIT) {
+                    System.exit(0);
+                }
+
                 paddle.update();
                 ball.update();
 
@@ -142,18 +169,10 @@ public class GamePage extends AbstractPage implements Runnable{
 //                }
 
                 if (level == 1 && numBlocksRemoved == 32) {
-                    try {
-                        levelCleared = levelCleared();
-                    } catch (InterruptedException | IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    clear();
 
                 } else if (level == 2 && numBlocksRemoved == 26) {
-                    try {
-                        levelCleared = levelCleared();
-                    } catch (InterruptedException | IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    clear();
 
                 } else if (level == 3 && numBlocksRemoved == 30) {
                     breakPage.setLevel(level);
@@ -205,18 +224,19 @@ public class GamePage extends AbstractPage implements Runnable{
             }
         }
     }
-    public boolean levelCleared() throws InterruptedException, IOException {
+
+    @Override
+    public void clear() {
         numBlocksRemoved = 0;
         blocks.clear();
         ball.delete();
         level++;
         screenAddon.setLevel(level);
 
-        breakPage = new BreakPage();
+        myMouse.setPage(breakPage);
         breakPage.setLevel(level);
         breakPage.setScore(score);
         breakPage.init();
-        return true;
     }
 
     public void setMyKeyboard(MyKeyboard myKeyboard) {
@@ -231,6 +251,10 @@ public class GamePage extends AbstractPage implements Runnable{
         this.scoreSaver = scoreSaver;
     }
 
+    public void setMyMouse(MyMouse myMouse) {
+        this.myMouse = myMouse;
+    }
+
     public void setScore(int score) {
         this.score = score;
     }
@@ -239,9 +263,21 @@ public class GamePage extends AbstractPage implements Runnable{
         this.level = level;
     }
 
+    public void setState(PageState state) {
+        this.state = state;
+    }
+
+    @Override
+    public void createMouseButtons() {
+        myMouse.createButton("PAUSE");
+        myMouse.createButton("QUIT");
+        myMouse.createButton("CONTINUE");
+    }
+
     @Override
     public void drawButtons() {
-
+        myMouse.drawButton("pause", 650, 600);
+        myMouse.drawButton("quit", 650, 650);
     }
 
     @Override

@@ -7,5 +7,6 @@ public enum PageState {
     RESTART,
     SCORES,
     RUNNING,
-    PAUSE
+    PAUSE,
+    IDLE
 }
