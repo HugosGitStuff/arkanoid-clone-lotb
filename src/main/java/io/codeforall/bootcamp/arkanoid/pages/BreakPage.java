@@ -27,47 +27,49 @@ public class BreakPage implements Page {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            level++;
             gamePage.setLevel(level);
             gamePage.setScore(score);
 
             clear();
-        }
+        } else {
+            createMouseButtons();
+            drawButtons();
 
-        drawButtons();
-
-        while (state != PageState.QUIT) {
-            switch (state) {
-                case START:
-                    clear();
-                    break;
-                case SCORES:
-                    System.out.println("Coming soon...");
-                    break;
-                case RESTART:
-                    myMouse.setPage(intro);
-                    background.delete();
-                    intro.init();
-                    break;
-                case IDLE:
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+            while (state != PageState.QUIT) {
+                switch (state) {
+                    case START:
+                        clear();
+                        break;
+                    case SCORES:
+                        System.out.println("Coming soon...");
+                        break;
+                    case RESTART:
+                        myMouse.setPage(intro);
+                        background.delete();
+                        intro.init();
+                        break;
+                    case IDLE:
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                }
             }
+
+            System.exit(0);
         }
-
-        System.exit(0);
-
     }
 
     @Override
     public void clear() {
         myMouse.reset();
         myMouse.setPage(gamePage);
+        gamePage.setState(PageState.RUNNING);
         gamePage.init();
         background.delete();
-        hideButtons();
+        //hideButtons();
     }
 
     public void setScore(int score) {
@@ -99,12 +101,12 @@ public class BreakPage implements Page {
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("start", 700, 750);
-        myMouse.drawButton("score", 650, 750);
-        myMouse.drawButton("restart", 600, 750);
+        myMouse.drawButton("start", 950, 750);
+        myMouse.drawButton("score", 750, 750);
+        myMouse.drawButton("restart", 550, 750);
     }
 
-    @Override
+    //@Override
     public void hideButtons() {
         myMouse.hideButton("start");
         myMouse.hideButton("score");

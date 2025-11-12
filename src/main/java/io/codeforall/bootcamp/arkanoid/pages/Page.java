@@ -9,7 +9,7 @@ public interface Page {
 
     void drawButtons();
 
-    void hideButtons();
+    //void hideButtons();
 
     void setState(PageState pageState);
 

@@ -26,7 +26,7 @@ public class Bootstrap {
     public void execute() throws InterruptedException, IOException {
 
         myMouse = new MyMouse();
-        myMouse.init();
+        //myMouse.init();
 
         myKeyboard = new MyKeyboard();
         myKeyboard.init();
@@ -41,6 +41,8 @@ public class Bootstrap {
         gamePage.setScreenAddon(screenAddon);
         gamePage.setMyMouse(myMouse);
         gamePage.setState(PageState.IDLE);
+
+        myMouse.setGamePage(gamePage);
 
         breakPage = new BreakPage();
         breakPage.setGamePage(gamePage);

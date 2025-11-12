@@ -21,11 +21,18 @@ public class Button {
         this.x = x;
         this.y = y;
         button = new Rectangle(this.x, this.y, width, height);
+
         button.setColor(Color.LIGHT_GRAY);
 
-        text = new Text(x, y, message);
+        text = new Text(this.x, this.y, message);
         text.grow(10, 10);
+        text.translate(centeredTextX(), 8);
         text.setColor(Color.YELLOW);
+
+    }
+
+       public int centeredTextX() {
+        return (button.getWidth()/2 - text.getWidth()/2) + 17;
     }
 
     public void hide() {
@@ -34,8 +41,8 @@ public class Button {
     }
 
     public void draw() {
-        button.draw();
         text.draw();
+        button.draw();
     }
 
     public int getWidth() {

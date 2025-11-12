@@ -30,6 +30,8 @@ public class GamePage implements Runnable, Page {
     private PageState state;
     private IntroPage intro;
 
+    private boolean paused = false;
+
     private BreakPage breakPage;
 
     private int score;
@@ -38,6 +40,7 @@ public class GamePage implements Runnable, Page {
 
     @Override
     public void init() {
+        try {
         newGrid = new Grid(8, 12);
         newGrid.init();
 
@@ -49,42 +52,28 @@ public class GamePage implements Runnable, Page {
         paddle = new Paddle(425, 725, newGrid);
         myKeyboard.setPaddle(paddle);
 
+        blocks = new Blocks();
+
+        createMouseButtons();
         paddle.draw();
         ball.draw();
-        blocks = new Blocks(newGrid, level);
+        blocks.init(newGrid, level);
+        drawButtons();
         screenAddon.initialText();
 
-        try {
             screenAddon.countDown();
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
+        run();
 
-        while (!gameOver) {
-            switch (state) {
-                case RUNNING:
-                    drawButtons();
-                    Thread gameThread = new Thread(this);
-                    gameThread.start();
-                    break;
-                case PAUSE:
-                    try {
-                    myMouse.hideButton("pause");
-                    myMouse.drawButton("continue", 650, 600);
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    break;
-                case QUIT:
-                    System.exit(0);
-            }
-        }
     }
 
     @Override
     public void run() {
+
+
 
         int FPS = 60;
         double drawInterval = (double) 1000000000 / FPS;
@@ -95,7 +84,7 @@ public class GamePage implements Runnable, Page {
         int drawCount = 0;// Needed to check FPS
         boolean levelCleared = false;
 
-        while (!levelCleared) {
+        while (!levelCleared && state == PageState.RUNNING) {
             currentTime = System.nanoTime();
 
             delta += (currentTime - lastTime) / drawInterval;
@@ -205,6 +194,7 @@ public class GamePage implements Runnable, Page {
                     score += 20;
                     screenAddon.setScore(score);
                 }
+
                 if (ball.checkWallCollision(newGrid) != null) {
                     try {
                         screenAddon.runAudio("/sfx/ball_wallhit.WAV");
@@ -222,6 +212,28 @@ public class GamePage implements Runnable, Page {
                     break;
                 }
             }
+        }
+
+        while (state == PageState.PAUSE) {
+            try {
+                myMouse.hideButton("pause");
+                myMouse.drawButton("CONTINUE", 950, 400);
+                setPaused(true);
+
+                Thread.sleep(50);
+
+                if(!paused) {
+
+                    myMouse.drawButton("PAUSE", 950, 400);
+                    myMouse.hideButton("continue");
+                    setState(PageState.RUNNING);
+                    run();
+                }
+
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 
@@ -267,6 +279,10 @@ public class GamePage implements Runnable, Page {
         this.state = state;
     }
 
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
     @Override
     public void createMouseButtons() {
         myMouse.createButton("PAUSE");
@@ -276,12 +292,17 @@ public class GamePage implements Runnable, Page {
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("pause", 650, 600);
-        myMouse.drawButton("quit", 650, 650);
+        myMouse.drawButton("pause", 950, 400);
+        myMouse.drawButton("quit", 950, 450);
     }
 
-    @Override
+    //@Override
     public void hideButtons() {
-
+        myMouse.hideButton("quit");
+        if (state.equals(PageState.PAUSE)) {
+            myMouse.hideButton("continue");
+        } else if (state.equals(PageState.RUNNING)) {
+            myMouse.hideButton("pause");
+        }
     }
 }

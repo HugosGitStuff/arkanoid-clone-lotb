@@ -71,7 +71,7 @@ public class IntroPage implements Page {
 //        spaceEvent.setKey(KeyboardEvent.KEY_SPACE);
 //        spaceEvent.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
 //        keyboard.addEventListener(spaceEvent);
-
+        createMouseButtons();
         drawButtons();
 
         while(state != PageState.QUIT) {
@@ -85,7 +85,6 @@ public class IntroPage implements Page {
                 case IDLE:
                      try {
                         Thread.sleep(50);
-                         System.out.println("IDLE");
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
 
@@ -100,7 +99,8 @@ public class IntroPage implements Page {
     public void clear() {
         myMouse.reset();
         myMouse.setPage(breakPage);
-        hideButtons();
+        breakPage.setState(PageState.IDLE);
+        //hideButtons();
         background.delete();
         breakPage.init();
     }
@@ -204,12 +204,12 @@ public class IntroPage implements Page {
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("start", 600, 750);
-        myMouse.drawButton("scores", 500, 750);
-        myMouse.drawButton("quit", 400, 750);
+        myMouse.drawButton("start", 550, 750);
+        myMouse.drawButton("scores", 350, 750);
+        myMouse.drawButton("quit", 150, 750);
     }
 
-    @Override
+    //@Override
     public void hideButtons() {
         myMouse.hideButton("start");
         myMouse.hideButton("scores");
