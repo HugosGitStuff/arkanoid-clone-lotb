@@ -56,6 +56,7 @@ public class Bootstrap {
         intro.setMyMouse(myMouse);
         intro.setState(PageState.IDLE);
 
+        gamePage.setIntro(intro);
         myMouse.setPage(intro);
 
         intro.init();

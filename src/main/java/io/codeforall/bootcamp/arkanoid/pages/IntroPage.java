@@ -100,6 +100,8 @@ public class IntroPage implements Page {
         myMouse.reset();
         myMouse.setPage(breakPage);
         breakPage.setState(PageState.IDLE);
+        breakPage.setLevel(0);
+        breakPage.setScore(0);
         //hideButtons();
         background.delete();
         breakPage.init();

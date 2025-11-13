@@ -12,6 +12,7 @@ public class Button {
     private int x;
     private int y;
     private String message;
+    private boolean drawn;
 
     public Button(String message) {
         this.message = message;
@@ -36,11 +37,15 @@ public class Button {
     }
 
     public void hide() {
-        button.delete();
-        text.delete();
+        if (button != null) {
+            drawn = false;
+            button.delete();
+            text.delete();
+        }
     }
 
     public void draw() {
+        drawn = true;
         text.draw();
         button.draw();
     }
@@ -59,6 +64,10 @@ public class Button {
 
     public int getY() {
         return y;
+    }
+
+    public boolean isDrawn() {
+        return drawn;
     }
 }
 

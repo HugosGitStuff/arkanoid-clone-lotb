@@ -31,6 +31,7 @@ public class GamePage implements Runnable, Page {
     private IntroPage intro;
 
     private boolean paused = false;
+    private Picture background = new Picture(10, 10, "gameBackground/background-final.png");
 
     private BreakPage breakPage;
 
@@ -40,13 +41,11 @@ public class GamePage implements Runnable, Page {
 
     @Override
     public void init() {
-        try {
         newGrid = new Grid(8, 12);
         newGrid.init();
 
         ball = new Ball(425, 600, 3, 3);
 
-        Picture background = new Picture(10, 10, "gameBackground/background-final.png");
         background.draw();
 
         paddle = new Paddle(425, 725, newGrid);
@@ -61,18 +60,22 @@ public class GamePage implements Runnable, Page {
         drawButtons();
         screenAddon.initialText();
 
-            screenAddon.countDown();
-        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        while (!gameOver) {
+            run();
         }
-
-        run();
 
     }
 
     @Override
     public void run() {
 
+        hideButtons();
+
+        try {
+            screenAddon.countDown();
+        } catch (InterruptedException | UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
 
 
         int FPS = 60;
@@ -84,7 +87,13 @@ public class GamePage implements Runnable, Page {
         int drawCount = 0;// Needed to check FPS
         boolean levelCleared = false;
 
+        if (state == PageState.QUIT) {
+            System.exit(0);
+        }
+
         while (!levelCleared && state == PageState.RUNNING) {
+
+
             currentTime = System.nanoTime();
 
             delta += (currentTime - lastTime) / drawInterval;
@@ -95,10 +104,6 @@ public class GamePage implements Runnable, Page {
 
 
             if (delta >= 1){
-
-                if (state == PageState.QUIT) {
-                    System.exit(0);
-                }
 
                 paddle.update();
                 ball.update();
@@ -209,27 +214,34 @@ public class GamePage implements Runnable, Page {
 
                 if (ball.getY() >= 770) {
                     gameOver = true;
-                    break;
+                    myMouse.hideButton("pause");
+                    myMouse.drawButton("RESTART", 940, 400);
+                    screenAddon.gameOverText();
+
+                    while (gameOver) {
+                        gameOver();
+                    }
                 }
             }
         }
 
+
+
         while (state == PageState.PAUSE) {
             try {
                 myMouse.hideButton("pause");
-                myMouse.drawButton("CONTINUE", 950, 400);
+                if (!myMouse.isDrawn("continue")) {
+                    myMouse.drawButton("CONTINUE", 940, 400);
+                }
                 setPaused(true);
 
                 Thread.sleep(50);
-
-                if(!paused) {
-
-                    myMouse.drawButton("PAUSE", 950, 400);
-                    myMouse.hideButton("continue");
+                if (!paused) {
                     setState(PageState.RUNNING);
-                    run();
+                    myMouse.hideButton("continue");
+                    myMouse.drawButton("PAUSE", 940, 400);
+                    break;
                 }
-
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -283,26 +295,53 @@ public class GamePage implements Runnable, Page {
         this.paused = paused;
     }
 
+    public void setIntro(IntroPage intro) {
+        this.intro = intro;
+    }
+
+    public void gameOver() {
+        try {
+
+            if (state == PageState.QUIT) {
+                System.exit(0);
+            } else if (state == PageState.RESTART) {
+                gameOver = false;
+                myMouse.hideButton("restart");
+                myMouse.hideButton("quit");
+                ball.delete();
+                paddle.delete();
+                background.delete();
+                blocks.clear();
+                screenAddon.deleteLevelAndScore();
+
+                myMouse.reset();
+                myMouse.setPage(intro);
+                intro.setState(PageState.IDLE);
+                intro.init();
+            }
+
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void createMouseButtons() {
         myMouse.createButton("PAUSE");
         myMouse.createButton("QUIT");
         myMouse.createButton("CONTINUE");
+        myMouse.createButton("RESTART");
     }
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("pause", 950, 400);
-        myMouse.drawButton("quit", 950, 450);
+        myMouse.drawButton("pause", 940, 400);
+        myMouse.drawButton("quit", 940, 450);
     }
 
     //@Override
     public void hideButtons() {
-        myMouse.hideButton("quit");
-        if (state.equals(PageState.PAUSE)) {
-            myMouse.hideButton("continue");
-        } else if (state.equals(PageState.RUNNING)) {
-            myMouse.hideButton("pause");
-        }
+        myMouse.hideButton("continue");
     }
 }

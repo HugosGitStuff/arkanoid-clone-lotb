@@ -13,8 +13,8 @@ public class BreakPage implements Page {
     private GamePage gamePage;
     private PageState state;
     private Picture background;
-    private int score = 0;
-    private int level = 0;
+    private int score;
+    private int level;
     private IntroPage intro;
 
     @Override
@@ -66,9 +66,9 @@ public class BreakPage implements Page {
     public void clear() {
         myMouse.reset();
         myMouse.setPage(gamePage);
+        background.delete();
         gamePage.setState(PageState.RUNNING);
         gamePage.init();
-        background.delete();
         //hideButtons();
     }
 

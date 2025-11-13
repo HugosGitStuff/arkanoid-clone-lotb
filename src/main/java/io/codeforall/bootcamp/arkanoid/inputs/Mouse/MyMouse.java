@@ -57,21 +57,16 @@ public class MyMouse implements MouseHandler {
 
         if (isInside("start", x, y)) {
             page.setState(PageState.START);
-        }
-        if (isInside("continue", x, y)) {
+        }else if (isInside("continue", x, y)) {
             gamePage.setPaused(false);
             page.setState(PageState.RUNNING);
-        }
-        if (isInside("restart", x, y)) {
+        }else if (isInside("restart", x, y)) {
             page.setState(PageState.RESTART);
-        }
-        if (isInside("quit", x, y)) {
+        }else if (isInside("quit", x, y)) {
             page.setState(PageState.QUIT);
-        }
-        if (isInside("pause", x, y)) {
+        }else if (isInside("pause", x, y)) {
             page.setState(PageState.PAUSE);
-        }
-        if (isInside("scores", x, y)) {
+        }else if (isInside("scores", x, y)) {
             page.setState(PageState.SCORES);
         }
     }
@@ -89,15 +84,8 @@ public class MyMouse implements MouseHandler {
         if (button == null) {
             return false;
         }
-        boolean result = x >= button.getX() && x <= button.getX() + button.getWidth() &&
+        return x >= button.getX() && x <= button.getX() + button.getWidth() &&
                 y >= button.getY() && y <= button.getY() + button.getHeight();
-        System.out.println(result);
-        System.out.println("==== COORDINATES ====\n");
-        System.out.println("Mouse: x - " + x + " : y - " + y);
-        System.out.println("Button: x - " + button.getX() + " : y - " + button.getY() + "\n" +
-                " : width - " + button.getWidth() + " : height - " + button.getHeight());
-        System.out.println("\n==== END ====");
-        return result;
     }
 
     public void createButton(String message) {
@@ -111,5 +99,9 @@ public class MyMouse implements MouseHandler {
 
     public void hideButton(String message) {
         buttons.get(message.toUpperCase()).hide();
+    }
+
+    public boolean isDrawn(String button) {
+        return buttons.get(button.toUpperCase()).isDrawn();
     }
 }

@@ -13,11 +13,13 @@ import java.util.Arrays;
 public class ScreenAdditions {
     Text levNum;
     Text scoreValue;
+    Text lev;
+    Text highScore;
 
     public void initialText() {
-        Text lev = new Text(970, 160, "Level ");
+        lev = new Text(970, 160, "Level ");
         levNum = new Text(970, 220, "1");
-        Text highScore = new Text(960, 300, "SCORE");
+        highScore = new Text(960, 300, "SCORE");
         scoreValue = new Text(965, 350,"");
 
         lev.setColor(Color.YELLOW);
@@ -125,5 +127,12 @@ public class ScreenAdditions {
 
     public void setScore(int score) {
         scoreValue.setText( "" + score);
+    }
+
+    public void deleteLevelAndScore() {
+        levNum.delete();
+        scoreValue.delete();
+        lev.delete();
+        highScore.delete();
     }
 }
