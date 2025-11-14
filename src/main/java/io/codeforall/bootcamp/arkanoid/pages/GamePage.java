@@ -27,10 +27,9 @@ public class GamePage implements Runnable, Page {
     private ScoreSaver scoreSaver;
     private MyMouse myMouse;
     private boolean gameOver;
-    private PageState state;
+    volatile private PageState state;
     private IntroPage intro;
 
-    private boolean paused = false;
     private Picture background = new Picture(10, 10, "gameBackground/background-final.png");
 
     private BreakPage breakPage;
@@ -59,6 +58,7 @@ public class GamePage implements Runnable, Page {
         blocks.init(newGrid, level);
         drawButtons();
         screenAddon.initialText();
+        gameOver = false;
 
         while (!gameOver) {
             run();
@@ -103,7 +103,7 @@ public class GamePage implements Runnable, Page {
             lastTime = currentTime;
 
 
-            if (delta >= 1){
+            if (delta >= 1) {
 
                 paddle.update();
                 ball.update();
@@ -173,13 +173,13 @@ public class GamePage implements Runnable, Page {
                     try {
                         breakPage.init();
 
-                    screenAddon.finalScore(score);
-                    // screenAddon.scoreboard(scoreSaver.getSavedScores("/score/score.txt"));
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                    scoreSaver.saveToFile("/resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
+                        screenAddon.finalScore(score);
+                        // screenAddon.scoreboard(scoreSaver.getSavedScores("/score/score.txt"));
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                        scoreSaver.saveToFile("/resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
 
-                    Thread.sleep(20000);
-                    System.exit(0);
+                        Thread.sleep(20000);
+                        System.exit(0);
                     } catch (IOException | InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -226,18 +226,15 @@ public class GamePage implements Runnable, Page {
         }
 
 
-
         while (state == PageState.PAUSE) {
             try {
                 myMouse.hideButton("pause");
                 if (!myMouse.isDrawn("continue")) {
                     myMouse.drawButton("CONTINUE", 940, 400);
                 }
-                setPaused(true);
 
                 Thread.sleep(50);
-                if (!paused) {
-                    setState(PageState.RUNNING);
+                if (state == PageState.RUNNING) {
                     myMouse.hideButton("continue");
                     myMouse.drawButton("PAUSE", 940, 400);
                     break;
@@ -291,10 +288,6 @@ public class GamePage implements Runnable, Page {
         this.state = state;
     }
 
-    public void setPaused(boolean paused) {
-        this.paused = paused;
-    }
-
     public void setIntro(IntroPage intro) {
         this.intro = intro;
     }
@@ -304,8 +297,8 @@ public class GamePage implements Runnable, Page {
 
             if (state == PageState.QUIT) {
                 System.exit(0);
-            } else if (state == PageState.RESTART) {
-                gameOver = false;
+            }
+            if (state == PageState.RESTART) {
                 myMouse.hideButton("restart");
                 myMouse.hideButton("quit");
                 ball.delete();
@@ -343,5 +336,9 @@ public class GamePage implements Runnable, Page {
     //@Override
     public void hideButtons() {
         myMouse.hideButton("continue");
+    }
+
+    public PageState getState() {
+        return state;
     }
 }
