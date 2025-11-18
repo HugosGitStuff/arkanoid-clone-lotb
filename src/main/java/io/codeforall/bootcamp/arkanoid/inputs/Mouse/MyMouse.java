@@ -26,17 +26,16 @@ public class MyMouse implements MouseHandler {
     }
 
     public void init() {
-        createButton("START");
-        createButton("CONTINUE");
-        createButton("RESTART");
-        createButton("QUIT");
-        createButton("PAUSE");
-        createButton("SCORES");
+        createButton("start");
+        createButton("continue");
+        createButton("restart");
+        createButton("quit");
+        createButton("pause");
+        createButton("scores");
     }
 
     public void reset() {
         List<String> itemsToRemove = new ArrayList<>(buttons.keySet());
-
         for (String key : itemsToRemove) {
             buttons.remove(key);
         }
@@ -58,7 +57,7 @@ public class MyMouse implements MouseHandler {
         if (isInside("start", x, y)) {
             page.setState(PageState.START);
         }else if (isInside("continue", x, y)) {
-            page.setState(PageState.RUNNING);
+            page.setState(PageState.START);
         }else if (isInside("restart", x, y)) {
             page.setState(PageState.RESTART);
             System.out.println(gamePage.getState());
@@ -80,7 +79,7 @@ public class MyMouse implements MouseHandler {
     }
 
     public boolean isInside(String message, int x, int y) {
-        Button button = buttons.get(message.toUpperCase());
+        Button button = buttons.get(message);
         if (button == null) {
             return false;
         }
@@ -89,19 +88,19 @@ public class MyMouse implements MouseHandler {
     }
 
     public void createButton(String message) {
-        buttons.put(message, new Button(message));
+        buttons.put(message, new Button(message.toUpperCase()));
     }
 
     public void drawButton(String message, int x, int y) {
-        buttons.get(message.toUpperCase()).init(x, y);
-        buttons.get(message.toUpperCase()).draw();
+        buttons.get(message).init(x, y);
+        buttons.get(message).draw();
     }
 
     public void hideButton(String message) {
-        buttons.get(message.toUpperCase()).hide();
+        buttons.get(message).hide();
     }
 
     public boolean isDrawn(String button) {
-        return buttons.get(button.toUpperCase()).isDrawn();
+        return buttons.get(button).isDrawn();
     }
 }

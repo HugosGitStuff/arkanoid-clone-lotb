@@ -5,13 +5,13 @@ import com.codeforall.simplegraphics.graphics.Rectangle;
 import com.codeforall.simplegraphics.graphics.Text;
 
 public class Button {
-    private Rectangle button;
-    private Text text;
     private final int width = 100;
     private final int height = 30;
+    private Rectangle button;
+    private Text text;
     private int x;
     private int y;
-    private String message;
+    private final String message;
     private boolean drawn;
 
     public Button(String message) {
@@ -32,16 +32,16 @@ public class Button {
 
     }
 
-       public int centeredTextX() {
-        return (button.getWidth()/2 - text.getWidth()/2) + 17;
+    public int centeredTextX() {
+        return (button.getWidth() / 2 - text.getWidth() / 2) + 17;
     }
 
     public void hide() {
-        if (button != null) {
-            drawn = false;
-            button.delete();
-            text.delete();
-        }
+        drawn = false;
+        button.delete();
+        text.delete();
+        x = 0;
+        y = 0;
     }
 
     public void draw() {

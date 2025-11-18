@@ -199,9 +199,9 @@ public class IntroPage implements Page {
 
     @Override
     public void createMouseButtons() {
-        myMouse.createButton("START");
-        myMouse.createButton("SCORES");
-        myMouse.createButton("QUIT");
+        myMouse.createButton("start");
+        myMouse.createButton("scores");
+        myMouse.createButton("quit");
     }
 
     @Override

@@ -23,7 +23,7 @@ public class Bootstrap {
     private BreakPage breakPage;
     private IntroPage intro;
 
-    public void execute() throws InterruptedException, IOException {
+    public void execute() {
 
         myMouse = new MyMouse();
         //myMouse.init();
@@ -56,6 +56,7 @@ public class Bootstrap {
         intro.setMyMouse(myMouse);
         intro.setState(PageState.IDLE);
 
+        gamePage.setBreakPage(breakPage);
         gamePage.setIntro(intro);
         myMouse.setPage(intro);
 

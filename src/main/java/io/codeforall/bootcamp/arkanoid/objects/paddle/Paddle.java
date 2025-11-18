@@ -60,4 +60,10 @@ public class Paddle extends GameObject {
     public double getHeight() {
         return rectangle.getHeight();
     }
+
+    @Override
+    public void delete() {
+        rectangle.delete();
+        picture.delete();
+    }
 }
