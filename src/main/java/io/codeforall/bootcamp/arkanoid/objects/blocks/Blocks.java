@@ -15,7 +15,6 @@ public class Blocks extends GameObject {
     private Picture aragorn;
     private Picture kay;
     private Picture easter;
-    private String[] mobVoidPlacements;
     private String imagePath;
     private int health;
     private String orcSoundPath;
@@ -34,7 +33,7 @@ public class Blocks extends GameObject {
     }
 
     public void init(Grid grid, int level) {
-        mobVoidPlacements = getMobVoidPlacements(level);
+        String[] mobVoidPlacements = getMobVoidPlacements(level);
         setImages(level);
 
         this.blockMatrix = new Block[rows][cols];

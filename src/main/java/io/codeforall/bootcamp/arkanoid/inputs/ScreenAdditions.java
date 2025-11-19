@@ -11,16 +11,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ScreenAdditions {
-    Text levNum;
-    Text scoreValue;
-    Text lev;
-    Text highScore;
+    private String level;
+    private Text levNum;
+    private Text score;
+    private Text lev;
+    private Text highScore;
+
 
     public void initialText() {
         lev = new Text(970, 160, "Level ");
-        levNum = new Text(970, 220, "1");
+        levNum = new Text(970, 220, level);
         highScore = new Text(960, 300, "SCORE");
-        scoreValue = new Text(965, 350,"");
+        score = new Text(965, 350,"");
 
         lev.setColor(Color.YELLOW);
         lev.grow(30, 20);
@@ -28,13 +30,13 @@ public class ScreenAdditions {
         levNum.grow(20, 20);
         highScore.setColor(Color.YELLOW);
         highScore.grow(30, 20);
-        scoreValue.setColor(Color.YELLOW);
-        scoreValue.grow(30, 20);
+        score.setColor(Color.YELLOW);
+        score.grow(30, 20);
 
         lev.draw();
         levNum.draw();
         highScore.draw();
-        scoreValue.draw();
+        score.draw();
     }
 
     public void countDown() throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException {
@@ -68,14 +70,6 @@ public class ScreenAdditions {
 
     }
 
-    public void pressToExit() {
-        Text pressToExit = new Text(450, 770, "Press 2 to exit the game. Thank you for playing!");
-        pressToExit.grow(200, 20);
-        pressToExit.setColor(Color.YELLOW);
-
-        pressToExit.draw();
-    }
-
     public void finalScore(int score) {
         Text finalScore = new Text(550, 120, "FINAL SCORE");
         finalScore.grow(50, 20);
@@ -84,8 +78,6 @@ public class ScreenAdditions {
         Text endScore = new Text(570, 170, score + " pts");
         endScore.grow(50, 20);
         endScore.setColor(Color.YELLOW);
-
-        pressToExit();
 
         finalScore.draw();
         endScore.draw();
@@ -121,17 +113,17 @@ public class ScreenAdditions {
         }
     }
 
-    public void setLevel(int level) {
-        levNum.setText("" + level);
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public void setScore(int score) {
-        scoreValue.setText( "" + score);
+        this.score.setText("" + score);
     }
 
     public void deleteLevelAndScore() {
         levNum.delete();
-        scoreValue.delete();
+        score.delete();
         lev.delete();
         highScore.delete();
     }

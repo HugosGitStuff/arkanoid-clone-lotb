@@ -1,10 +1,8 @@
 package io.codeforall.bootcamp.arkanoid.pages;
 
 import com.codeforall.simplegraphics.pictures.Picture;
-import io.codeforall.bootcamp.arkanoid.Bootstrap;
 import io.codeforall.bootcamp.arkanoid.inputs.MyKeyboard;
 import io.codeforall.bootcamp.arkanoid.inputs.Mouse.MyMouse;
-import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
 import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
 import io.codeforall.bootcamp.arkanoid.objects.ball.Ball;
 import io.codeforall.bootcamp.arkanoid.objects.blocks.Block;
@@ -15,11 +13,8 @@ import io.codeforall.bootcamp.arkanoid.objects.paddle.Paddle;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class GamePage implements Page {
-    private final int FPS = 60;
     private final Picture background = new Picture(10, 10, "gameBackground/background-final.png");
     private Ball ball;
     private Paddle paddle;
@@ -27,7 +22,6 @@ public class GamePage implements Page {
     private Blocks blocks;
     private MyKeyboard myKeyboard;
     private ScreenAdditions screenAddon;
-    private ScoreSaver scoreSaver;
     private MyMouse myMouse;
     private boolean gameOver;
     volatile private PageState state;
@@ -45,7 +39,7 @@ public class GamePage implements Page {
             newGrid = new Grid(8, 12);
             newGrid.init();
 
-            ball = new Ball(425, 600, 3, 3);
+            ball = new Ball(465, 700, 3, -3);
 
             background.draw();
 
@@ -60,6 +54,9 @@ public class GamePage implements Page {
             blocks.init(newGrid, level);
             drawButtons();
             screenAddon.initialText();
+            if (level != 1){
+                screenAddon.setScore(score);
+            }
             gameOver = false;
 
             screenAddon.countDown();
@@ -79,6 +76,7 @@ public class GamePage implements Page {
                 lastTime = System.nanoTime();
             }
 
+            int FPS = 60;
             switch (state) {
                 case START:
                     myMouse.hideButton("continue");
@@ -158,24 +156,26 @@ public class GamePage implements Page {
 //                }
 
                         if (level == 1 && numBlocksRemoved == 2) {
-                            clear();
+                            try {
+                                Thread.sleep(500);
+                                clear();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
 
                         } else if (level == 2 && numBlocksRemoved == 4) {
-                            clear();
+                            try {
+                                Thread.sleep(500);
+                                clear();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
 
                         } else if (level == 3 && numBlocksRemoved == 3) {
-                            breakPage.setLevel(level);
                             try {
-                                breakPage.init();
-
-                                screenAddon.finalScore(score);
-                                // screenAddon.scoreboard(scoreSaver.getSavedScores("/score/score.txt"));
-                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                                scoreSaver.saveToFile("/resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
-
-                                Thread.sleep(20000);
-                                System.exit(0);
-                            } catch (IOException | InterruptedException e) {
+                                Thread.sleep(500);
+                                clear();
+                            } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                         }
@@ -247,14 +247,36 @@ public class GamePage implements Page {
         blocks.clear();
         ball.delete();
         paddle.delete();
-        level++;
+        background.delete();
+        myMouse.hideButton("pause");
+        myMouse.hideButton("quit");
+        myMouse.reset();
 
         screenAddon.deleteLevelAndScore();
-        screenAddon.setLevel(level);
         myMouse.setPage(breakPage);
         breakPage.setLevel(level);
         breakPage.setScore(score);
         breakPage.init();
+    }
+
+    public void restart() {
+        if(myMouse.isDrawn("pause")) {
+            myMouse.hideButton("pause");
+        }
+        numBlocksRemoved = 0;
+        myMouse.hideButton("restart");
+        myMouse.hideButton("quit");
+        ball.delete();
+        paddle.delete();
+        background.delete();
+        blocks.clear();
+        screenAddon.deleteLevelAndScore();
+        myMouse.reset();
+        gameOver = false;
+
+        myMouse.setPage(intro);
+        intro.setState(PageState.IDLE);
+        intro.init();
     }
 
     public void setMyKeyboard(MyKeyboard myKeyboard) {
@@ -263,10 +285,6 @@ public class GamePage implements Page {
 
     public void setScreenAddon(ScreenAdditions screenAddon) {
         this.screenAddon = screenAddon;
-    }
-
-    public void setScoreSaver(ScoreSaver scoreSaver) {
-        this.scoreSaver = scoreSaver;
     }
 
     public void setMyMouse(MyMouse myMouse) {
@@ -289,28 +307,20 @@ public class GamePage implements Page {
         this.breakPage = breakPage;
     }
 
-    public void restart() {
-        myMouse.hideButton("restart");
-        myMouse.hideButton("quit");
-        ball.delete();
-        paddle.delete();
-        background.delete();
-        blocks.clear();
-        screenAddon.deleteLevelAndScore();
-        myMouse.reset();
-        gameOver = false;
+    public PageState getState() {
+        return state;
+    }
 
-        myMouse.setPage(intro);
-        intro.setState(PageState.IDLE);
-        intro.init();
+    public void setState(PageState state) {
+        this.state = state;
     }
 
     @Override
     public void createMouseButtons() {
-        myMouse.createButton("pause");
-        myMouse.createButton("quit");
-        myMouse.createButton("continue");
-        myMouse.createButton("restart");
+        myMouse.createButton("pause /p");
+        myMouse.createButton("quit /q");
+        myMouse.createButton("continue /space");
+        myMouse.createButton("restart /r");
     }
 
     @Override
@@ -322,13 +332,5 @@ public class GamePage implements Page {
     //@Override
     public void hideButtons() {
         myMouse.hideButton("continue");
-    }
-
-    public PageState getState() {
-        return state;
-    }
-
-    public void setState(PageState state) {
-        this.state = state;
     }
 }

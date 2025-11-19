@@ -6,7 +6,7 @@ import com.codeforall.simplegraphics.pictures.Picture;
 import io.codeforall.bootcamp.arkanoid.objects.GameObject;
 import io.codeforall.bootcamp.arkanoid.objects.grid.Grid;
 
-public class Ball extends io.codeforall.bootcamp.arkanoid.objects.GameObject {
+public class Ball extends GameObject {
     private double velocityX, velocityY;
     private final Ellipse bola;
 
@@ -52,7 +52,7 @@ public class Ball extends io.codeforall.bootcamp.arkanoid.objects.GameObject {
         }
     }
 
-    public void paddleBounce(io.codeforall.bootcamp.arkanoid.objects.GameObject paddle){
+    public void paddleBounce(GameObject paddle){
         if (getY() + (getHeight() / 2) <= paddle.getY()) {
             velocityY = velocityY * -1;
 
@@ -69,19 +69,19 @@ public class Ball extends io.codeforall.bootcamp.arkanoid.objects.GameObject {
     }
     public double prevBallY(){ return getY() - getVelocityY(); }
 
-    public boolean collisionTopLeft(io.codeforall.bootcamp.arkanoid.objects.GameObject other){
+    public boolean collisionTopLeft(GameObject other){
         return getX() <= other.getX() + other.getWidth() && getY() <= other.getY() + other.getHeight();
     }
 
-    public boolean collisionTopRight(io.codeforall.bootcamp.arkanoid.objects.GameObject other){
+    public boolean collisionTopRight(GameObject other){
         return getX()  + getWidth() >= other.getX();
     }
 
-    public boolean collisionBottomLeft (io.codeforall.bootcamp.arkanoid.objects.GameObject other){
+    public boolean collisionBottomLeft (GameObject other){
         return getX() <= other.getX() + other.getWidth() && getY() + getHeight() >= other.getY();
     }
 
-    public boolean collisionBottomRight(io.codeforall.bootcamp.arkanoid.objects.GameObject other){
+    public boolean collisionBottomRight(GameObject other){
         return getX() + getWidth() >= other.getX() && getY() + getHeight() >= other.getY();
     }
 

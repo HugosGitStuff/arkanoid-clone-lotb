@@ -37,7 +37,6 @@ public class Bootstrap {
 
         gamePage = new GamePage();
         gamePage.setMyKeyboard(myKeyboard);
-        gamePage.setScoreSaver(scoreSaver);
         gamePage.setScreenAddon(screenAddon);
         gamePage.setMyMouse(myMouse);
         gamePage.setState(PageState.IDLE);
@@ -49,12 +48,16 @@ public class Bootstrap {
         breakPage.setMyMouse(myMouse);
         breakPage.setLevel(0);
         breakPage.setState(PageState.IDLE);
+        breakPage.setScreenAddons(screenAddon);
+        breakPage.setScoreSaver(scoreSaver);
 
 
         intro = new IntroPage();
         intro.setBreakPage(breakPage);
         intro.setMyMouse(myMouse);
         intro.setState(PageState.IDLE);
+
+        breakPage.setIntro(intro);
 
         gamePage.setBreakPage(breakPage);
         gamePage.setIntro(intro);

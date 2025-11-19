@@ -2,6 +2,12 @@ package io.codeforall.bootcamp.arkanoid.pages;
 
 import com.codeforall.simplegraphics.pictures.Picture;
 import io.codeforall.bootcamp.arkanoid.inputs.Mouse.MyMouse;
+import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
+import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class BreakPage implements Page {
     private final String[] picturePaths = new String[]{
@@ -10,10 +16,12 @@ public class BreakPage implements Page {
             "text/congratsSecondLevel.png",
             "text/finalGame.png"};
     private MyMouse myMouse;
+    private ScreenAdditions screenAddons;
+    private ScoreSaver scoreSaver;
     private GamePage gamePage;
     private PageState state;
     private Picture background;
-    private int score;
+    private int score = 0;
     private int level;
     private IntroPage intro;
 
@@ -21,48 +29,65 @@ public class BreakPage implements Page {
     public void init() {
         background = new Picture(10, 10, picturePaths[level]);
         background.draw();
-        if (level == 0) {
+
+        createMouseButtons();
+        drawButtons();
+
+        if (level == 3) {
             try {
-                level++;
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
+                screenAddons.finalScore(score);
+                myMouse.hideButton("start");
+                myMouse.drawButton("quit", 950, 750);
+                // screenAddon.scoreboard(scoreSaver.getSavedScores("/score/score.txt"));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                scoreSaver.saveToFile("score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
+
+                Thread.sleep(20000);
+                System.exit(0);
+            } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
+        }
 
-            clear();
-        } else {
-            createMouseButtons();
-            drawButtons();
+        setState(PageState.IDLE);
 
-            while (state != PageState.QUIT) {
-                switch (state) {
-                    case START:
-                        hideButtons();
-                        clear();
-                        break;
-                    case SCORES:
-                        System.out.println("Coming soon...");
-                        break;
-                    case RESTART:
-                        myMouse.setPage(intro);
-                        background.delete();
-                        intro.init();
-                        break;
-                    case IDLE:
-                        try {
-                            Thread.sleep(50);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                }
+        while (state != PageState.QUIT) {
+            switch (state) {
+                case START:
+                    hideButtons();
+                    clear();
+                    break;
+                case SCORES:
+                    System.out.println("Coming soon...");
+                    break;
+                case RESTART:
+                    screenAddons.setLevel("0");
+                    screenAddons.setScore(0);
+                    background.delete();
+                    hideButtons();
+                    myMouse.reset();
+
+                    myMouse.setPage(intro);
+                    intro.setState(PageState.IDLE);
+                    intro.init();
+                    break;
+                case IDLE:
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
             }
 
-            System.exit(0);
         }
+        System.exit(0);
     }
 
     @Override
     public void clear() {
+        level++;
+        screenAddons.setLevel("" + level);
         gamePage.setLevel(level);
         gamePage.setScore(score);
         myMouse.reset();
@@ -70,7 +95,6 @@ public class BreakPage implements Page {
         background.delete();
         gamePage.setState(PageState.RUNNING);
         gamePage.init();
-        //hideButtons();
     }
 
     public void setScore(int score) {
@@ -93,11 +117,24 @@ public class BreakPage implements Page {
         this.state = state;
     }
 
+    public void setScreenAddons(ScreenAdditions screenAddons) {
+        this.screenAddons = screenAddons;
+    }
+
+    public void setScoreSaver(ScoreSaver scoreSaver) {
+        this.scoreSaver = scoreSaver;
+    }
+
+    public void setIntro(IntroPage intro) {
+        this.intro = intro;
+    }
+
     @Override
     public void createMouseButtons() {
-        myMouse.createButton("start");
-        myMouse.createButton("scores");
-        myMouse.createButton("restart");
+        myMouse.createButton("start /space");
+        myMouse.createButton("scores /h");
+        myMouse.createButton("restart /r");
+        myMouse.createButton("quit /q");
     }
 
     @Override
@@ -109,8 +146,12 @@ public class BreakPage implements Page {
 
     //@Override
     public void hideButtons() {
-        myMouse.hideButton("start");
-        myMouse.hideButton("scores");
-        myMouse.hideButton("restart");
+            myMouse.hideButton("scores");
+            myMouse.hideButton("restart");
+        if(myMouse.isDrawn("start")) {
+            myMouse.hideButton("start");
+        } else {
+           myMouse.hideButton("quit");
+        }
     }
 }

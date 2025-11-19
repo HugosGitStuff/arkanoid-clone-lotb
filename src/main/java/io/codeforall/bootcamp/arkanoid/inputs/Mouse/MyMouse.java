@@ -4,12 +4,11 @@ import com.codeforall.simplegraphics.mouse.Mouse;
 import com.codeforall.simplegraphics.mouse.MouseEvent;
 import com.codeforall.simplegraphics.mouse.MouseEventType;
 import com.codeforall.simplegraphics.mouse.MouseHandler;
-import io.codeforall.bootcamp.arkanoid.pages.AbstractPage;
 import io.codeforall.bootcamp.arkanoid.pages.GamePage;
 import io.codeforall.bootcamp.arkanoid.pages.Page;
 import io.codeforall.bootcamp.arkanoid.pages.PageState;
 
-import java.awt.*;
+
 import java.util.*;
 import java.util.List;
 
@@ -88,7 +87,7 @@ public class MyMouse implements MouseHandler {
     }
 
     public void createButton(String message) {
-        buttons.put(message, new Button(message.toUpperCase()));
+        buttons.put(message.split(" ")[0], new Button(message.toUpperCase()));
     }
 
     public void drawButton(String message, int x, int y) {

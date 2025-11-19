@@ -18,11 +18,6 @@ public class ArkanoidGame {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.execute();
     }
-//
-//    public void gameOver() {
-//        screenAddon.gameOverText();
-//        screenAddon.pressToExit();
-//    }
 }
 
 

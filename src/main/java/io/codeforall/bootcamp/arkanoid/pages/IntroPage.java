@@ -1,8 +1,6 @@
 package io.codeforall.bootcamp.arkanoid.pages;
 
 import com.codeforall.simplegraphics.graphics.Color;
-import com.codeforall.simplegraphics.graphics.Rectangle;
-import com.codeforall.simplegraphics.graphics.Text;
 import com.codeforall.simplegraphics.pictures.Picture;
 import io.codeforall.bootcamp.arkanoid.inputs.Mouse.MyMouse;
 
@@ -18,14 +16,6 @@ public class IntroPage implements Page {
     private Picture background;
     private Clip musicClip;
 
-    private Rectangle startBtn;
-    private Rectangle optionsBtn;
-    private Rectangle highScoresBtn;
-
-    private Text startText;
-    private Text optionsText;
-    private Text highScoresText;
-
     private PageState state;
 
     private Color normalColor = new Color(220, 200, 120); // gold tone
@@ -36,41 +26,8 @@ public class IntroPage implements Page {
     public void init() {
         background = new Picture(10, 10, "introbackground/FinalIntroImageBackground.png");
         background.draw();
-
-
-        // Buttons (adjust to align perfectly with your image)
-        startBtn = new Rectangle(530, 400, 190, 40);
-//        optionsBtn = new Rectangle(530, 460, 190, 40);
-//        highScoresBtn = new Rectangle(530, 520, 190, 40);
-
-        startBtn.setColor(normalColor);
-//        optionsBtn.setColor(normalColor);
-//        highScoresBtn.setColor(normalColor);
-
-        // Text labels
-//        startText = new Text(310, 790, "PRESS SPACE TO START GAME");
-//        optionsText = new Text(510, 473, "OPTIONS");
-//        highScoresText = new Text(510, 533, "HIGH SCORES");
-
-//        styleText(startText);
-//        styleText(optionsText);
-//        styleText(highScoresText);
-
-//        drawButton(startText);
-//        drawButton(optionsBtn, optionsText);
-//        drawButton(highScoresBtn, highScoresText);
-//
-//        Mouse mouse = new Mouse(this);
-//        mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
-//        mouse.addEventListener(MouseEventType.MOUSE_MOVED);
-//
         playMusic("/soundtrack/AncientShadowsRising.wav");
-//
-//        Keyboard keyboard = new Keyboard(this);
-//        KeyboardEvent spaceEvent = new KeyboardEvent();
-//        spaceEvent.setKey(KeyboardEvent.KEY_SPACE);
-//        spaceEvent.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-//        keyboard.addEventListener(spaceEvent);
+
         createMouseButtons();
         drawButtons();
 
@@ -97,12 +54,12 @@ public class IntroPage implements Page {
 
     @Override
     public void clear() {
+        hideButtons();
         myMouse.reset();
         myMouse.setPage(breakPage);
         breakPage.setState(PageState.IDLE);
         breakPage.setLevel(0);
         breakPage.setScore(0);
-        //hideButtons();
         background.delete();
         breakPage.init();
     }
@@ -121,70 +78,6 @@ public class IntroPage implements Page {
         }
     }
 
-    private void stopMusic() {
-        if (musicClip != null && musicClip.isRunning()) {
-            musicClip.stop();
-            musicClip.close();
-        }
-    }
-
-    private void styleText(Text text) {
-        text.setColor(Color.WHITE);
-        text.grow(10, 30);
-    }
-
-    private void drawButtonRec(Rectangle rect, Text label) {
-        rect.draw();
-        label.draw();
-    }
-
-    private void drawButton(Text label) {
-
-        label.draw();
-    }
-
-//    @Override
-//    public void mouseClicked(MouseEvent e) {
-//        int x = (int) e.getX();
-//        int y = (int) e.getY();
-//
-//        if (isInside(startBtn, x, y)) {
-//            System.out.println("Start Game clicked!");
-//        } else if (isInside(optionsBtn, x, y)) {
-//            System.out.println("Options clicked!");
-//        } else if (isInside(highScoresBtn, x, y)) {
-//            System.out.println("High Scores clicked!");
-//        }
-//    }
-//
-//    @Override
-//    public void mouseMoved(MouseEvent e) {
-//        int x = (int) e.getX();
-//        int y = (int) e.getY();
-//
-//        // Glow effect on hover
-//        handleHover(startBtn, startText, x, y);
-//        handleHover(optionsBtn, optionsText, x, y);
-//        handleHover(highScoresBtn, highScoresText, x, y);
-//    }
-//
-//    private boolean isInside(Rectangle rect, int x, int y) {
-//        return x >= rect.getX() && x <= rect.getX() + rect.getWidth()
-//                && y >= rect.getY() && y <= rect.getY() + rect.getHeight();
-//    }
-//
- //
-//    @Override
-//    public void keyPressed(KeyboardEvent e) {
-//        if (e.getKey() == KeyboardEvent.KEY_SPACE) {
-//            finished = true;
-//        }
-//    }
-//
-//    @Override
-//    public void keyReleased(KeyboardEvent e) {
-//    }
-//
     public void setBreakPage(BreakPage breakPage) {
         this.breakPage = breakPage;
     }
@@ -199,9 +92,9 @@ public class IntroPage implements Page {
 
     @Override
     public void createMouseButtons() {
-        myMouse.createButton("start");
-        myMouse.createButton("scores");
-        myMouse.createButton("quit");
+        myMouse.createButton("start /space");
+        myMouse.createButton("scores /h");
+        myMouse.createButton("quit /q");
     }
 
     @Override

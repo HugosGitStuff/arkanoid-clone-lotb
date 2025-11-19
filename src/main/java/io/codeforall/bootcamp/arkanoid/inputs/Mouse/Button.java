@@ -24,7 +24,6 @@ public class Button {
         button = new Rectangle(this.x, this.y, width, height);
 
         button.setColor(Color.LIGHT_GRAY);
-
         text = new Text(this.x, this.y, message);
         text.grow(10, 10);
         text.translate(centeredTextX(), 8);
