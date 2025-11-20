@@ -16,42 +16,44 @@ import java.io.IOException;
 
 public class GamePage implements Page {
     private final Picture background = new Picture(10, 10, "gameBackground/background-final.png");
+    private final int[] numBlocksArray = {32,26,30};// {32,26,30}
     private Ball ball;
     private Paddle paddle;
-    private Grid newGrid;
+    private Grid Grid;
     private Blocks blocks;
     private MyKeyboard myKeyboard;
     private ScreenAdditions screenAddon;
     private MyMouse myMouse;
-    private boolean gameOver;
-    volatile private PageState state;
     private IntroPage intro;
     private BreakPage breakPage;
+    private boolean gameOver;
     private int score;
     private int level;
-    private int numBlocksRemoved = 0;
     private double delta = 0;
+    private int numBlocks;
+    volatile private PageState state;
 
 
     @Override
     public void init() {
         try {
-            newGrid = new Grid(8, 12);
-            newGrid.init();
+            Grid = new Grid(8, 12);
+            Grid.init();
 
             ball = new Ball(465, 700, 3, -3);
 
             background.draw();
 
-            paddle = new Paddle(425, 725, newGrid);
+            paddle = new Paddle(425, 725, Grid);
             myKeyboard.setPaddle(paddle);
 
             blocks = new Blocks();
+            numBlocks = numBlocksArray[level-1];
 
             createMouseButtons();
             paddle.draw();
             ball.draw();
-            blocks.init(newGrid, level);
+            blocks.init(Grid, level);
             drawButtons();
             screenAddon.initialText();
             if (level != 1){
@@ -107,40 +109,15 @@ public class GamePage implements Page {
                                 if (block != null) {
                                     if (ball.collidesWith(block)) {
 
-                                        boolean wasAbove = ball.prevBallY() + ball.getHeight() <= block.getY();
-                                        boolean wasBelow = ball.prevBallY() >= block.getY() + block.getHeight();
-                                        boolean wasLeft = ball.prevBallX() + ball.getWidth() <= block.getX();
-                                        boolean wasRight = ball.prevBallX() >= block.getX() + block.getWidth();
+                                        ball.directionAfterCollision(block);
 
-                                        if (wasAbove || wasBelow) {
-                                            ball.bounce(wasAbove ? "top" : "bottom");
-                                            score += 30;
+                                        score += 30;
+                                        screenAddon.setScore(score);
+
+                                        if (blocks.removeBlock(i, j)) {
+                                            score += block.getMaxHealth() * 100;
                                             screenAddon.setScore(score);
-
-                                            if (blocks.removeBlock(i, j)) {
-                                                score += block.getMaxHealth() * 100;
-                                                screenAddon.setScore(score);
-                                                numBlocksRemoved++;
-                                            }
-
-                                        } else if (wasLeft || wasRight) {
-                                            ball.bounce(wasLeft ? "left" : "right");
-
-                                            score += 30;
-                                            screenAddon.setScore(score);
-
-                                            if (blocks.removeBlock(i, j)) {
-                                                score += block.getMaxHealth() * 100;
-                                                screenAddon.setScore(score);
-                                                numBlocksRemoved++;
-                                            }
-
-                                        } else {
-                                            if (Math.abs(ball.getVelocityY()) > Math.abs(ball.getVelocityX())) {
-                                                ball.bounce(ball.getVelocityY() > 0 ? "top" : "bottom");
-                                            } else {
-                                                ball.bounce(ball.getVelocityX() > 0 ? "left" : "right");
-                                            }
+                                            numBlocks--;
                                         }
                                     }
                                 }
@@ -148,30 +125,12 @@ public class GamePage implements Page {
                         }
                         delta--;
                         drawCount++;
-
 //                if (timer >= 1000000000) {
 //                    System.out.println("FPS: " + drawCount); // Show FPS on console
 //                    drawCount = 0;
 //                    timer = 0;
 //                }
-
-                        if (level == 1 && numBlocksRemoved == 2) {
-                            try {
-                                Thread.sleep(500);
-                                clear();
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                        } else if (level == 2 && numBlocksRemoved == 4) {
-                            try {
-                                Thread.sleep(500);
-                                clear();
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                        } else if (level == 3 && numBlocksRemoved == 3) {
+                        if (numBlocks == 0) {
                             try {
                                 Thread.sleep(500);
                                 clear();
@@ -179,9 +138,6 @@ public class GamePage implements Page {
                                 throw new RuntimeException(e);
                             }
                         }
-                        // level 1 - 32 blocks
-                        // level 2  - 26 blocks
-                        // level 3  - 30 blocks
 
                         if (ball.collidesWith(paddle)) {
                             try {
@@ -195,16 +151,16 @@ public class GamePage implements Page {
                             screenAddon.setScore(score);
                         }
 
-                        if (ball.checkWallCollision(newGrid) != null) {
+                        if (ball.collidesWithWall(Grid)) {
                             try {
+
                                 screenAddon.runAudio("/sfx/ball_wallhit.WAV");
+                                score += 2;
+                                screenAddon.setScore(score);
+
                             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                                 System.out.println("Error playing music: " + e.getMessage());
                             }
-                            String collision = ball.checkWallCollision(newGrid);
-                            ball.bounce(collision);
-                            score += 2;
-                            screenAddon.setScore(score);
                         }
 
                         if (ball.getY() >= 770) {
@@ -242,7 +198,6 @@ public class GamePage implements Page {
 
     @Override
     public void clear() {
-        numBlocksRemoved = 0;
         delta = 0;
         blocks.clear();
         ball.delete();
@@ -263,7 +218,6 @@ public class GamePage implements Page {
         if(myMouse.isDrawn("pause")) {
             myMouse.hideButton("pause");
         }
-        numBlocksRemoved = 0;
         myMouse.hideButton("restart");
         myMouse.hideButton("quit");
         ball.delete();

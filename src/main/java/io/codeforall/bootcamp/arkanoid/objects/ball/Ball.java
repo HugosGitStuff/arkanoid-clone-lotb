@@ -67,7 +67,24 @@ public class Ball extends GameObject {
     public double prevBallX(){
        return getX() - getVelocityX();
     }
-    public double prevBallY(){ return getY() - getVelocityY(); }
+
+    public double prevBallY(){
+        return getY() - getVelocityY();
+    }
+
+    public void directionAfterCollision(GameObject other) {
+        boolean wasAbove = prevBallY() + getHeight() <= other.getY();
+        boolean wasBelow = prevBallY() >= other.getY() + other.getHeight();
+        boolean wasLeft = prevBallX() + getWidth() <= other.getX();
+        boolean wasRight = prevBallX() >= other.getX() + other.getWidth();
+
+        if (wasAbove || wasBelow) {
+            velocityY *= -1;
+        }
+        if (wasLeft || wasRight) {
+            velocityX *= -1;
+        }
+    }
 
     public boolean collisionTopLeft(GameObject other){
         return getX() <= other.getX() + other.getWidth() && getY() <= other.getY() + other.getHeight();
@@ -89,12 +106,16 @@ public class Ball extends GameObject {
         return (collisionTopLeft(other) && collisionTopRight(other)) && (collisionBottomLeft(other) && collisionBottomRight(other));
     }
 
-    public String checkWallCollision(Grid grid) {
-        if (x <= grid.getX()) return "left";
-        if (x + getWidth() >= grid.getWidth() + grid.getX()) return "right";
-        if (y <= grid.getY()) return "top";
-        if (y + getHeight() >= grid.getHeight()) return "bottom";
-        return null;
+    public boolean collidesWithWall(Grid grid) {
+        if (x <= grid.getX() || x + getWidth() >= grid.getX() + grid.getWidth()) {
+            velocityX *= -1;
+            return true;
+        }
+        if (y <= grid.getY() || y + getHeight() >= grid.getY() + grid.getHeight()) {
+            velocityY *= -1;
+            return true;
+        }
+        return false;
     }
 
     @Override
