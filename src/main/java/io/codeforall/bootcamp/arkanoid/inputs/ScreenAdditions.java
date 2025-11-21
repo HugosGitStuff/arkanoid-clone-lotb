@@ -92,10 +92,8 @@ public class ScreenAdditions {
 
     }
 
-    public void scoreboard(ArrayList<String[]> savedScores) {
-        int x = 400;
-        int y = 550;
-        Text scoreboardSign = new Text(600, 500, "SCOREBOARD");
+    public void scoreboard(int x, int y, ArrayList<String[]> savedScores) {
+        Text scoreboardSign = new Text(x, y, "SCOREBOARD");
         scoreboardSign.grow(20, 20);
         scoreboardSign.setColor(Color.YELLOW);
         scoreboardSign.draw();
@@ -103,7 +101,7 @@ public class ScreenAdditions {
             System.out.println();
         } else {
             for (String[] score : savedScores) {
-                Text positions = new Text(x, y, Arrays.stream(score).reduce("", (acc, elem) -> acc.concat(elem + "                    ")));
+                Text positions = new Text(x - 100, y + 20, Arrays.stream(score).reduce("", (acc, elem) -> acc.concat(elem + "                    ")));
                 positions.setColor(Color.YELLOW);
                 positions.grow(150, 5);
                 positions.draw();
