@@ -19,6 +19,7 @@ public class BreakPage implements Page {
     private ScreenAdditions screenAddons;
     private ScoreSaver scoreSaver;
     private GamePage gamePage;
+    private ScorePage scorePage;
     private PageState state;
     private Picture background;
     private int score = 0;
@@ -58,7 +59,10 @@ public class BreakPage implements Page {
                     clear();
                     break;
                 case SCORES:
-                    System.out.println("Coming soon...");
+                    hideButtons();
+                    scorePage.setScreenAddon(screenAddons);
+                    scorePage.setScoreSaver(scoreSaver);
+                    scorePage.init();
                     break;
                 case RESTART:
                     screenAddons.setLevel("0");
@@ -127,6 +131,10 @@ public class BreakPage implements Page {
 
     public void setIntro(IntroPage intro) {
         this.intro = intro;
+    }
+
+    public void setScorePage(ScorePage scorePage) {
+        this.scorePage = scorePage;
     }
 
     @Override
