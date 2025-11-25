@@ -35,7 +35,7 @@ public class Bootstrap {
 
         gamePage = new GamePage();
         gamePage.setMyKeyboard(myKeyboard);
-        gamePage.setScreenAddon(screenAddon);
+        gamePage.setScreenAddons(screenAddon);
         gamePage.setMyMouse(myMouse);
         gamePage.setState(PageState.IDLE);
 

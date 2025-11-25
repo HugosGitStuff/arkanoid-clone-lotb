@@ -29,5 +29,4 @@ public abstract class GameObject {
     }
 
     public void delete() {}
-
 }

@@ -34,23 +34,23 @@ public class BreakPage implements Page {
         createMouseButtons();
         drawButtons();
 
+        setState(PageState.IDLE);
+        run();
+    }
+
+    public void run() {
         if (level == 3) {
             try {
                 screenAddons.finalScore(score);
                 myMouse.hideButton("start");
                 myMouse.drawButton("quit", 950, 750);
-                // screenAddon.scoreboard(scoreSaver.getSavedScores("/score/score.txt"));
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                scoreSaver.saveToFile("score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
+                scoreSaver.saveToFile("src/main/resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
 
-                Thread.sleep(20000);
-                System.exit(0);
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-
-        setState(PageState.IDLE);
 
         while (state != PageState.QUIT) {
             switch (state) {
@@ -60,8 +60,10 @@ public class BreakPage implements Page {
                     break;
                 case SCORES:
                     hideButtons();
-                    scorePage.setScreenAddon(screenAddons);
+                    scorePage.setScreenAddons(screenAddons);
                     scorePage.setScoreSaver(scoreSaver);
+                    myMouse.setPage(scorePage);
+                    scorePage.setBreakPage(this);
                     scorePage.init();
                     break;
                 case RESTART:
@@ -121,6 +123,7 @@ public class BreakPage implements Page {
         this.state = state;
     }
 
+    @Override
     public void setScreenAddons(ScreenAdditions screenAddons) {
         this.screenAddons = screenAddons;
     }
@@ -152,7 +155,7 @@ public class BreakPage implements Page {
         myMouse.drawButton("restart", 550, 750);
     }
 
-    //@Override
+    @Override
     public void hideButtons() {
             myMouse.hideButton("scores");
             myMouse.hideButton("restart");

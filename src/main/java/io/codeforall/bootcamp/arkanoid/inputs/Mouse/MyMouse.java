@@ -59,7 +59,6 @@ public class MyMouse implements MouseHandler {
             page.setState(PageState.START);
         }else if (isInside("restart", x, y)) {
             page.setState(PageState.RESTART);
-            System.out.println(gamePage.getState());
         }else if (isInside("quit", x, y)) {
             page.setState(PageState.QUIT);
         }else if (isInside("pause", x, y)) {

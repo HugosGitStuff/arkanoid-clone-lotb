@@ -1,7 +1,12 @@
 package io.codeforall.bootcamp.arkanoid.pages;
 
 
+import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
+import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
+
 public interface Page {
+
+    void run();
 
     void init();
 
@@ -9,9 +14,13 @@ public interface Page {
 
     void drawButtons();
 
-    //void hideButtons();
-
     void setState(PageState pageState);
 
     void createMouseButtons();
+
+    void hideButtons();
+
+    void setScoreSaver(ScoreSaver scoreSaver);
+
+    void setScreenAddons(ScreenAdditions screenAddons);
 }

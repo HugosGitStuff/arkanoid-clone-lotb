@@ -3,6 +3,8 @@ package io.codeforall.bootcamp.arkanoid.pages;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.pictures.Picture;
 import io.codeforall.bootcamp.arkanoid.inputs.Mouse.MyMouse;
+import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
+import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
 
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
@@ -31,6 +33,11 @@ public class IntroPage implements Page {
         createMouseButtons();
         drawButtons();
 
+        run();
+    }
+
+    @Override
+    public void run() {
         while(state != PageState.QUIT) {
             switch (state) {
                 case START:
@@ -40,7 +47,7 @@ public class IntroPage implements Page {
                     System.out.println("Coming soon!");
                     break;
                 case IDLE:
-                     try {
+                    try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
@@ -48,7 +55,6 @@ public class IntroPage implements Page {
                     }
             }
         }
-
         System.exit(0);
     }
 
@@ -104,10 +110,16 @@ public class IntroPage implements Page {
         myMouse.drawButton("quit", 150, 750);
     }
 
-    //@Override
+    @Override
     public void hideButtons() {
         myMouse.hideButton("start");
         myMouse.hideButton("scores");
         myMouse.hideButton("quit");
     }
+
+    @Override
+    public void setScoreSaver(ScoreSaver scoreSaver) {}
+
+    @Override
+    public void setScreenAddons(ScreenAdditions screenAddons) {}
 }

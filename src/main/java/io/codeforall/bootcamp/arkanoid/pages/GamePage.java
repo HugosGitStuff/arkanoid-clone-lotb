@@ -3,6 +3,7 @@ package io.codeforall.bootcamp.arkanoid.pages;
 import com.codeforall.simplegraphics.pictures.Picture;
 import io.codeforall.bootcamp.arkanoid.inputs.MyKeyboard;
 import io.codeforall.bootcamp.arkanoid.inputs.Mouse.MyMouse;
+import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
 import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
 import io.codeforall.bootcamp.arkanoid.objects.ball.Ball;
 import io.codeforall.bootcamp.arkanoid.objects.blocks.Block;
@@ -69,6 +70,7 @@ public class GamePage implements Page {
         run();
     }
 
+    @Override
     public void run() {
         long lastTime = System.nanoTime();
         long timer = 0; // Needed to check FPS
@@ -237,7 +239,8 @@ public class GamePage implements Page {
         this.myKeyboard = myKeyboard;
     }
 
-    public void setScreenAddon(ScreenAdditions screenAddon) {
+    @Override
+    public void setScreenAddons(ScreenAdditions screenAddon) {
         this.screenAddon = screenAddon;
     }
 
@@ -261,10 +264,6 @@ public class GamePage implements Page {
         this.breakPage = breakPage;
     }
 
-    public PageState getState() {
-        return state;
-    }
-
     public void setState(PageState state) {
         this.state = state;
     }
@@ -283,8 +282,11 @@ public class GamePage implements Page {
         myMouse.drawButton("quit", 940, 450);
     }
 
-    //@Override
+    @Override
     public void hideButtons() {
         myMouse.hideButton("continue");
     }
+
+    @Override
+    public void setScoreSaver(ScoreSaver scoreSaver) {}
 }

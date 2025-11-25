@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ScreenAdditions {
     private String level;
@@ -16,6 +17,8 @@ public class ScreenAdditions {
     private Text score;
     private Text lev;
     private Text highScore;
+    private Text scoreboardSign;
+    private List<Text> positions = new ArrayList<>();
 
 
     public void initialText() {
@@ -93,7 +96,7 @@ public class ScreenAdditions {
     }
 
     public void scoreboard(int x, int y, ArrayList<String[]> savedScores) {
-        Text scoreboardSign = new Text(x, y, "SCOREBOARD");
+        scoreboardSign = new Text(x, y, "SCOREBOARD");
         scoreboardSign.grow(20, 20);
         scoreboardSign.setColor(Color.YELLOW);
         scoreboardSign.draw();
@@ -101,13 +104,21 @@ public class ScreenAdditions {
             System.out.println();
         } else {
             for (String[] score : savedScores) {
-                Text positions = new Text(x - 100, y + 20, Arrays.stream(score).reduce("", (acc, elem) -> acc.concat(elem + "                    ")));
-                positions.setColor(Color.YELLOW);
-                positions.grow(150, 5);
-                positions.draw();
+                Text position = new Text(x - 100, y + 20, Arrays.stream(score).reduce("", (acc, elem) -> acc.concat(elem + "                    ")));
+                position.setColor(Color.YELLOW);
+                position.grow(150, 5);
+                position.draw();
+                positions.add(position);
                 y += 15;
 
             }
+        }
+    }
+
+    public void deleteScoreboardSign() {
+        scoreboardSign.delete();
+        for(Text position : positions) {
+            position.delete();
         }
     }
 

@@ -14,50 +14,67 @@ public class ScorePage implements Page {
     private PageState state;
     private ScoreSaver scoreSaver;
     private ScreenAdditions screenAddon;
+    private Page page;
 
 
     @Override
     public void init() {
-        background.setColor(Color.RED);
-        background.fill();
-        createMouseButtons();
-        drawButtons();
-        setState(PageState.START);
+        try {
+            background.setColor(Color.RED);
+            background.fill();
+            createMouseButtons();
+            drawButtons();
+            screenAddon.scoreboard(background.getX() + 300, background.getY() + 25, scoreSaver.getSavedScores("src/main/resources/score/score.txt"));
+            setState(PageState.PAUSE);
+            run();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-        while (state != PageState.QUIT) {
+    @Override
+    public void run() {
+        while (state != PageState.IDLE) {
             switch (state) {
-
                 case START:
-                    try {
-                        screenAddon.scoreboard(background.getX() + 300, background.getY() + 25, scoreSaver.getSavedScores("/score/score.txt"));
-                        setState(PageState.IDLE);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    clear();
                     break;
-
-                case IDLE:
+                case QUIT:
+                    System.exit(0);
+                    break;
+                case PAUSE:
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    break;
-
             }
-            clear();
         }
     }
 
     @Override
     public void clear() {
         background.delete();
+        hideButtons();
+        screenAddon.deleteScoreboardSign();
+        mouse.setPage(page);
+        page.drawButtons();
+        page.setScoreSaver(scoreSaver);
+        page.setScreenAddons(screenAddon);
+        page.setState(PageState.IDLE);
+        page.run();
     }
 
     @Override
     public void createMouseButtons() {
         mouse.createButton("continue /space");
         mouse.createButton("quit /q");
+    }
+
+    @Override
+    public void hideButtons() {
+        mouse.hideButton("continue");
+        mouse.hideButton("quit");
     }
 
     @Override
@@ -79,7 +96,12 @@ public class ScorePage implements Page {
         this.scoreSaver = scoreSaver;
     }
 
-    public void setScreenAddon(ScreenAdditions screenAddon) {
+    @Override
+    public void setScreenAddons(ScreenAdditions screenAddon) {
         this.screenAddon = screenAddon;
+    }
+
+    public void setBreakPage(BreakPage breakPage) {
+        this.page = breakPage;
     }
 }
