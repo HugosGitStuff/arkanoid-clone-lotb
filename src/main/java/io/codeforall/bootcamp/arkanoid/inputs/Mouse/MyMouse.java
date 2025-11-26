@@ -24,15 +24,6 @@ public class MyMouse implements MouseHandler {
         buttons = new HashMap<>();
     }
 
-    public void init() {
-        createButton("start");
-        createButton("continue");
-        createButton("restart");
-        createButton("quit");
-        createButton("pause");
-        createButton("scores");
-    }
-
     public void reset() {
         List<String> itemsToRemove = new ArrayList<>(buttons.keySet());
         for (String key : itemsToRemove) {
@@ -53,17 +44,17 @@ public class MyMouse implements MouseHandler {
         int x = (int) mouseEvent.getX();
         int y = (int) mouseEvent.getY() - 30;
 
-        if (isInside("start", x, y)) {
+        if (isInside("st", x, y)) {
             page.setState(PageState.START);
-        }else if (isInside("continue", x, y)) {
+        }else if (isInside("cont", x, y)) {
             page.setState(PageState.START);
-        }else if (isInside("restart", x, y)) {
+        }else if (isInside("rest", x, y)) {
             page.setState(PageState.RESTART);
-        }else if (isInside("quit", x, y)) {
+        }else if (isInside("q", x, y)) {
             page.setState(PageState.QUIT);
-        }else if (isInside("pause", x, y)) {
+        }else if (isInside("p", x, y)) {
             page.setState(PageState.PAUSE);
-        }else if (isInside("scores", x, y)) {
+        }else if (isInside("scr", x, y)) {
             page.setState(PageState.SCORES);
         }
     }
@@ -86,7 +77,7 @@ public class MyMouse implements MouseHandler {
     }
 
     public void createButton(String message) {
-        buttons.put(message.split(" ")[0], new Button(message.toUpperCase()));
+        buttons.put(message, new Button(message));
     }
 
     public void drawButton(String message, int x, int y) {

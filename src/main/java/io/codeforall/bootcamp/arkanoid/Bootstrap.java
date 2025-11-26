@@ -6,13 +6,11 @@ import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
 import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
 import io.codeforall.bootcamp.arkanoid.pages.*;
 
-import java.io.IOException;
-
 public class Bootstrap {
 
     private MyMouse myMouse;
     private MyKeyboard myKeyboard;
-    private ScreenAdditions screenAddon;
+    private ScreenAdditions screenAddons;
 
 
     private ScorePage scorePage;
@@ -29,13 +27,13 @@ public class Bootstrap {
         myKeyboard = new MyKeyboard();
         myKeyboard.init();
 
-        screenAddon = new ScreenAdditions();
+        screenAddons = new ScreenAdditions();
 
         scoreSaver = new ScoreSaver();
 
         gamePage = new GamePage();
         gamePage.setMyKeyboard(myKeyboard);
-        gamePage.setScreenAddons(screenAddon);
+        gamePage.setScreenAddons(screenAddons);
         gamePage.setMyMouse(myMouse);
         gamePage.setState(PageState.IDLE);
 
@@ -46,7 +44,7 @@ public class Bootstrap {
         breakPage.setMyMouse(myMouse);
         breakPage.setLevel(0);
         breakPage.setState(PageState.IDLE);
-        breakPage.setScreenAddons(screenAddon);
+        breakPage.setScreenAddons(screenAddons);
         breakPage.setScoreSaver(scoreSaver);
 
 
@@ -54,6 +52,8 @@ public class Bootstrap {
         intro.setBreakPage(breakPage);
         intro.setMyMouse(myMouse);
         intro.setState(PageState.IDLE);
+        intro.setScoreSaver(scoreSaver);
+        intro.setScreenAddons(screenAddons);
 
         breakPage.setIntro(intro);
 
@@ -64,6 +64,7 @@ public class Bootstrap {
         scorePage = new ScorePage();
         scorePage.setMouse(myMouse);
         breakPage.setScorePage(scorePage);
+        intro.setScorePage(scorePage);
 
         intro.init();
     }

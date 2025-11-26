@@ -25,25 +25,27 @@ public class BreakPage implements Page {
     private int score = 0;
     private int level;
     private IntroPage intro;
+    private boolean finalLevel = false;
 
     @Override
     public void init() {
         background = new Picture(10, 10, picturePaths[level]);
         background.draw();
 
-        createMouseButtons();
+        createButtons();
         drawButtons();
 
         setState(PageState.IDLE);
         run();
     }
 
+    @Override
     public void run() {
-        if (level == 3) {
+        if (finalLevel) {
             try {
                 screenAddons.finalScore(score);
-                myMouse.hideButton("start");
-                myMouse.drawButton("quit", 950, 750);
+                myMouse.hideButton("st");
+                myMouse.drawButton("q", 950, 750);
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
                 scoreSaver.saveToFile("src/main/resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
 
@@ -63,7 +65,7 @@ public class BreakPage implements Page {
                     scorePage.setScreenAddons(screenAddons);
                     scorePage.setScoreSaver(scoreSaver);
                     myMouse.setPage(scorePage);
-                    scorePage.setBreakPage(this);
+                    scorePage.setPage(this);
                     scorePage.init();
                     break;
                 case RESTART:
@@ -140,29 +142,33 @@ public class BreakPage implements Page {
         this.scorePage = scorePage;
     }
 
+    public void setFinalLevel(boolean finalLevel) {
+        this.finalLevel = finalLevel;
+    }
+
     @Override
-    public void createMouseButtons() {
-        myMouse.createButton("start /space");
-        myMouse.createButton("scores /h");
-        myMouse.createButton("restart /r");
-        myMouse.createButton("quit /q");
+    public void createButtons() {
+        myMouse.createButton("st");
+        myMouse.createButton("scr");
+        myMouse.createButton("rest");
+        myMouse.createButton("q");
     }
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("start", 950, 750);
-        myMouse.drawButton("scores", 750, 750);
-        myMouse.drawButton("restart", 550, 750);
+        myMouse.drawButton("st", 950, 750);
+        myMouse.drawButton("scr", 750, 750);
+        myMouse.drawButton("rest", 550, 750);
     }
 
     @Override
     public void hideButtons() {
-            myMouse.hideButton("scores");
-            myMouse.hideButton("restart");
-        if(myMouse.isDrawn("start")) {
-            myMouse.hideButton("start");
+            myMouse.hideButton("scr");
+            myMouse.hideButton("rest");
+        if(myMouse.isDrawn("st")) {
+            myMouse.hideButton("st");
         } else {
-           myMouse.hideButton("quit");
+           myMouse.hideButton("q");
         }
     }
 }

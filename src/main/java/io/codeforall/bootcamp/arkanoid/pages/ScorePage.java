@@ -20,11 +20,14 @@ public class ScorePage implements Page {
     @Override
     public void init() {
         try {
+            if (page instanceof IntroPage) {
+                background.translate(-160,0);
+            }
             background.setColor(Color.RED);
             background.fill();
-            createMouseButtons();
+            createButtons();
             drawButtons();
-            screenAddon.scoreboard(background.getX() + 300, background.getY() + 25, scoreSaver.getSavedScores("src/main/resources/score/score.txt"));
+            screenAddon.scoreboard(background.getX() + 350, background.getY() + 25, scoreSaver.getSavedScores("src/main/resources/score/score.txt"));
             setState(PageState.PAUSE);
             run();
         } catch (IOException e) {
@@ -41,7 +44,6 @@ public class ScorePage implements Page {
                     break;
                 case QUIT:
                     System.exit(0);
-                    break;
                 case PAUSE:
                     try {
                         Thread.sleep(100);
@@ -66,21 +68,21 @@ public class ScorePage implements Page {
     }
 
     @Override
-    public void createMouseButtons() {
-        mouse.createButton("continue /space");
-        mouse.createButton("quit /q");
+    public void createButtons() {
+        mouse.createButton("cont");
+        mouse.createButton("q");
     }
 
     @Override
     public void hideButtons() {
-        mouse.hideButton("continue");
-        mouse.hideButton("quit");
+        mouse.hideButton("cont");
+        mouse.hideButton("q");
     }
 
     @Override
     public void drawButtons() {
-        mouse.drawButton("continue", 730, 650);
-        mouse.drawButton("quit", 280, 650);
+        mouse.drawButton("cont", background.getX() + 530, 650);
+        mouse.drawButton("q", background.getX() + 80, 650);
     }
 
     @Override
@@ -101,7 +103,7 @@ public class ScorePage implements Page {
         this.screenAddon = screenAddon;
     }
 
-    public void setBreakPage(BreakPage breakPage) {
-        this.page = breakPage;
+    public void setPage(Page page) {
+        this.page = page;
     }
 }

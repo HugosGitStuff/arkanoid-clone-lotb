@@ -14,6 +14,9 @@ import java.net.URL;
 public class IntroPage implements Page {
     private MyMouse myMouse;
     private BreakPage breakPage;
+    private ScorePage scorePage;
+    private ScoreSaver scoreSaver;
+    private ScreenAdditions screenAddons;
 
     private Picture background;
     private Clip musicClip;
@@ -30,7 +33,7 @@ public class IntroPage implements Page {
         background.draw();
         playMusic("/soundtrack/AncientShadowsRising.wav");
 
-        createMouseButtons();
+        createButtons();
         drawButtons();
 
         run();
@@ -44,7 +47,12 @@ public class IntroPage implements Page {
                     clear();
                     break;
                 case SCORES:
-                    System.out.println("Coming soon!");
+                    hideButtons();
+                    scorePage.setScreenAddons(screenAddons);
+                    scorePage.setScoreSaver(scoreSaver);
+                    myMouse.setPage(scorePage);
+                    scorePage.setPage(this);
+                    scorePage.init();
                     break;
                 case IDLE:
                     try {
@@ -97,29 +105,37 @@ public class IntroPage implements Page {
     }
 
     @Override
-    public void createMouseButtons() {
-        myMouse.createButton("start /space");
-        myMouse.createButton("scores /h");
-        myMouse.createButton("quit /q");
+    public void setScreenAddons(ScreenAdditions screenAddons) {
+        this.screenAddons = screenAddons;
+    }
+
+    @Override
+    public void setScoreSaver(ScoreSaver scoreSaver) {
+        this.scoreSaver = scoreSaver;
+    }
+
+    public void setScorePage(ScorePage scorePage) {
+        this.scorePage = scorePage;
+    }
+
+    @Override
+    public void createButtons() {
+        myMouse.createButton("st");
+        myMouse.createButton("scr");
+        myMouse.createButton("q");
     }
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("start", 550, 750);
-        myMouse.drawButton("scores", 350, 750);
-        myMouse.drawButton("quit", 150, 750);
+        myMouse.drawButton("st", 550, 750);
+        myMouse.drawButton("scr", 350, 750);
+        myMouse.drawButton("q", 150, 750);
     }
 
     @Override
     public void hideButtons() {
-        myMouse.hideButton("start");
-        myMouse.hideButton("scores");
-        myMouse.hideButton("quit");
+        myMouse.hideButton("st");
+        myMouse.hideButton("scr");
+        myMouse.hideButton("q");
     }
-
-    @Override
-    public void setScoreSaver(ScoreSaver scoreSaver) {}
-
-    @Override
-    public void setScreenAddons(ScreenAdditions screenAddons) {}
 }

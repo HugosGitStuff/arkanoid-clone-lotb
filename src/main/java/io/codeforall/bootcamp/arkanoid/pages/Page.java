@@ -16,7 +16,7 @@ public interface Page {
 
     void setState(PageState pageState);
 
-    void createMouseButtons();
+    void createButtons();
 
     void hideButtons();
 

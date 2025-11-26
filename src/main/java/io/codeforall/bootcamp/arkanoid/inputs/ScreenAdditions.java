@@ -97,19 +97,21 @@ public class ScreenAdditions {
 
     public void scoreboard(int x, int y, ArrayList<String[]> savedScores) {
         scoreboardSign = new Text(x, y, "SCOREBOARD");
-        scoreboardSign.grow(20, 20);
+        scoreboardSign.grow(50, 20);
         scoreboardSign.setColor(Color.YELLOW);
         scoreboardSign.draw();
         if (savedScores.isEmpty()) {
             System.out.println();
         } else {
+                int scoreNum = 1;
             for (String[] score : savedScores) {
-                Text position = new Text(x - 100, y + 20, Arrays.stream(score).reduce("", (acc, elem) -> acc.concat(elem + "                    ")));
+                Text position = new Text(x - 20, y + 50, scoreNum + ". " + Arrays.stream(score).reduce("", (acc, elem) -> acc.concat(elem + "   ")));
                 position.setColor(Color.YELLOW);
-                position.grow(150, 5);
+                position.grow(200, 8);
                 position.draw();
                 positions.add(position);
-                y += 15;
+                scoreNum ++;
+                y += 40;
 
             }
         }

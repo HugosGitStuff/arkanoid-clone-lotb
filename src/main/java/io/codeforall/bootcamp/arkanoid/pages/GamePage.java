@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class GamePage implements Page {
     private final Picture background = new Picture(10, 10, "gameBackground/background-final.png");
-    private final int[] numBlocksArray = {32,26,30};// {32,26,30}
+    private final int[] numBlocksArray = {32,26,30,31,26,32,32,32,33,32,33,33,33};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
     private Ball ball;
     private Paddle paddle;
     private Grid Grid;
@@ -51,7 +51,7 @@ public class GamePage implements Page {
             blocks = new Blocks();
             numBlocks = numBlocksArray[level-1];
 
-            createMouseButtons();
+            createButtons();
             paddle.draw();
             ball.draw();
             blocks.init(Grid, level);
@@ -83,8 +83,8 @@ public class GamePage implements Page {
             int FPS = 60;
             switch (state) {
                 case START:
-                    myMouse.hideButton("continue");
-                    myMouse.drawButton("pause", 940, 400);
+                    myMouse.hideButton("cont");
+                    myMouse.drawButton("p", 940, 400);
                     setState(PageState.RUNNING);
                     break;
 
@@ -166,8 +166,8 @@ public class GamePage implements Page {
                         }
 
                         if (ball.getY() >= 770) {
-                            myMouse.hideButton("pause");
-                            myMouse.drawButton("restart", 940, 400);
+                            myMouse.hideButton("p");
+                            myMouse.drawButton("rest", 940, 400);
                             screenAddon.gameOverText();
                             setState(PageState.IDLE);
                         }
@@ -175,8 +175,8 @@ public class GamePage implements Page {
                     break;
 
                 case PAUSE:
-                    myMouse.hideButton("pause");
-                    myMouse.drawButton("continue", 940, 400);
+                    myMouse.hideButton("p");
+                    myMouse.drawButton("cont", 940, 400);
                     setState(PageState.IDLE);
                     break;
 
@@ -205,9 +205,12 @@ public class GamePage implements Page {
         ball.delete();
         paddle.delete();
         background.delete();
-        myMouse.hideButton("pause");
-        myMouse.hideButton("quit");
+        myMouse.hideButton("p");
+        myMouse.hideButton("q");
         myMouse.reset();
+        if (level == numBlocksArray.length) {
+            breakPage.setFinalLevel(true);
+        }
 
         screenAddon.deleteLevelAndScore();
         myMouse.setPage(breakPage);
@@ -217,11 +220,11 @@ public class GamePage implements Page {
     }
 
     public void restart() {
-        if(myMouse.isDrawn("pause")) {
-            myMouse.hideButton("pause");
+        if(myMouse.isDrawn("p")) {
+            myMouse.hideButton("p");
         }
-        myMouse.hideButton("restart");
-        myMouse.hideButton("quit");
+        myMouse.hideButton("rest");
+        myMouse.hideButton("q");
         ball.delete();
         paddle.delete();
         background.delete();
@@ -269,22 +272,22 @@ public class GamePage implements Page {
     }
 
     @Override
-    public void createMouseButtons() {
-        myMouse.createButton("pause /p");
-        myMouse.createButton("quit /q");
-        myMouse.createButton("continue /space");
-        myMouse.createButton("restart /r");
+    public void createButtons() {
+        myMouse.createButton("p");
+        myMouse.createButton("q");
+        myMouse.createButton("cont");
+        myMouse.createButton("rest");
     }
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("pause", 940, 400);
-        myMouse.drawButton("quit", 940, 450);
+        myMouse.drawButton("p", 940, 400);
+        myMouse.drawButton("q", 940, 450);
     }
 
     @Override
     public void hideButtons() {
-        myMouse.hideButton("continue");
+        myMouse.hideButton("cont");
     }
 
     @Override
