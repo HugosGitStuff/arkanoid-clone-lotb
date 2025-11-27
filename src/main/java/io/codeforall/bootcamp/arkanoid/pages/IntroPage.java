@@ -121,15 +121,15 @@ public class IntroPage implements Page {
     @Override
     public void createButtons() {
         myMouse.createButton("st");
-        myMouse.createButton("scr");
-        myMouse.createButton("q");
+        //myMouse.createButton("scr");
+        //myMouse.createButton("q");
     }
 
     @Override
     public void drawButtons() {
         myMouse.drawButton("st", 550, 750);
-        myMouse.drawButton("scr", 350, 750);
-        myMouse.drawButton("q", 150, 750);
+        //myMouse.drawButton("scr", 350, 750);
+        //myMouse.drawButton("q", 150, 750);
     }
 
     @Override

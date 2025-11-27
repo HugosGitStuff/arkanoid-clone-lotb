@@ -19,12 +19,12 @@ public class Button {
     private boolean drawn;
     private Picture pic;
     private final Map<String, String> buttonImg = Map.ofEntries(
-            entry("st", "src/main/resources/buttons/cleanedButtonsResized/start_game_button.png"),
-            entry("p", "src/main/resources/buttons/cleanedButtonsResized/pause_button.png"),
-            entry("scr", "src/main/resources/buttons/cleanedButtonsResized/scores_button.png"),
-            entry("rest", "src/main/resources/buttons/cleanedButtonsResized/restart_button.png"),
-            entry("q", "src/main/resources/buttons/cleanedButtonsResized/quit_button.png"),
-            entry("cont", "src/main/resources/buttons/cleanedButtonsResized/continue_button.png")
+            entry("st", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/start_game_button copy.png"),
+            entry("p", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/pause_button.png"),
+            entry("scr", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/scores_button.png"),
+            entry("rest", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/restart_button.png"),
+            entry("q", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/quit_button.png"),
+            entry("cont", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/continue_button.png")
     );
 
     public Button(String message) {

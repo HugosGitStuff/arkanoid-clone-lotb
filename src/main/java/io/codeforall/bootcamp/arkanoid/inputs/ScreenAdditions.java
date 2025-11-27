@@ -129,7 +129,9 @@ public class ScreenAdditions {
     }
 
     public void setScore(int score) {
-        this.score.setText("" + score);
+        if (this.score != null) {
+            this.score.setText("" + score);
+        }
     }
 
     public void deleteLevelAndScore() {
