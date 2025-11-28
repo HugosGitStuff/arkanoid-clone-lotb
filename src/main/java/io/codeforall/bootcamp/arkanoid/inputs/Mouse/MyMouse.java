@@ -16,6 +16,7 @@ public class MyMouse implements MouseHandler {
     private Page page;
     private Map<String, Button> buttons;
     private GamePage gamePage;
+    private boolean gameOver;
 
     public MyMouse() {
         Mouse mouse = new Mouse(this);
@@ -46,15 +47,17 @@ public class MyMouse implements MouseHandler {
 
         if (isInside("st", x, y)) {
             page.setState(PageState.START);
-        }else if (isInside("cont", x, y)) {
+        } else if (isInside("cont", x, y)) {
             page.setState(PageState.START);
-        }else if (isInside("rest", x, y)) {
+        } else if (isInside("rest", x, y)) {
             page.setState(PageState.RESTART);
-        }else if (isInside("q", x, y)) {
+        } else if (isInside("q", x, y)) {
             page.setState(PageState.QUIT);
-        }else if (isInside("p", x, y)) {
-            page.setState(PageState.PAUSE);
-        }else if (isInside("scr", x, y)) {
+        } else if (isInside("p", x, y)) {
+            if (!gameOver) {
+                page.setState(PageState.PAUSE);
+            }
+        } else if (isInside("scr", x, y)) {
             page.setState(PageState.SCORES);
         }
     }
@@ -91,5 +94,9 @@ public class MyMouse implements MouseHandler {
 
     public boolean isDrawn(String button) {
         return buttons.get(button).isDrawn();
+    }
+
+    public void setGameOver(boolean b) {
+        gameOver = b;
     }
 }

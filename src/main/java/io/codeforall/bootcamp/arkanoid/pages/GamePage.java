@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class GamePage implements Page {
     private final Picture background = new Picture(10, 10, "gameBackground/background-final.png");
-    private final int[] numBlocksArray = {32,26,30,31,26,32,32,32,33,32,33,33,33};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
+    private final int[] numBlocksArray = {1,1,1,1,1,1,1,1,1,1,1,1,1};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
     private Ball ball;
     private Paddle paddle;
     private Grid Grid;
@@ -84,7 +84,7 @@ public class GamePage implements Page {
             switch (state) {
                 case START:
                     myMouse.hideButton("cont");
-                    myMouse.drawButton("p", 940, 400);
+                    myMouse.drawButton("p", 908, 637);
                     setState(PageState.RUNNING);
                     break;
 
@@ -166,8 +166,7 @@ public class GamePage implements Page {
                         }
 
                         if (ball.getY() >= 770) {
-                            myMouse.hideButton("p");
-                            myMouse.drawButton("rest", 940, 400);
+                            myMouse.setGameOver(true);
                             screenAddon.gameOverText();
                             setState(PageState.IDLE);
                         }
@@ -176,7 +175,7 @@ public class GamePage implements Page {
 
                 case PAUSE:
                     myMouse.hideButton("p");
-                    myMouse.drawButton("cont", 940, 400);
+                    myMouse.drawButton("cont", 908, 637);
                     setState(PageState.IDLE);
                     break;
 
@@ -206,6 +205,7 @@ public class GamePage implements Page {
         paddle.delete();
         background.delete();
         myMouse.hideButton("p");
+        myMouse.hideButton("rest");
         myMouse.hideButton("q");
         myMouse.reset();
         if (level == numBlocksArray.length) {
@@ -281,8 +281,9 @@ public class GamePage implements Page {
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("p", 940, 400);
-        myMouse.drawButton("q", 940, 450);
+        myMouse.drawButton("p", 908, 637);
+        myMouse.drawButton("rest", 908, 677);
+        myMouse.drawButton("q", 908, 717);
     }
 
     @Override

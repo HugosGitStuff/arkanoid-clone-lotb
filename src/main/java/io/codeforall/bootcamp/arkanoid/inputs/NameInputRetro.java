@@ -31,7 +31,6 @@ public class NameInputRetro  implements KeyboardHandler {
         nameText = new Text(200, 700, "_");
         nameText.setColor(Color.YELLOW);
         nameText.grow(150, 25);
-
     }
 
     public void drawInputText() {

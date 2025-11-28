@@ -62,4 +62,10 @@ public class ScoreSaver {
         writer.flush();
         writer.close();
     }
+    
+    public void clearList() {
+        for (int i = 0; i < savedScores.size();) {
+            savedScores.remove(i);
+        }
+    }
 }

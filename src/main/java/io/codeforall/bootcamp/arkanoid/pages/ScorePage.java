@@ -21,7 +21,7 @@ public class ScorePage implements Page {
     public void init() {
         try {
             if (page instanceof IntroPage) {
-                background.translate(-160,0);
+                background.translate(-170,0);
             }
             background.setColor(Color.RED);
             background.fill();
@@ -56,11 +56,15 @@ public class ScorePage implements Page {
 
     @Override
     public void clear() {
+        if (page instanceof IntroPage) {
+            background.translate(170,0);
+        }
         background.delete();
         hideButtons();
         screenAddon.deleteScoreboardSign();
-        mouse.setPage(page);
+        scoreSaver.clearList();
         page.drawButtons();
+        mouse.setPage(page);
         page.setScoreSaver(scoreSaver);
         page.setScreenAddons(screenAddon);
         page.setState(PageState.IDLE);

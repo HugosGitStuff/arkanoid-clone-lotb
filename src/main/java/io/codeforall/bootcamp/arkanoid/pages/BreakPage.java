@@ -29,9 +29,15 @@ public class BreakPage implements Page {
 
     @Override
     public void init() {
-        background = new Picture(10, 10, picturePaths[level]);
-        background.draw();
 
+        if (level >= 3 && level <= 12) {
+            background = new Picture(10, 10, picturePaths[2]);
+        } else {
+            background = new Picture(10, 10, picturePaths[level]);
+        }
+
+        background.draw();
+        myMouse.setGameOver(false);
         createButtons();
         drawButtons();
 
@@ -156,9 +162,9 @@ public class BreakPage implements Page {
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("st", 950, 750);
-        myMouse.drawButton("scr", 750, 750);
-        myMouse.drawButton("rest", 550, 750);
+        myMouse.drawButton("st", 930, 670);
+        myMouse.drawButton("scr", 930, 710);
+        myMouse.drawButton("rest", 930, 750);
     }
 
     @Override

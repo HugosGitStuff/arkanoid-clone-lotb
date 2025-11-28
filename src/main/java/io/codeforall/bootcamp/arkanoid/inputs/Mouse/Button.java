@@ -9,8 +9,8 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 public class Button {
-    private final int width = 100;
-    private final int height = 30;
+    private final int width = 150;
+    private final int height = 31;
     private Rectangle button;
     private String message;
 //    private Text text;
@@ -19,7 +19,7 @@ public class Button {
     private boolean drawn;
     private Picture pic;
     private final Map<String, String> buttonImg = Map.ofEntries(
-            entry("st", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/start_game_button copy.png"),
+            entry("st", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/start_game_button.png"),
             entry("p", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/pause_button.png"),
             entry("scr", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/scores_button.png"),
             entry("rest", "src/main/resources/buttons/cleanedButtonsFinalSmallSize/restart_button.png"),
@@ -62,7 +62,7 @@ public class Button {
         drawn = true;
 //        text.draw();
         pic.draw();
-        button.draw();
+        //button.draw();
     }
 
     public int getWidth() {

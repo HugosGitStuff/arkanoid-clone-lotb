@@ -22,10 +22,10 @@ public class ScreenAdditions {
 
 
     public void initialText() {
-        lev = new Text(970, 160, "Level ");
-        levNum = new Text(970, 220, level);
-        highScore = new Text(960, 300, "SCORE");
-        score = new Text(965, 350,"");
+        lev = new Text(980, 140, "Level ");
+        levNum = new Text(980, 200, level);
+        highScore = new Text(970, 280, "SCORE");
+        score = new Text(975, 330,"");
 
         lev.setColor(Color.YELLOW);
         lev.grow(30, 20);
