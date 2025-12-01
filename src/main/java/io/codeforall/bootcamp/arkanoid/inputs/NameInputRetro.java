@@ -16,28 +16,39 @@ public class NameInputRetro  implements KeyboardHandler {
     private Text instructionText;
     private boolean finished = false;
     private boolean cursorVisible = true;
+    private Rectangle bg = new Rectangle(50, 685, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    public NameInputRetro() {
-        // background
-        Rectangle bg = new Rectangle(200, 700, SCREEN_WIDTH, SCREEN_HEIGHT);
+    public void init() {
         bg.setColor(Color.BLACK);
         bg.draw();
-        // instructions
-        instructionText = new Text(200, 650, "ENTER YOUR NAME");
-        instructionText.setColor(Color.YELLOW);
-        instructionText.grow(150, 10);
 
-        // name text
-        nameText = new Text(200, 700, "_");
-        nameText.setColor(Color.YELLOW);
-        nameText.grow(150, 25);
+        instructionText = new Text(250, 650, "ENTER YOUR NAME");
+        instructionText.setColor(Color.RED);
+        instructionText.grow(100, 10);
+        instructionText.draw();
+
+        nameText = new Text(70, 700, "");
+        nameText.setColor(Color.RED);
+        nameText.grow(0, 25);
+        nameText.draw();
+
+        setupKeyboard();
+
+        run();
     }
 
-    public void drawInputText() {
-        instructionText.draw();
-        nameText.draw();
-        setupKeyboard();
-        startCursorBlink();
+    public void run() {
+        while(!finished) {
+            updateDisplay();
+            if(playerName.length() < 12) {
+                try {
+                cursorBlink();
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 
     private void setupKeyboard() {
@@ -51,7 +62,7 @@ public class NameInputRetro  implements KeyboardHandler {
             addKeyEvent(keyboard, i);
         }
         addKeyEvent(keyboard, KeyboardEvent.KEY_SPACE);
-        addKeyEvent(keyboard, KeyboardEvent.KEY_BACK_SLASH);
+        addKeyEvent(keyboard, KeyboardEvent.KEY_LEFT);
         addKeyEvent(keyboard, KeyboardEvent.KEY_ENTER);
     }
     private void addKeyEvent(Keyboard keyboard, int key) {
@@ -63,24 +74,36 @@ public class NameInputRetro  implements KeyboardHandler {
 
     @Override
     public void keyPressed(KeyboardEvent e) {
-        if (finished) return;
+        if (finished) {
+            return;
+        }
         int key = e.getKey();
+        System.out.println(key);
         if (key == KeyboardEvent.KEY_ENTER) {
             finished = true;
             nameText.setText(playerName.toString());
+            instructionText.setText("NAME ACCEPTED!");
             return;
         }
-        if (key == KeyboardEvent.KEY_BACK_SLASH &&  playerName.length() > 0) {
-            playerName.deleteCharAt(playerName.length() - 1);
-        } else if (playerName.length() < 12) {
+        if (key == KeyboardEvent.KEY_LEFT && playerName.length() > 0) {
+            playerName.deleteCharAt(playerName.length()-1);
+            nameText.grow(-10,0);
+            nameText.translate(-10,0);
+        } else if (playerName.length() < 16) {
             if (key >= KeyboardEvent.KEY_A && key <= KeyboardEvent.KEY_Z) {
                 char c = (char) ('A' + (key - KeyboardEvent.KEY_A));
                 playerName.append(c);
+                nameText.translate(10,0);
+                nameText.grow(10,0);
             } else if (key >= KeyboardEvent.KEY_0 && key <= KeyboardEvent.KEY_9) {
                 char c = (char) ('0' + (key - KeyboardEvent.KEY_0));
                 playerName.append(c);
+                nameText.translate(10,0);
+                nameText.grow(10,0);
             } else if (key == KeyboardEvent.KEY_SPACE) {
                 playerName.append(' ');
+                nameText.translate(10,0);
+                nameText.grow(10,0);
             }
         }
         updateDisplay();
@@ -90,24 +113,11 @@ public class NameInputRetro  implements KeyboardHandler {
     public void keyReleased(KeyboardEvent e) {}
 
     private void updateDisplay() {
-        if (!finished) {
-            nameText.setText(playerName.toString() + (cursorVisible ? "|" : ""));
-        } else {
-            nameText.setText(playerName.toString());
-        }
+        nameText.setText(playerName.toString() + (cursorVisible ? "|" : ""));
     }
 
-    private void startCursorBlink() {
-        Thread blink = new Thread(() -> {
-            try {
-                while (!finished) {
-                    cursorVisible = !cursorVisible;
-                    updateDisplay();
-                    Thread.sleep(600);
-                }
-            } catch (InterruptedException ignored) {}
-        });
-        blink.start();
+    private void cursorBlink() {
+        cursorVisible = !cursorVisible;
     }
     public String getPlayerName() {
         return playerName.toString();
@@ -116,11 +126,10 @@ public class NameInputRetro  implements KeyboardHandler {
         return finished;
     }
     // Demo entry point
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         NameInputRetro input = new NameInputRetro();
         while (!input.isFinished()) {
-            input.drawInputText();
-            Thread.sleep(400);
+            input.init();
         }
         System.out.println("Player name: " + input.getPlayerName());
     }
