@@ -132,7 +132,7 @@ public class GamePage implements Page {
 //                    drawCount = 0;
 //                    timer = 0;
 //                }
-                        if (numBlocks == 0) {
+                        if (numBlocks <= 0) {
                             try {
                                 Thread.sleep(500);
                                 clear();

@@ -58,20 +58,20 @@ public class MyKeyboard implements KeyboardHandler {
     }
 
     @Override
-    public void keyPressed(KeyboardEvent keyboardEvent) {
-        if (keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT) {
+    public void keyPressed(KeyboardEvent k) {
+        if (k.getKey() == KeyboardEvent.KEY_RIGHT) {
 
             paddle.setState(PaddleState.MOVING_RIGHT);
 
-        } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT) {
+        } else if (k.getKey() == KeyboardEvent.KEY_LEFT) {
 
             paddle.setState(PaddleState.MOVING_LEFT);
 
-        } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_1){
+        } else if (k.getKey() == KeyboardEvent.KEY_1){
 
             //inserir metodo de dar restart ao jogo
 
-        }else if (keyboardEvent.getKey() == KeyboardEvent.KEY_2){
+        }else if (k.getKey() == KeyboardEvent.KEY_2){
 
             try {
                 Thread.sleep(1000);

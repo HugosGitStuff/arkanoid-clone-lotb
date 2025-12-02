@@ -2,6 +2,7 @@ package io.codeforall.bootcamp.arkanoid;
 
 import io.codeforall.bootcamp.arkanoid.inputs.MyKeyboard;
 import io.codeforall.bootcamp.arkanoid.inputs.Mouse.MyMouse;
+import io.codeforall.bootcamp.arkanoid.inputs.NameInputRetro;
 import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
 import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
 import io.codeforall.bootcamp.arkanoid.pages.*;
@@ -18,6 +19,7 @@ public class Bootstrap {
     private GamePage gamePage;
     private BreakPage breakPage;
     private IntroPage intro;
+    private NameInputRetro nameInput;
 
     public void execute() {
 
@@ -65,6 +67,9 @@ public class Bootstrap {
         scorePage.setMouse(myMouse);
         breakPage.setScorePage(scorePage);
         intro.setScorePage(scorePage);
+
+        nameInput = new NameInputRetro();
+        breakPage.setNameInput(nameInput);
 
         intro.init();
     }

@@ -2,6 +2,7 @@ package io.codeforall.bootcamp.arkanoid.pages;
 
 import com.codeforall.simplegraphics.pictures.Picture;
 import io.codeforall.bootcamp.arkanoid.inputs.Mouse.MyMouse;
+import io.codeforall.bootcamp.arkanoid.inputs.NameInputRetro;
 import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
 import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
 
@@ -20,11 +21,12 @@ public class BreakPage implements Page {
     private ScoreSaver scoreSaver;
     private GamePage gamePage;
     private ScorePage scorePage;
+    private IntroPage intro;
+    private NameInputRetro nameInput;
     private PageState state;
     private Picture background;
     private int score = 0;
     private int level;
-    private IntroPage intro;
     private boolean finalLevel = false;
 
     @Override
@@ -32,6 +34,8 @@ public class BreakPage implements Page {
 
         if (level >= 3 && level <= 12) {
             background = new Picture(10, 10, picturePaths[2]);
+        } else if (level == 13) {
+          background = new Picture(10,10,picturePaths[3]);
         } else {
             background = new Picture(10, 10, picturePaths[level]);
         }
@@ -52,8 +56,10 @@ public class BreakPage implements Page {
                 screenAddons.finalScore(score);
                 myMouse.hideButton("st");
                 myMouse.drawButton("q", 950, 750);
+                String description = nameInput.init();
+                nameInput.clear();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                scoreSaver.saveToFile("src/main/resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), "first game", score));
+                scoreSaver.saveToFile("src/main/resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), description, score));
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -150,6 +156,10 @@ public class BreakPage implements Page {
 
     public void setFinalLevel(boolean finalLevel) {
         this.finalLevel = finalLevel;
+    }
+
+    public void setNameInput(NameInputRetro nameInput) {
+        this.nameInput = nameInput;
     }
 
     @Override
