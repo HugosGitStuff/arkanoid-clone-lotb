@@ -9,6 +9,9 @@ import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BreakPage implements Page {
     private final String[] picturePaths = new String[]{
@@ -28,6 +31,7 @@ public class BreakPage implements Page {
     private int score = 0;
     private int level;
     private boolean finalLevel = false;
+    private boolean addedName = false;
 
     @Override
     public void init() {
@@ -35,7 +39,7 @@ public class BreakPage implements Page {
         if (level >= 3 && level <= 12) {
             background = new Picture(10, 10, picturePaths[2]);
         } else if (level == 13) {
-          background = new Picture(10,10,picturePaths[3]);
+            background = new Picture(10, 10, picturePaths[3]);
         } else {
             background = new Picture(10, 10, picturePaths[level]);
         }
@@ -55,11 +59,18 @@ public class BreakPage implements Page {
             try {
                 screenAddons.finalScore(score);
                 myMouse.hideButton("st");
-                myMouse.drawButton("q", 950, 750);
-                String description = nameInput.init();
-                nameInput.clear();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                scoreSaver.saveToFile("src/main/resources/score/score.txt", scoreSaver.updateScores(LocalDate.now().format(formatter), description, score));
+                myMouse.drawButton("q", 930, 670);
+                if (!addedName) {
+                    String description = nameInput.init();
+                    nameInput.clear();
+                    addedName = true;
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                    ArrayList<String[]> updatedScores = scoreSaver.updateScores(LocalDate.now().format(formatter), description, score);
+                    for (String[] score : updatedScores) {
+                        System.out.println(Arrays.toString(score));
+                    }
+                    scoreSaver.saveToFile("src/main/resources/score/score.txt", updatedScores);
+                }
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -179,12 +190,12 @@ public class BreakPage implements Page {
 
     @Override
     public void hideButtons() {
-            myMouse.hideButton("scr");
-            myMouse.hideButton("rest");
-        if(myMouse.isDrawn("st")) {
+        myMouse.hideButton("scr");
+        myMouse.hideButton("rest");
+        if (myMouse.isDrawn("st")) {
             myMouse.hideButton("st");
         } else {
-           myMouse.hideButton("q");
+            myMouse.hideButton("q");
         }
     }
 }

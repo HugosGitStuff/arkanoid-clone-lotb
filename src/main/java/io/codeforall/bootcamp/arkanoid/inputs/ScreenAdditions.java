@@ -15,30 +15,19 @@ public class ScreenAdditions {
     private String level;
     private Text levNum;
     private Text score;
-    private Text lev;
-    private Text highScore;
-    private Text scoreboardSign;
     private List<Text> positions = new ArrayList<>();
 
 
     public void initialText() {
-        lev = new Text(980, 140, "Level ");
-        levNum = new Text(980, 200, level);
-        highScore = new Text(970, 280, "SCORE");
-        score = new Text(975, 330,"");
+        levNum = new Text(980, 190, level);
+        score = new Text(975, 310,"");
 
-        lev.setColor(Color.YELLOW);
-        lev.grow(30, 20);
         levNum.setColor(Color.YELLOW);
-        levNum.grow(20, 20);
-        highScore.setColor(Color.YELLOW);
-        highScore.grow(30, 20);
+        levNum.grow(15, 20);
         score.setColor(Color.YELLOW);
-        score.grow(30, 20);
+        score.grow(20, 20);
 
-        lev.draw();
         levNum.draw();
-        highScore.draw();
         score.draw();
     }
 
@@ -96,10 +85,6 @@ public class ScreenAdditions {
     }
 
     public void scoreboard(int x, int y, ArrayList<String[]> savedScores) {
-        scoreboardSign = new Text(x, y, "SCOREBOARD");
-        scoreboardSign.grow(50, 20);
-        scoreboardSign.setColor(Color.YELLOW);
-        scoreboardSign.draw();
         if (savedScores.isEmpty()) {
             System.out.println();
         } else {
@@ -111,14 +96,13 @@ public class ScreenAdditions {
                 position.draw();
                 positions.add(position);
                 scoreNum ++;
-                y += 40;
+                y += 50;
 
             }
         }
     }
 
     public void deleteScoreboardSign() {
-        scoreboardSign.delete();
         for(Text position : positions) {
             position.delete();
         }
@@ -137,7 +121,5 @@ public class ScreenAdditions {
     public void deleteLevelAndScore() {
         levNum.delete();
         score.delete();
-        lev.delete();
-        highScore.delete();
     }
 }

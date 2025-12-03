@@ -16,7 +16,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
 public class GamePage implements Page {
-    private final Picture background = new Picture(10, 10, "gameBackground/background-final.png");
+    private final Picture background = new Picture(10, 10, "gameBackground/background-final copy.png");
     private final int[] numBlocksArray = {1,1,1,1,1,1,1,1,1,1,1,1,1};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
     private Ball ball;
     private Paddle paddle;

@@ -17,7 +17,7 @@ public class NameInputRetro implements KeyboardHandler {
     private Text instructionText;
     private boolean finished = false;
     private boolean cursorVisible = true;
-    private Rectangle bg = new Rectangle(50, 685, SCREEN_WIDTH, SCREEN_HEIGHT);
+    private Rectangle bg = new Rectangle(250, 685, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 //    // Demo entry point
 //    public static void main(String[] args) {
@@ -29,12 +29,12 @@ public class NameInputRetro implements KeyboardHandler {
         bg.setColor(Color.BLACK);
         bg.draw();
 
-        instructionText = new Text(180, 650, "ENTER YOUR NAME (LEFT ARROW TO DELETE)");
+        instructionText = new Text(380, 650, "ENTER YOUR NAME (LEFT ARROW TO DELETE)");
         instructionText.setColor(Color.RED);
         instructionText.grow(150, 10);
         instructionText.draw();
 
-        nameText = new Text(70, 700, "");
+        nameText = new Text(270, 700, "");
         nameText.setColor(Color.RED);
         nameText.grow(0, 25);
         nameText.draw();

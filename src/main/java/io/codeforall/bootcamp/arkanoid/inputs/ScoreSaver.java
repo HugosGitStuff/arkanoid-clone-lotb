@@ -26,18 +26,19 @@ public class ScoreSaver {
     }
 
     public ArrayList<String[]> updateScores(String systemDate, String description, int score) {
+        boolean replaced = false;
         for (int i = 0; !savedScores.isEmpty() && i < savedScores.size(); i++) {
+            if (!replaced) {
+                int savedScore = Integer.parseInt(savedScores.get(i)[2]);
 
-            int savedScore = Integer.parseInt(savedScores.get(i)[2]);
-
-            if (score >= savedScore || savedScores.get(i) == null) {
-
-                if (savedScores.size() == 10){
-                    savedScores.remove(9);
+                if (score >= savedScore || savedScores.get(i) == null) {
+                    if (savedScores.size() < 10) {
+                        savedScores.add(i, new String[]{systemDate, description, "" + score});
+                    } else {
+                        savedScores.set(i, new String[]{systemDate, description, "" + score});
+                    }
+                    replaced = true;
                 }
-
-                savedScores.add(i, new String[]{systemDate, description, "" + score});
-                return savedScores;
             }
         }
 
