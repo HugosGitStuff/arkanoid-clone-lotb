@@ -11,14 +11,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class BreakPage implements Page {
     private final String[] picturePaths = new String[]{
-            "text/textIntro.png",
-            "text/congratsFirstLevel.png",
-            "text/congratsSecondLevel.png",
-            "text/finalGame.png"};
+            "breakPage/introLevel.png",
+            "breakPage/firstLevel.png",
+            "breakPage/secondLevel.png",
+            "breakPage/finalLevel.png"};
     private MyMouse myMouse;
     private ScreenAdditions screenAddons;
     private ScoreSaver scoreSaver;
@@ -96,8 +95,6 @@ public class BreakPage implements Page {
                     screenAddons.setScore(0);
                     background.delete();
                     hideButtons();
-                    myMouse.reset();
-
                     myMouse.setPage(intro);
                     intro.setState(PageState.IDLE);
                     intro.init();
@@ -121,7 +118,7 @@ public class BreakPage implements Page {
         screenAddons.setLevel("" + level);
         gamePage.setLevel(level);
         gamePage.setScore(score);
-        myMouse.reset();
+        hideButtons();
         myMouse.setPage(gamePage);
         background.delete();
         gamePage.setState(PageState.RUNNING);
@@ -194,7 +191,7 @@ public class BreakPage implements Page {
         myMouse.hideButton("rest");
         if (myMouse.isDrawn("st")) {
             myMouse.hideButton("st");
-        } else {
+        } else if (myMouse.isDrawn("q")){
             myMouse.hideButton("q");
         }
     }

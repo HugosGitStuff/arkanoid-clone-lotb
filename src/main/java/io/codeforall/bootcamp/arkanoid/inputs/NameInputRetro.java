@@ -48,6 +48,7 @@ public class NameInputRetro implements KeyboardHandler {
     public void run() {
         try {
             while (!finished) {
+                instructionText.setText("ENTER YOUR NAME (LEFT ARROW TO DELETE)");
                 updateDisplay();
                 if (playerName.length() < 12) {
                     try {
@@ -56,6 +57,8 @@ public class NameInputRetro implements KeyboardHandler {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+                } else if (playerName.length() == 12) {
+                    instructionText.setText("MAX CHARACTERS REACHED!");
                 }
             }
             Thread.sleep(1000);
@@ -129,11 +132,11 @@ public class NameInputRetro implements KeyboardHandler {
     }
 
     private void updateDisplay() {
-        nameText.setText(playerName.toString() + (cursorVisible ? "|" : ""));
+        nameText.setText(playerName.toString() + (cursorVisible ? "|" : " "));
     }
 
     public void clear() {
-        playerName.delete(0,playerName.length());
+        playerName.delete(0, playerName.length());
         instructionText.delete();
         nameText.delete();
         bg.delete();

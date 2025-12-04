@@ -86,13 +86,13 @@ public class ScreenAdditions {
 
     public void scoreboard(int x, int y, ArrayList<String[]> savedScores) {
         if (savedScores.isEmpty()) {
-            System.out.println();
+
         } else {
                 int scoreNum = 1;
             for (String[] score : savedScores) {
                 Text position = new Text(x - 20, y + 50, scoreNum + ". " + Arrays.stream(score).reduce("", (acc, elem) -> acc.concat(elem + "   ")));
                 position.setColor(Color.YELLOW);
-                position.grow(200, 8);
+                position.grow(150, 8);
                 position.draw();
                 positions.add(position);
                 scoreNum ++;

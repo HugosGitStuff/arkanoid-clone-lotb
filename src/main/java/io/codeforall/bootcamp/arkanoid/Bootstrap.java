@@ -39,8 +39,6 @@ public class Bootstrap {
         gamePage.setMyMouse(myMouse);
         gamePage.setState(PageState.IDLE);
 
-        myMouse.setGamePage(gamePage);
-
         breakPage = new BreakPage();
         breakPage.setGamePage(gamePage);
         breakPage.setMyMouse(myMouse);

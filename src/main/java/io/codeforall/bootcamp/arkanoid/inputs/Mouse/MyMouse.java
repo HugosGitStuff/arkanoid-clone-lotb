@@ -4,40 +4,24 @@ import com.codeforall.simplegraphics.mouse.Mouse;
 import com.codeforall.simplegraphics.mouse.MouseEvent;
 import com.codeforall.simplegraphics.mouse.MouseEventType;
 import com.codeforall.simplegraphics.mouse.MouseHandler;
-import io.codeforall.bootcamp.arkanoid.pages.GamePage;
 import io.codeforall.bootcamp.arkanoid.pages.Page;
 import io.codeforall.bootcamp.arkanoid.pages.PageState;
 
 
 import java.util.*;
-import java.util.List;
 
 public class MyMouse implements MouseHandler {
     private Page page;
     private Map<String, Button> buttons;
-    private GamePage gamePage;
     private boolean gameOver;
+    private boolean hoverDrawn = false;
+    private String hoverButtonMsg;
 
     public MyMouse() {
         Mouse mouse = new Mouse(this);
         mouse.addEventListener(MouseEventType.MOUSE_CLICKED);
         mouse.addEventListener(MouseEventType.MOUSE_MOVED);
         buttons = new HashMap<>();
-    }
-
-    public void reset() {
-        List<String> itemsToRemove = new ArrayList<>(buttons.keySet());
-        for (String key : itemsToRemove) {
-            buttons.remove(key);
-        }
-    }
-
-    public void setPage(Page page) {
-        this.page = page;
-    }
-
-    public void setGamePage(GamePage gamePage) {
-        this.gamePage = gamePage;
     }
 
     @Override
@@ -65,9 +49,30 @@ public class MyMouse implements MouseHandler {
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
         int x = (int) mouseEvent.getX();
-        int y = (int) mouseEvent.getY();
+        int y = (int) mouseEvent.getY() - 30;
 
-
+        if (isInside("st", x, y)) {
+            hoverDraw("st");
+            hoverButtonMsg = "st";
+        } else if (isInside("cont", x, y)) {
+            hoverDraw("cont");
+            hoverButtonMsg = "cont";
+        } else if (isInside("rest", x, y)) {
+            hoverDraw("rest");
+            hoverButtonMsg = "rest";
+        } else if (isInside("q", x, y)) {
+            hoverDraw("q");
+            hoverButtonMsg = "q";
+        } else if (isInside("p", x, y)) {
+            hoverDraw("p");
+            hoverButtonMsg = "p";
+        } else if (isInside("scr", x, y)) {
+            hoverDraw("scr");
+            hoverButtonMsg = "scr";
+        } else if (hoverDrawn) {
+            hoverDrawn = false;
+            hoverDelete(hoverButtonMsg);
+        }
     }
 
     public boolean isInside(String message, int x, int y) {
@@ -88,12 +93,28 @@ public class MyMouse implements MouseHandler {
         buttons.get(message).draw();
     }
 
+    public void hoverDraw(String message) {
+        if (!hoverDrawn) {
+            buttons.get(message).hoverDraw();
+            hoverDrawn = true;
+        }
+    }
+
+    public void hoverDelete(String message) {
+        buttons.get(message).hoverDelete();
+    }
+
     public void hideButton(String message) {
+        buttons.get(message).hoverDelete();
         buttons.get(message).hide();
     }
 
     public boolean isDrawn(String button) {
         return buttons.get(button).isDrawn();
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 
     public void setGameOver(boolean b) {

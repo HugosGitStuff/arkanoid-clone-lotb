@@ -29,9 +29,9 @@ public class IntroPage implements Page {
 
     @Override
     public void init() {
-        background = new Picture(10, 10, "introbackground/FinalIntroImageBackground.png");
+        background = new Picture(10, 10, "introPage/background.png");
         background.draw();
-        playMusic("/soundtrack/AncientShadowsRising.wav");
+        playMusic("/soundtrack/music1.wav");
 
         createButtons();
         drawButtons();
@@ -69,7 +69,6 @@ public class IntroPage implements Page {
     @Override
     public void clear() {
         hideButtons();
-        myMouse.reset();
         myMouse.setPage(breakPage);
         breakPage.setState(PageState.IDLE);
         breakPage.setLevel(0);

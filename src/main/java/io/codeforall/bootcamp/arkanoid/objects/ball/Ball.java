@@ -18,8 +18,7 @@ public class Ball extends GameObject {
         this.velocityY = velocityY;
         this.bola = new Ellipse(x, y, 20, 20);
         bola.setColor(Color.WHITE);
-        picture = new Picture(x, y, "/ball/arkanoid-ball.png");
-
+        picture = new Picture(x, y, "/ball/image.png");
     }
 
     public void setVelocityX(double velocityX) {

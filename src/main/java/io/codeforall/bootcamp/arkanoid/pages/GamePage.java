@@ -16,7 +16,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
 public class GamePage implements Page {
-    private final Picture background = new Picture(10, 10, "gameBackground/background-final copy.png");
+    private final Picture background = new Picture(10, 10, "gamePage/background.png");
     private final int[] numBlocksArray = {1,1,1,1,1,1,1,1,1,1,1,1,1};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
     private Ball ball;
     private Paddle paddle;
@@ -207,7 +207,6 @@ public class GamePage implements Page {
         myMouse.hideButton("p");
         myMouse.hideButton("rest");
         myMouse.hideButton("q");
-        myMouse.reset();
         if (level == numBlocksArray.length) {
             breakPage.setFinalLevel(true);
         }
@@ -230,7 +229,6 @@ public class GamePage implements Page {
         background.delete();
         blocks.clear();
         screenAddon.deleteLevelAndScore();
-        myMouse.reset();
         gameOver = false;
 
         myMouse.setPage(intro);

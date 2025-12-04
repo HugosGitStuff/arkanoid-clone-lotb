@@ -70,29 +70,29 @@ public class Blocks extends GameObject {
 
         public void setImages ( int level){
             if (level == 1) {
-                rollin = new Picture(400, 115, "/caracters/rollin.png");
+                rollin = new Picture(400, 115, "/characters/rollin.png");
                 rollin.draw();
                 legolas = new Picture(950, 380, "/avatars/legolas.png");
                 legolas.draw();
                 aragorn = new Picture(885, 380, "/avatars/aragorn.png");
                 aragorn.draw();
             } else if (level == 2) {
-                kay = new Picture(385, 115, "/caracters/kay.png");
+                kay = new Picture(385, 115, "/characters/kay.png");
                 kay.draw();
 
-                rollin = new Picture(935, 410, "/caracters/rollin.png");
+                rollin = new Picture(935, 410, "/characters/rollin.png");
                 rollin.draw();
             } else if (level == 3) {
-                easter = new Picture(395, 115, "/caracters/easter.png");
+                easter = new Picture(395, 115, "/characters/easter.png");
                 easter.draw();
-                kay = new Picture(950, 410, "/caracters/kay.png");
+                kay = new Picture(950, 410, "/characters/kay.png");
                 kay.draw();
-                rollin = new Picture(905, 410, "/caracters/rollin.png");
+                rollin = new Picture(905, 410, "/characters/rollin.png");
                 rollin.draw();
             } else {
-                kay = new Picture(950, 410, "/caracters/kay.png");
+                kay = new Picture(950, 410, "/characters/kay.png");
                 kay.draw();
-                rollin = new Picture(905, 410, "/caracters/rollin.png");
+                rollin = new Picture(905, 410, "/characters/rollin.png");
                 rollin.draw();
             }
         }

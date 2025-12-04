@@ -8,7 +8,7 @@ import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
 import java.io.IOException;
 
 public class ScorePage implements Page {
-    private final Picture background = new Picture(250, 10, "/score/FinaScores.png");
+    private final Picture background = new Picture(250, 150, "/score/background.png");
     private MyMouse mouse;
     private PageState state;
     private ScoreSaver scoreSaver;
@@ -20,12 +20,12 @@ public class ScorePage implements Page {
     public void init() {
         try {
             if (page instanceof IntroPage) {
-                background.translate(-170,0);
+                background.translate(-170,100);
             }
             background.draw();
             createButtons();
             drawButtons();
-            screenAddon.scoreboard(background.getX() + 280, background.getY() + 180, scoreSaver.getSavedScores("src/main/resources/score/score.txt"));
+            screenAddon.scoreboard(background.getX() + 280, background.getY() + 80, scoreSaver.getSavedScores("src/main/resources/score/score.txt"));
             setState(PageState.PAUSE);
             run();
         } catch (IOException e) {
@@ -55,7 +55,7 @@ public class ScorePage implements Page {
     @Override
     public void clear() {
         if (page instanceof IntroPage) {
-            background.translate(170,0);
+            background.translate(170,-100);
         }
         background.delete();
         hideButtons();
@@ -83,8 +83,8 @@ public class ScorePage implements Page {
 
     @Override
     public void drawButtons() {
-        mouse.drawButton("cont", background.getX() + 350, 820);
-        mouse.drawButton("q", background.getX() + 120, 820);
+        mouse.drawButton("cont", background.getX() + 350, background.getY() + 450);
+        mouse.drawButton("q", background.getX() + 120, background.getY() + 450);
     }
 
     @Override
