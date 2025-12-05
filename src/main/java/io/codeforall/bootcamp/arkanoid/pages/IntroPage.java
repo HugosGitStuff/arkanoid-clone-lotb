@@ -1,6 +1,5 @@
 package io.codeforall.bootcamp.arkanoid.pages;
 
-import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.pictures.Picture;
 import io.codeforall.bootcamp.arkanoid.inputs.Mouse.MyMouse;
 import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
@@ -19,13 +18,8 @@ public class IntroPage implements Page {
     private ScreenAdditions screenAddons;
 
     private Picture background;
-    private Clip musicClip;
 
     private PageState state;
-
-    private Color normalColor = new Color(220, 200, 120); // gold tone
-    private Color glowColor = new Color(255, 255, 180);   // lighter glow
-
 
     @Override
     public void init() {
@@ -82,7 +76,7 @@ public class IntroPage implements Page {
             URL file = getClass().getResource(path);
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(file.openStream()));
 
-            musicClip = AudioSystem.getClip();
+            Clip musicClip = AudioSystem.getClip();
             musicClip.open(audioStream);
             musicClip.loop(Clip.LOOP_CONTINUOUSLY); // loop forever
             musicClip.start();
@@ -126,9 +120,9 @@ public class IntroPage implements Page {
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("st", 575, 775);
-        myMouse.drawButton("scr", 575, 815);
-        myMouse.drawButton("q", 575, 855);
+        myMouse.drawButton("st", background.getX() + 898, background.getY() + 627);
+        myMouse.drawButton("scr", background.getX() + 898, background.getY() + 667);
+        myMouse.drawButton("q", background.getX() + 898, background.getY() + 707);
     }
 
     @Override

@@ -51,22 +51,22 @@ public class MyMouse implements MouseHandler {
         int x = (int) mouseEvent.getX();
         int y = (int) mouseEvent.getY() - 30;
 
-        if (isInside("st", x, y)) {
+        if (isInside("st", x, y) && isDrawn("st")) {
             hoverDraw("st");
             hoverButtonMsg = "st";
-        } else if (isInside("cont", x, y)) {
+        } else if (isInside("cont", x, y) && isDrawn("cont")) {
             hoverDraw("cont");
             hoverButtonMsg = "cont";
-        } else if (isInside("rest", x, y)) {
+        } else if (isInside("rest", x, y) && isDrawn("rest")) {
             hoverDraw("rest");
             hoverButtonMsg = "rest";
-        } else if (isInside("q", x, y)) {
+        } else if (isInside("q", x, y) && isDrawn("q")) {
             hoverDraw("q");
             hoverButtonMsg = "q";
-        } else if (isInside("p", x, y)) {
+        } else if (isInside("p", x, y) && isDrawn("p")) {
             hoverDraw("p");
             hoverButtonMsg = "p";
-        } else if (isInside("scr", x, y)) {
+        } else if (isInside("scr", x, y) && isDrawn("scr")) {
             hoverDraw("scr");
             hoverButtonMsg = "scr";
         } else if (hoverDrawn) {

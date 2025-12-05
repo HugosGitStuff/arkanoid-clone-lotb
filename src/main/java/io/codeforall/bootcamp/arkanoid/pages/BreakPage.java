@@ -18,15 +18,18 @@ public class BreakPage implements Page {
             "breakPage/firstLevel.png",
             "breakPage/secondLevel.png",
             "breakPage/finalLevel.png"};
+    private IntroPage intro;
+    private GamePage gamePage;
+    private ScorePage scorePage;
+
     private MyMouse myMouse;
     private ScreenAdditions screenAddons;
     private ScoreSaver scoreSaver;
-    private GamePage gamePage;
-    private ScorePage scorePage;
-    private IntroPage intro;
     private NameInputRetro nameInput;
+
     private PageState state;
     private Picture background;
+
     private int score = 0;
     private int level;
     private boolean finalLevel = false;
@@ -34,7 +37,6 @@ public class BreakPage implements Page {
 
     @Override
     public void init() {
-
         if (level >= 3 && level <= 12) {
             background = new Picture(10, 10, picturePaths[2]);
         } else if (level == 13) {
@@ -42,12 +44,10 @@ public class BreakPage implements Page {
         } else {
             background = new Picture(10, 10, picturePaths[level]);
         }
-
         background.draw();
         myMouse.setGameOver(false);
         createButtons();
         drawButtons();
-
         setState(PageState.IDLE);
         run();
     }
@@ -70,7 +70,6 @@ public class BreakPage implements Page {
                     }
                     scoreSaver.saveToFile("src/main/resources/score/score.txt", updatedScores);
                 }
-
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -105,9 +104,7 @@ public class BreakPage implements Page {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-
             }
-
         }
         System.exit(0);
     }
@@ -180,9 +177,9 @@ public class BreakPage implements Page {
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("st", 930, 670);
-        myMouse.drawButton("scr", 930, 710);
-        myMouse.drawButton("rest", 930, 750);
+        myMouse.drawButton("st", background.getX() + 898, background.getY() + 627);
+        myMouse.drawButton("scr", background.getX() + 898, background.getY() + 667);
+        myMouse.drawButton("rest", background.getX() + 898, background.getY() + 707);
     }
 
     @Override

@@ -19,9 +19,6 @@ public class ScorePage implements Page {
     @Override
     public void init() {
         try {
-            if (page instanceof IntroPage) {
-                background.translate(-170,100);
-            }
             background.draw();
             createButtons();
             drawButtons();
@@ -54,9 +51,6 @@ public class ScorePage implements Page {
 
     @Override
     public void clear() {
-        if (page instanceof IntroPage) {
-            background.translate(170,-100);
-        }
         background.delete();
         hideButtons();
         screenAddon.deleteScoreboardSign();

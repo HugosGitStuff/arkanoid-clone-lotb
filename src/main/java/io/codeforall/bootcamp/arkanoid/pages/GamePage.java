@@ -18,39 +18,38 @@ import java.io.IOException;
 public class GamePage implements Page {
     private final Picture background = new Picture(10, 10, "gamePage/background.png");
     private final int[] numBlocksArray = {1,1,1,1,1,1,1,1,1,1,1,1,1};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
+    private double delta = 0;
+    private boolean gameOver;
+    private int level;
+    private int score;
+    private int numBlocks;
+
     private Ball ball;
     private Paddle paddle;
     private Grid Grid;
     private Blocks blocks;
+
     private MyKeyboard myKeyboard;
     private ScreenAdditions screenAddon;
     private MyMouse myMouse;
+    volatile private PageState state;
+
     private IntroPage intro;
     private BreakPage breakPage;
-    private boolean gameOver;
-    private int score;
-    private int level;
-    private double delta = 0;
-    private int numBlocks;
-    volatile private PageState state;
 
 
     @Override
     public void init() {
         try {
             Grid = new Grid(8, 12);
-            Grid.init();
-
             ball = new Ball(465, 700, 3, -3);
-
-            background.draw();
-
             paddle = new Paddle(425, 725, Grid);
-            myKeyboard.setPaddle(paddle);
-
             blocks = new Blocks();
-            numBlocks = numBlocksArray[level-1];
 
+            Grid.init();
+            background.draw();
+            myKeyboard.setPaddle(paddle);
+            numBlocks = numBlocksArray[level-1];
             createButtons();
             paddle.draw();
             ball.draw();
@@ -61,12 +60,10 @@ public class GamePage implements Page {
                 screenAddon.setScore(score);
             }
             gameOver = false;
-
             screenAddon.countDown();
         } catch (InterruptedException | UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             throw new RuntimeException(e);
         }
-
         run();
     }
 
@@ -88,7 +85,6 @@ public class GamePage implements Page {
                     setState(PageState.RUNNING);
                     break;
 
-
                 case RUNNING:
                     long currentTime = System.nanoTime();
 
@@ -98,7 +94,6 @@ public class GamePage implements Page {
                     timer += (currentTime - lastTime);
 
                     lastTime = currentTime;
-
 
                     if (delta >= 1) {
 
@@ -210,7 +205,6 @@ public class GamePage implements Page {
         if (level == numBlocksArray.length) {
             breakPage.setFinalLevel(true);
         }
-
         screenAddon.deleteLevelAndScore();
         myMouse.setPage(breakPage);
         breakPage.setLevel(level);
@@ -230,7 +224,6 @@ public class GamePage implements Page {
         blocks.clear();
         screenAddon.deleteLevelAndScore();
         gameOver = false;
-
         myMouse.setPage(intro);
         intro.setState(PageState.IDLE);
         intro.init();
@@ -279,9 +272,9 @@ public class GamePage implements Page {
 
     @Override
     public void drawButtons() {
-        myMouse.drawButton("p", 908, 637);
-        myMouse.drawButton("rest", 908, 677);
-        myMouse.drawButton("q", 908, 717);
+        myMouse.drawButton("p", background.getX() + 898, background.getY() + 627);
+        myMouse.drawButton("rest", background.getX() + 898, background.getY() + 667);
+        myMouse.drawButton("q", background.getX() + 898, background.getY() + 707);
     }
 
     @Override
