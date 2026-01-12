@@ -9,7 +9,7 @@ import io.codeforall.bootcamp.arkanoid.objects.grid.Grid;
 public class Paddle extends GameObject {
 
     Rectangle rectangle;
-    private final double speed = 10;
+    private double speed = 10;
     private PaddleState state;
     private final Grid grid;
 
@@ -43,6 +43,14 @@ public class Paddle extends GameObject {
 
     public void setState(PaddleState state) {
        this.state = state;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 
     @Override

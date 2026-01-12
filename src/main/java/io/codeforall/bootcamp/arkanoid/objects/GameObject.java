@@ -6,8 +6,8 @@ public abstract class GameObject {
 
     protected double x;
     protected double y;
-    protected int width;
-    protected int height;
+    protected double width;
+    protected double height;
     protected Picture picture;
 
     public abstract void draw();
@@ -26,6 +26,10 @@ public abstract class GameObject {
 
     public double getWidth() {
         return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
     }
 
     public void delete() {}
