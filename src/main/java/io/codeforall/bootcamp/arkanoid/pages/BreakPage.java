@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 public class BreakPage implements Page {
     private final String[] picturePaths = new String[]{
-            "breakPage/introLevel.png",
+            "breakPage/intro.png",
             "breakPage/firstLevel.png",
             "breakPage/secondLevel.png",
             "breakPage/finalLevel.png"};
