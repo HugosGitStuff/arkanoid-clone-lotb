@@ -10,24 +10,28 @@ import io.codeforall.bootcamp.arkanoid.objects.blocks.Block;
 import io.codeforall.bootcamp.arkanoid.objects.blocks.Blocks;
 import io.codeforall.bootcamp.arkanoid.objects.grid.Grid;
 import io.codeforall.bootcamp.arkanoid.objects.paddle.Paddle;
+import io.codeforall.bootcamp.arkanoid.objects.powerups.PowerUp;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GamePage implements Page {
     private final Picture background = new Picture(10, 10, "gamePage/background.png");
-    private final int[] numBlocksArray = {1,1,1,1,1,1,1,1,1,1,1,1,1};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
+    private final int[] numBlocksArray = {32,1,1,1,1,1,1,1,1,1,1,1,1};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
     private double delta = 0;
     private boolean gameOver;
     private int level;
     private int score;
     private int numBlocks;
 
-    private Ball ball;
+    private ArrayList<Ball> balls;
     private Paddle paddle;
     private Grid Grid;
     private Blocks blocks;
+    private ArrayList<PowerUp> powerUps;
 
     private MyKeyboard myKeyboard;
     private ScreenAdditions screenAddon;
@@ -42,9 +46,11 @@ public class GamePage implements Page {
     public void init() {
         try {
             Grid = new Grid(8, 12);
-            ball = new Ball(465, 700, 3, -3);
+            balls = new ArrayList<>();
             paddle = new Paddle(425, 725, Grid);
             blocks = new Blocks();
+            powerUps = new ArrayList<>();
+            balls.add(new Ball(465, 700, 3, -3));
 
             Grid.init();
             background.draw();
@@ -52,7 +58,7 @@ public class GamePage implements Page {
             numBlocks = numBlocksArray[level-1];
             createButtons();
             paddle.draw();
-            ball.draw();
+            balls.get(0).draw();
             blocks.init(Grid, level);
             drawButtons();
             screenAddon.initialText();
@@ -98,23 +104,33 @@ public class GamePage implements Page {
                     if (delta >= 1) {
 
                         paddle.update();
-                        ball.update();
+                        for (Ball ball1 : balls) {
+                            ball1.update();
+                        }
 
                         for (int i = 0; i < blocks.getBlockMatrix().length; i++) {
                             for (int j = 0; j < blocks.getBlockMatrix()[i].length; j++) {
                                 Block block = blocks.getBlockMatrix()[i][j];
                                 if (block != null) {
-                                    if (ball.collidesWith(block)) {
+                                    for (Ball ball : balls) {
+                                        if (ball.collidesWith(block)) {
 
-                                        ball.directionAfterCollision(block);
+                                            ball.directionAfterCollision(block);
 
-                                        score += 30;
-                                        screenAddon.setScore(score);
-
-                                        if (blocks.removeBlock(i, j)) {
-                                            score += block.getMaxHealth() * 100;
+                                            score += 30;
                                             screenAddon.setScore(score);
-                                            numBlocks--;
+
+                                            if (blocks.removeBlock(i, j)) {
+                                                PowerUp powerUp = new PowerUp(block.getX() + block.getWidth()/2,
+                                                        block.getY() + block.getHeight()/2,
+                                                        (int) (Math.random() * 5));
+                                                powerUp.setBalls(balls);
+                                                powerUp.setPaddle(paddle);
+                                                powerUps.add(powerUp);
+                                                score += block.getMaxHealth() * 100;
+                                                screenAddon.setScore(score);
+                                                numBlocks--;
+                                            }
                                         }
                                     }
                                 }
@@ -136,31 +152,54 @@ public class GamePage implements Page {
                             }
                         }
 
-                        if (ball.collidesWith(paddle)) {
-                            try {
-                                screenAddon.runAudio("/sfx/ball-hit-paddle.WAV");
-                                ball.paddleBounce(paddle);
-                            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                                System.out.println("Error playing music: " + e.getMessage());
-                            }
+                        for (int i = 0; i < balls.size(); i++) {
+                            Ball ball = balls.get(i);
+                            if (ball.collidesWith(paddle)) {
+                                try {
+                                    screenAddon.runAudio("/sfx/ball-hit-paddle.WAV");
+                                    ball.paddleBounce(paddle);
+                                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                                    System.out.println("Error playing music: " + e.getMessage());
+                                }
 
-                            score += 20;
-                            screenAddon.setScore(score);
-                        }
-
-                        if (ball.collidesWithWall(Grid)) {
-                            try {
-
-                                screenAddon.runAudio("/sfx/ball_wallhit.WAV");
-                                score += 2;
+                                score += 20;
                                 screenAddon.setScore(score);
+                            }
 
-                            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                                System.out.println("Error playing music: " + e.getMessage());
+                            if (ball.collidesWithWall(Grid)) {
+                                try {
+
+                                    screenAddon.runAudio("/sfx/ball_wallhit.WAV");
+                                    score += 2;
+                                    screenAddon.setScore(score);
+
+                                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                                    System.out.println("Error playing music: " + e.getMessage());
+                                }
+                            }
+
+                            if (ball.getY() >= 770) {
+                                ball.delete();
+                                balls.remove(ball);
                             }
                         }
 
-                        if (ball.getY() >= 770) {
+                        if (!powerUps.isEmpty()) {
+                            for (int i =0; i < powerUps.size(); i++) {
+                                PowerUp powerUp = powerUps.get(i);
+                                powerUp.update();
+                                if (powerUp.collidesWith(paddle)) {
+                                    powerUp.execute();
+                                    powerUps.remove(powerUp);
+                                }
+                                if (powerUp.getY() >= 770) {
+                                    powerUp.delete();
+                                    powerUps.remove(powerUp);
+                                }
+                            }
+                        }
+
+                        if (balls.isEmpty()) {
                             myMouse.setGameOver(true);
                             screenAddon.gameOverText();
                             setState(PageState.IDLE);
@@ -196,7 +235,8 @@ public class GamePage implements Page {
     public void clear() {
         delta = 0;
         blocks.clear();
-        ball.delete();
+        balls = null;
+        powerUps = null;
         paddle.delete();
         background.delete();
         myMouse.hideButton("p");
@@ -218,7 +258,8 @@ public class GamePage implements Page {
         }
         myMouse.hideButton("rest");
         myMouse.hideButton("q");
-        ball.delete();
+        balls = null;
+        powerUps = null;
         paddle.delete();
         background.delete();
         blocks.clear();
