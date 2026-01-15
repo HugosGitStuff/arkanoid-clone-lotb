@@ -20,7 +20,7 @@ import java.util.Iterator;
 
 public class GamePage implements Page {
     private final Picture background = new Picture(10, 10, "gamePage/background.png");
-    private final int[] numBlocksArray = {32,1,1,1,1,1,1,1,1,1,1,1,1};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
+    private final int[] numBlocksArray = {32, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
     private double delta = 0;
     private boolean gameOver;
     private int level;
@@ -50,19 +50,18 @@ public class GamePage implements Page {
             paddle = new Paddle(425, 725, Grid);
             blocks = new Blocks();
             powerUps = new ArrayList<>();
-            balls.add(new Ball(465, 700, 3, -3));
 
             Grid.init();
             background.draw();
             myKeyboard.setPaddle(paddle);
-            numBlocks = numBlocksArray[level-1];
+            numBlocks = numBlocksArray[level - 1];
             createButtons();
             paddle.draw();
-            balls.get(0).draw();
             blocks.init(Grid, level);
             drawButtons();
             screenAddon.initialText();
-            if (level != 1){
+            balls.add(new Ball(465, 700, 3, -3));
+            if (level != 1) {
                 screenAddon.setScore(score);
             }
             gameOver = false;
@@ -104,32 +103,37 @@ public class GamePage implements Page {
                     if (delta >= 1) {
 
                         paddle.update();
-                        for (Ball ball1 : balls) {
-                            ball1.update();
-                        }
 
-                        for (int i = 0; i < blocks.getBlockMatrix().length; i++) {
-                            for (int j = 0; j < blocks.getBlockMatrix()[i].length; j++) {
-                                Block block = blocks.getBlockMatrix()[i][j];
-                                if (block != null) {
-                                    for (Ball ball : balls) {
+                        for (Ball ball : balls) {
+                            ball.update();
+                            for (int i = 0; i < blocks.getBlockMatrix().length; i++) {
+                                for (int j = 0; j < blocks.getBlockMatrix()[i].length; j++) {
+                                    Block block = blocks.getBlockMatrix()[i][j];
+                                    if (block != null) {
+
                                         if (ball.collidesWith(block)) {
 
+                                            block.hit();
                                             ball.directionAfterCollision(block);
 
                                             score += 30;
                                             screenAddon.setScore(score);
 
-                                            if (blocks.removeBlock(i, j)) {
-                                                PowerUp powerUp = new PowerUp(block.getX() + block.getWidth()/2,
-                                                        block.getY() + block.getHeight()/2,
-                                                        (int) (Math.random() * 5));
-                                                powerUp.setBalls(balls);
-                                                powerUp.setPaddle(paddle);
-                                                powerUps.add(powerUp);
+                                            if (block.isDead()) {
+                                                blocks.removeBlock(i, j);
                                                 score += block.getMaxHealth() * 100;
                                                 screenAddon.setScore(score);
                                                 numBlocks--;
+                                                if ((int) (Math.random() * 2) == 1) {
+
+                                                    PowerUp powerUp = new PowerUp(block.getX() + block.getWidth() / 4,
+                                                            block.getY() + block.getHeight() / 4,
+                                                            (int) (Math.random() * 9));
+                                                    powerUp.setBalls(balls);
+                                                    powerUp.setPaddle(paddle);
+                                                    powerUps.add(powerUp);
+
+                                                }
                                             }
                                         }
                                     }
@@ -185,7 +189,7 @@ public class GamePage implements Page {
                         }
 
                         if (!powerUps.isEmpty()) {
-                            for (int i =0; i < powerUps.size(); i++) {
+                            for (int i = 0; i < powerUps.size(); i++) {
                                 PowerUp powerUp = powerUps.get(i);
                                 powerUp.update();
                                 if (powerUp.collidesWith(paddle)) {
@@ -253,7 +257,7 @@ public class GamePage implements Page {
     }
 
     public void restart() {
-        if(myMouse.isDrawn("p")) {
+        if (myMouse.isDrawn("p")) {
             myMouse.hideButton("p");
         }
         myMouse.hideButton("rest");
@@ -324,5 +328,6 @@ public class GamePage implements Page {
     }
 
     @Override
-    public void setScoreSaver(ScoreSaver scoreSaver) {}
+    public void setScoreSaver(ScoreSaver scoreSaver) {
+    }
 }

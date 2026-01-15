@@ -37,7 +37,7 @@ public class Blocks extends GameObject {
             case 7:
                 return new String[]{"0.0", "0.6", "1.1", "1.4", "1.5", "2.3", "2.7", "3.2", "3.6", "4.1", "4.5", "5.0", "5.7", "3.3", "2.4", "1.3"};
             case 8:
-                return new String[]{"0.2", "0.5", "1.0", "1.6", "2.1", "2.4", "3.3", "3.5","4.2", "4.7", "5.3", "5.4", "1.3", "2.3", "3.4", "2.6"};
+                return new String[]{"0.2", "0.5", "1.0", "1.6", "2.1", "2.4", "3.3", "3.5", "4.2", "4.7", "5.3", "5.4", "1.3", "2.3", "3.4", "2.6"};
             case 9:
                 return new String[]{"0.1", "0.4", "1.7", "2.0", "2.5", "3.1", "3.6", "4.3", "4.6", "5.2", "5.5", "1.3", "1.4", "2.3", "3.3"};
             case 10:
@@ -68,95 +68,90 @@ public class Blocks extends GameObject {
         }
     }
 
-        public void setImages ( int level){
-            if (level == 1) {
-                rollin = new Picture(400, 115, "/characters/rollin.png");
-                rollin.draw();
-                legolas = new Picture(950, 380, "/avatars/legolas.png");
-                legolas.draw();
-                aragorn = new Picture(885, 380, "/avatars/aragorn.png");
-                aragorn.draw();
-            } else if (level == 2) {
-                kay = new Picture(385, 115, "/characters/kay.png");
-                kay.draw();
+    public void setImages(int level) {
+        if (level == 1) {
+            rollin = new Picture(400, 115, "/characters/rollin.png");
+            rollin.draw();
+            legolas = new Picture(950, 380, "/avatars/legolas.png");
+            legolas.draw();
+            aragorn = new Picture(885, 380, "/avatars/aragorn.png");
+            aragorn.draw();
+        } else if (level == 2) {
+            kay = new Picture(385, 115, "/characters/kay.png");
+            kay.draw();
 
-                rollin = new Picture(935, 410, "/characters/rollin.png");
-                rollin.draw();
-            } else if (level == 3) {
-                easter = new Picture(395, 115, "/characters/easter.png");
-                easter.draw();
-                kay = new Picture(950, 410, "/characters/kay.png");
-                kay.draw();
-                rollin = new Picture(905, 410, "/characters/rollin.png");
-                rollin.draw();
-            } else {
-                kay = new Picture(950, 410, "/characters/kay.png");
-                kay.draw();
-                rollin = new Picture(905, 410, "/characters/rollin.png");
-                rollin.draw();
-            }
-        }
-
-        public void setOrcs (int randomNum){
-            switch (randomNum) {
-                case 0:
-                    imagePath = BlockTypes.NORMAL.getImagePath();
-                    health = BlockTypes.NORMAL.getHealth();
-                    orcSoundPath = BlockTypes.NORMAL.getOrcSoundPath();
-                    break;
-                case 1:
-                    imagePath = BlockTypes.STRONG.getImagePath();
-                    health = BlockTypes.STRONG.getHealth();
-                    orcSoundPath = BlockTypes.STRONG.getOrcSoundPath();
-                    break;
-                case 2:
-                    imagePath = BlockTypes.UNBREAKABLE.getImagePath();
-                    health = BlockTypes.UNBREAKABLE.getHealth();
-                    orcSoundPath = BlockTypes.UNBREAKABLE.getOrcSoundPath();
-                    break;
-            }
-        }
-
-        public void clear () {
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < cols; j++) {
-                    if (blockMatrix[i][j] != null) {
-                        blockMatrix[i][j].delete();
-                        blockMatrix[i][j] = null;
-                    }
-                }
-            }
-            if (aragorn != null) {
-                aragorn.delete();
-            }
-            if (legolas != null) {
-                legolas.delete();
-            }
-            rollin.delete();
-            if (kay != null) {
-                kay.delete();
-            }
-            if (easter != null) {
-                easter.delete();
-            }
-        }
-
-
-        public Block[][] getBlockMatrix () {
-            return blockMatrix;
-        }
-
-        public boolean removeBlock ( int row, int col){
-            blockMatrix[row][col].hit();
-            if (blockMatrix[row][col].isDead()) {
-                blockMatrix[row][col].delete();
-                blockMatrix[row][col] = null;
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void draw () {
+            rollin = new Picture(935, 410, "/characters/rollin.png");
+            rollin.draw();
+        } else if (level == 3) {
+            easter = new Picture(395, 115, "/characters/easter.png");
+            easter.draw();
+            kay = new Picture(950, 410, "/characters/kay.png");
+            kay.draw();
+            rollin = new Picture(905, 410, "/characters/rollin.png");
+            rollin.draw();
+        } else {
+            kay = new Picture(950, 410, "/characters/kay.png");
+            kay.draw();
+            rollin = new Picture(905, 410, "/characters/rollin.png");
+            rollin.draw();
         }
     }
+
+    public void setOrcs(int randomNum) {
+        switch (randomNum) {
+            case 0:
+                imagePath = BlockTypes.NORMAL.getImagePath();
+                health = BlockTypes.NORMAL.getHealth();
+                orcSoundPath = BlockTypes.NORMAL.getOrcSoundPath();
+                break;
+            case 1:
+                imagePath = BlockTypes.STRONG.getImagePath();
+                health = BlockTypes.STRONG.getHealth();
+                orcSoundPath = BlockTypes.STRONG.getOrcSoundPath();
+                break;
+            case 2:
+                imagePath = BlockTypes.UNBREAKABLE.getImagePath();
+                health = BlockTypes.UNBREAKABLE.getHealth();
+                orcSoundPath = BlockTypes.UNBREAKABLE.getOrcSoundPath();
+                break;
+        }
+    }
+
+    public void clear() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (blockMatrix[i][j] != null) {
+                    blockMatrix[i][j].delete();
+                    blockMatrix[i][j] = null;
+                }
+            }
+        }
+        if (aragorn != null) {
+            aragorn.delete();
+        }
+        if (legolas != null) {
+            legolas.delete();
+        }
+        rollin.delete();
+        if (kay != null) {
+            kay.delete();
+        }
+        if (easter != null) {
+            easter.delete();
+        }
+    }
+
+
+    public Block[][] getBlockMatrix() {
+        return blockMatrix;
+    }
+
+    public void removeBlock(int row, int col) {
+        blockMatrix[row][col].delete();
+        blockMatrix[row][col] = null;
+    }
+
+    @Override
+    public void draw() {
+    }
+}

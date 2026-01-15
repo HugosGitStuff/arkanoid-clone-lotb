@@ -16,7 +16,10 @@ public class PowerUp extends GameObject {
             "powerups/paddle-vel+_dim.png",
             "powerups/paddle-vel-_dim.png",
             "powerups/ball-vel+_dim.png",
-            "powerups/ball-vel-_dim.png"};
+            "powerups/ball-vel-_dim.png",
+            "powerups/ball+1.png",
+            "powerups/ball+3.png",
+            "powerups/ball+5.png"};
 
     private Paddle paddle;
     private ArrayList<Ball> balls;
@@ -34,15 +37,15 @@ public class PowerUp extends GameObject {
     }
 
     public boolean collisionTopRight(GameObject other){
-        return getX()  + getWidth() >= other.getX();
+        return getX()  + image.getWidth() >= other.getX();
     }
 
     public boolean collisionBottomLeft (GameObject other){
-        return getX() <= other.getX() + other.getWidth() && getY() + getHeight() >= other.getY();
+        return getX() <= other.getX() + other.getWidth() && getY() + image.getHeight() >= other.getY();
     }
 
     public boolean collisionBottomRight(GameObject other){
-        return getX() + getWidth() >= other.getX() && getY() + getHeight() >= other.getY();
+        return getX() + image.getWidth() >= other.getX() && getY() + image.getHeight() >= other.getY();
     }
 
     public boolean collidesWith(GameObject other) {
@@ -57,40 +60,43 @@ public class PowerUp extends GameObject {
     public void execute() {
         switch (imgNum){
             case 0:
-                System.out.println("case 1: " + paddle.getWidth());
-               paddle.setWidth(paddle.getWidth() + 50);
-                System.out.println(paddle.getWidth());
+               paddle.switchWidth(10);
                break;
             case 1:
-                System.out.println("case 2:" + paddle.getWidth());
-                paddle.setWidth(paddle.getWidth() - 50);
-                System.out.println(paddle.getWidth());
+                paddle.switchWidth(-10);
                 break;
             case 2:
-                System.out.println("case 3:" + paddle.getSpeed());
                 paddle.setSpeed(paddle.getSpeed() + 2);
-                System.out.println(paddle.getSpeed());
                 break;
             case 3:
-                System.out.println("case 4:" + paddle.getSpeed());
                 paddle.setSpeed(paddle.getSpeed() - 2);
-                System.out.println(paddle.getSpeed());
                 break;
             case 4:
                 for (Ball ball : balls) {
-                    System.out.println("case 5:" + ball.getVelocityX());
                     ball.setVelocityX(ball.getVelocityX() * 1.2);
                     ball.setVelocityY(ball.getVelocityY() * 1.2);
-                    System.out.println(ball.getVelocityX());
                 }
                 break;
             case 5:
                 for (Ball ball : balls) {
-                    System.out.println("case 6:" + ball.getVelocityX());
                     ball.setVelocityY(ball.getVelocityY() * 0.8);
                     ball.setVelocityX(ball.getVelocityX() * 0.8);
-                    System.out.println(ball.getVelocityX());
                 }
+                break;
+            case 6:
+                balls.add(new Ball(465, 700, -3, -3));
+                break;
+            case 7:
+                balls.add(new Ball(445, 700, -3, -3));
+                balls.add(new Ball(465, 700, 3, -3));
+                balls.add(new Ball(485, 700, -3, -3));
+                break;
+            case 8:
+                balls.add(new Ball(425, 700, -3, -3));
+                balls.add(new Ball(445, 700, 3, -3));
+                balls.add(new Ball(465, 700, -3, -3));
+                balls.add(new Ball(485, 700, 3, -3));
+                balls.add(new Ball(505, 700, -3, -3));
                 break;
         }
         delete();

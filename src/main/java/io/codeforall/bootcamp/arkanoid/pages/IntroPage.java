@@ -25,7 +25,6 @@ public class IntroPage implements Page {
     public void init() {
         background = new Picture(10, 10, "introPage/background.png");
         background.draw();
-        playMusic("/soundtrack/music1.wav");
 
         createButtons();
         drawButtons();
@@ -69,20 +68,6 @@ public class IntroPage implements Page {
         breakPage.setScore(0);
         background.delete();
         breakPage.init();
-    }
-
-    private void playMusic(String path) {
-        try {
-            URL file = getClass().getResource(path);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(file.openStream()));
-
-            Clip musicClip = AudioSystem.getClip();
-            musicClip.open(audioStream);
-            musicClip.loop(Clip.LOOP_CONTINUOUSLY); // loop forever
-            musicClip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.out.println("Error playing music: " + e.getMessage());
-        }
     }
 
     public void setBreakPage(BreakPage breakPage) {

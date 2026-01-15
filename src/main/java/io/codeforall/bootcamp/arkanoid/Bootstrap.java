@@ -7,6 +7,11 @@ import io.codeforall.bootcamp.arkanoid.inputs.ScoreSaver;
 import io.codeforall.bootcamp.arkanoid.inputs.ScreenAdditions;
 import io.codeforall.bootcamp.arkanoid.pages.*;
 
+import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.URL;
+
 public class Bootstrap {
 
     private MyMouse myMouse;
@@ -69,6 +74,22 @@ public class Bootstrap {
         nameInput = new NameInputRetro();
         breakPage.setNameInput(nameInput);
 
+
+        playMusic("/soundtrack/music1.wav");
         intro.init();
+    }
+
+    private void playMusic(String path) {
+        try {
+            URL file = getClass().getResource(path);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(file.openStream()));
+
+            Clip musicClip = AudioSystem.getClip();
+            musicClip.open(audioStream);
+            musicClip.loop(Clip.LOOP_CONTINUOUSLY); // loop forever
+            musicClip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            System.out.println("Error playing music: " + e.getMessage());
+        }
     }
 }

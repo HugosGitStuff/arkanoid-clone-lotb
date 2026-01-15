@@ -41,6 +41,11 @@ public class Paddle extends GameObject {
         }
     }
 
+    public void switchWidth(double x) {
+        rectangle.grow(x, 0);
+        picture.grow(x, 0);
+    }
+
     public void setState(PaddleState state) {
        this.state = state;
     }
@@ -56,7 +61,7 @@ public class Paddle extends GameObject {
     @Override
     public void draw() {
         picture.draw();
-        rectangle.draw();
+        //rectangle.draw();
     }
 
     @Override
