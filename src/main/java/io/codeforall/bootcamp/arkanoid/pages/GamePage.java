@@ -16,7 +16,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class GamePage implements Page {
     private final Picture background = new Picture(10, 10, "gamePage/background.png");
@@ -160,7 +159,7 @@ public class GamePage implements Page {
                             Ball ball = balls.get(i);
                             if (ball.collidesWith(paddle)) {
                                 try {
-                                    screenAddon.runAudio("/sfx/ball-hit-paddle.WAV");
+                                    screenAddon.runAudio("/sfx/ball_hitPaddle.WAV");
                                     ball.paddleBounce(paddle);
                                 } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                                     System.out.println("Error playing music: " + e.getMessage());
@@ -173,7 +172,7 @@ public class GamePage implements Page {
                             if (ball.collidesWithWall(Grid)) {
                                 try {
 
-                                    screenAddon.runAudio("/sfx/ball_wallhit.WAV");
+                                    screenAddon.runAudio("/sfx/ball_hitWall.WAV");
                                     score += 2;
                                     screenAddon.setScore(score);
 
@@ -204,9 +203,9 @@ public class GamePage implements Page {
                         }
 
                         if (balls.isEmpty()) {
-                            myMouse.setGameOver(true);
-                            screenAddon.gameOverText();
-                            setState(PageState.IDLE);
+                                myMouse.setGameOver(true);
+                                screenAddon.gameOverText();
+                                setState(PageState.IDLE);
                         }
                     }
                     break;
@@ -239,6 +238,12 @@ public class GamePage implements Page {
     public void clear() {
         delta = 0;
         blocks.clear();
+        for (Ball ball : balls) {
+            ball.delete();
+        }
+        for (PowerUp powerUp : powerUps) {
+            powerUp.delete();
+        }
         balls = null;
         powerUps = null;
         paddle.delete();
@@ -262,6 +267,12 @@ public class GamePage implements Page {
         }
         myMouse.hideButton("rest");
         myMouse.hideButton("q");
+        for (Ball ball : balls) {
+            ball.delete();
+        }
+        for (PowerUp powerUp : powerUps) {
+            powerUp.delete();
+        }
         balls = null;
         powerUps = null;
         paddle.delete();

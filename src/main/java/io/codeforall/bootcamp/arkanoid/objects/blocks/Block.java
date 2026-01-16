@@ -39,13 +39,11 @@ public class Block extends GameObject {
 
     public void hit()  {
         health--;
-        System.out.println("Took a hit!");
         if (health <= 0){
             dead = true;
-            System.out.println("Dead!");
             try {
 
-                URL file = getClass().getResource("/sfx/ork_dyingsound.WAV");
+                URL file = getClass().getResource("/sfx/orc_dying.WAV");
                 AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(file.openStream()));
 
                 musicClip = AudioSystem.getClip();

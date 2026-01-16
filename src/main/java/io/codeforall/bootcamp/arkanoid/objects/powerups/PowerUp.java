@@ -8,8 +8,8 @@ import io.codeforall.bootcamp.arkanoid.objects.paddle.Paddle;
 import java.util.ArrayList;
 
 public class PowerUp extends GameObject {
-    private Picture image;
-    private int imgNum;
+    private final Picture image;
+    private final int imgNum;
     private final String[] images = new String[]{
             "powerups/paddle-lgt+_dim.png",
             "powerups/paddle-lgt-_dim.png",

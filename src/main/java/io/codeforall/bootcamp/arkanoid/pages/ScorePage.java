@@ -51,16 +51,20 @@ public class ScorePage implements Page {
 
     @Override
     public void clear() {
-        background.delete();
-        hideButtons();
-        screenAddon.deleteScoreboardSign();
-        scoreSaver.clearList();
-        page.drawButtons();
-        mouse.setPage(page);
-        page.setScoreSaver(scoreSaver);
-        page.setScreenAddons(screenAddon);
-        page.setState(PageState.IDLE);
-        page.run();
+        try {
+            background.delete();
+            hideButtons();
+            screenAddon.deleteScoreboardSign();
+            scoreSaver.clearList();
+            page.drawButtons();
+            mouse.setPage(page);
+            page.setScoreSaver(scoreSaver);
+            page.setScreenAddons(screenAddon);
+            page.setState(PageState.IDLE);
+            page.run();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

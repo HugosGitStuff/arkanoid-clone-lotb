@@ -20,9 +20,9 @@ public class Bootstrap implements LineListener {
 
     private String[] songPaths = new String[]{"/soundtrack/music1.wav",
                                             "/soundtrack/GameSound.wav",
-                                            "soundtrack/Oath In The Iron Sky.wav",
-                                            "/soundtrack/Raven Banner.wav",
-                                            "soundtrack/Ravens On The Ice.wav",
+                                            "/soundtrack/Oath.wav",
+                                            "/soundtrack/Raven_Banner_1.5.wav",
+                                            "/soundtrack/Ravens On The Ice.wav",
                                             "/soundtrack/Ritual of the Hollow Peak.wav"};
 
     private ScorePage scorePage;
