@@ -12,12 +12,18 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 
-public class Bootstrap {
+public class Bootstrap implements LineListener {
 
     private MyMouse myMouse;
     private MyKeyboard myKeyboard;
     private ScreenAdditions screenAddons;
 
+    private String[] songPaths = new String[]{"/soundtrack/music1.wav",
+                                            "/soundtrack/GameSound.wav",
+                                            "soundtrack/Oath In The Iron Sky.wav",
+                                            "/soundtrack/Raven Banner.wav",
+                                            "soundtrack/Ravens On The Ice.wav",
+                                            "/soundtrack/Ritual of the Hollow Peak.wav"};
 
     private ScorePage scorePage;
     private ScoreSaver scoreSaver;
@@ -75,7 +81,7 @@ public class Bootstrap {
         breakPage.setNameInput(nameInput);
 
 
-        playMusic("/soundtrack/music1.wav");
+        playMusic(randomSong());
         intro.init();
     }
 
@@ -85,11 +91,23 @@ public class Bootstrap {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(file.openStream()));
 
             Clip musicClip = AudioSystem.getClip();
+            musicClip.addLineListener(this);
             musicClip.open(audioStream);
-            musicClip.loop(Clip.LOOP_CONTINUOUSLY); // loop forever
+            //musicClip.loop(Clip.LOOP_CONTINUOUSLY); // loop forever
             musicClip.start();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             System.out.println("Error playing music: " + e.getMessage());
+        }
+    }
+
+    public String randomSong() {
+        return songPaths[(int) (Math.random()* songPaths.length)];
+    }
+
+    @Override
+    public void update(LineEvent event) {
+        if (event.getType() == LineEvent.Type.STOP) {
+            playMusic(randomSong());
         }
     }
 }
