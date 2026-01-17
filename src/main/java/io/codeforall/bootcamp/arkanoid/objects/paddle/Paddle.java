@@ -61,7 +61,7 @@ public class Paddle extends GameObject {
     @Override
     public void draw() {
         picture.draw();
-        //rectangle.draw();
+        rectangle.draw();
     }
 
     @Override

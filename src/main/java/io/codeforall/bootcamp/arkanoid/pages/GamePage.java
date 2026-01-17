@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class GamePage implements Page {
     private final Picture background = new Picture(10, 10, "gamePage/background.png");
-    private final int[] numBlocksArray = {32, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};// {32,26,30,31,26,32,32,32,33,32,33,33,33}
+    private final int[] numBlocksArray = {32,26,30,27,24,32,34,34,36,32,32,32,32};// {32,26,30,27,24,32,34,34,36,32,32,32,32}
     private double delta = 0;
     private boolean gameOver;
     private int level;
@@ -123,7 +123,7 @@ public class GamePage implements Page {
                                                 score += block.getMaxHealth() * 100;
                                                 screenAddon.setScore(score);
                                                 numBlocks--;
-                                                if ((int) (Math.random() * 2) == 1) {
+                                                if ((int) (Math.random() * 10) >= 6) {
 
                                                     PowerUp powerUp = new PowerUp(block.getX() + block.getWidth() / 4,
                                                             block.getY() + block.getHeight() / 4,

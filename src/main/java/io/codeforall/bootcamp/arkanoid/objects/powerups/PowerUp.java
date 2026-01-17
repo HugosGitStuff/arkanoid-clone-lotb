@@ -84,19 +84,19 @@ public class PowerUp extends GameObject {
                 }
                 break;
             case 6:
-                balls.add(new Ball(465, 700, -3, -3));
+                balls.add(new Ball(paddle.getX() + paddle.getWidth()/2, 700, -3, -3));
                 break;
             case 7:
-                balls.add(new Ball(445, 700, -3, -3));
-                balls.add(new Ball(465, 700, 3, -3));
-                balls.add(new Ball(485, 700, -3, -3));
+                balls.add(new Ball(paddle.getX() + paddle.getWidth()/3, 700, -3, -3));
+                balls.add(new Ball(paddle.getX() + paddle.getWidth()/2, 700, 3, -3));
+                balls.add(new Ball(paddle.getX() + (paddle.getWidth()*2)/3, 700, -3, -3));
                 break;
             case 8:
-                balls.add(new Ball(425, 700, -3, -3));
-                balls.add(new Ball(445, 700, 3, -3));
-                balls.add(new Ball(465, 700, -3, -3));
-                balls.add(new Ball(485, 700, 3, -3));
-                balls.add(new Ball(505, 700, -3, -3));
+                balls.add(new Ball(paddle.getX() + paddle.getWidth()/6, 700, -3, -3));
+                balls.add(new Ball(paddle.getX() + paddle.getWidth()/3, 700, 3, -3));
+                balls.add(new Ball(paddle.getX() + paddle.getWidth()/2, 700, -3, -3));
+                balls.add(new Ball(paddle.getX() + (paddle.getWidth()*2)/3, 700, 3, -3));
+                balls.add(new Ball(paddle.getX() + (paddle.getWidth()*5)/6, 700, -3, -3));
                 break;
         }
         delete();
