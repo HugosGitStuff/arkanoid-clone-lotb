@@ -108,6 +108,16 @@ public class PowerUp extends GameObject {
     }
 
     @Override
+    public double getHeight() {
+        return image.getHeight();
+    }
+
+    @Override
+    public double getWidth() {
+        return image.getWidth();
+    }
+
+    @Override
     public void delete() {
         image.delete();
     }

@@ -8,7 +8,7 @@ import io.codeforall.bootcamp.arkanoid.objects.grid.Grid;
 
 public class Ball extends GameObject {
     private double velocityX, velocityY;
-    private final Ellipse bola;
+    private final Ellipse ball;
 
 
     public Ball(double x, double y, int velocityX, int velocityY) {
@@ -16,8 +16,8 @@ public class Ball extends GameObject {
         this.y = y;
         this.velocityX = velocityX;
         this.velocityY = velocityY;
-        this.bola = new Ellipse(x, y, 20, 20);
-        bola.setColor(Color.WHITE);
+        this.ball = new Ellipse(x, y, 20, 20);
+        ball.setColor(Color.WHITE);
         picture = new Picture(x, y, "/ball/image.png");
         draw();
     }
@@ -33,23 +33,8 @@ public class Ball extends GameObject {
     public void update() {
         x += velocityX;
         y += velocityY;
-        bola.translate(velocityX, velocityY);
+        ball.translate(velocityX, velocityY);
         picture.translate(velocityX, velocityY);
-    }
-
-    public void bounce(String direction) {
-
-        if (direction == null) return;
-        switch (direction) {
-            case "left":
-            case "right":
-                velocityX *= -1;
-                break;
-            case "top":
-            case "bottom":
-                velocityY *= -1;
-                break;
-        }
     }
 
     public void paddleBounce(GameObject paddle){
@@ -120,18 +105,18 @@ public class Ball extends GameObject {
 
     @Override
     public void draw() {
-        //bola.draw();
+        //ball.draw();
         picture.draw();
     }
 
     @Override
     public double getWidth() {
-        return bola.getWidth();
+        return ball.getWidth();
     }
 
     @Override
     public double getHeight() {
-        return bola.getHeight();
+        return ball.getHeight();
     }
 
     public double getVelocityX() {
@@ -143,7 +128,7 @@ public class Ball extends GameObject {
     }
 
     public void delete(){
-        bola.delete();
+        ball.delete();
         picture.delete();
     }
 }

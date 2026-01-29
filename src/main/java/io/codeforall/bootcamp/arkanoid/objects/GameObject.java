@@ -20,17 +20,9 @@ public abstract class GameObject {
         return y;
     }
 
-    public double getHeight() {
-        return height;
-    }
+    public abstract double getHeight();
 
-    public double getWidth() {
-        return width;
-    }
-
-    public void setWidth(double width) {
-        this.width = width;
-    }
+    public abstract double getWidth();
 
     public void delete() {}
 }

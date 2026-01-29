@@ -6,7 +6,7 @@ import io.codeforall.bootcamp.arkanoid.objects.grid.Grid;
 
 import java.util.Arrays;
 
-public class Blocks extends GameObject {
+public class Blocks {
     private final int rows = 6;
     private final int cols = 8;
     private Block[][] blockMatrix;
@@ -141,7 +141,6 @@ public class Blocks extends GameObject {
         }
     }
 
-
     public Block[][] getBlockMatrix() {
         return blockMatrix;
     }
@@ -149,9 +148,5 @@ public class Blocks extends GameObject {
     public void removeBlock(int row, int col) {
         blockMatrix[row][col].delete();
         blockMatrix[row][col] = null;
-    }
-
-    @Override
-    public void draw() {
     }
 }
