@@ -11,7 +11,7 @@ improved individually, focusing on clean code, object-oriented design, and game 
 
 
 ##
-🎮 Play the game:
+🎮 Play and Test the game:
 https://teamsting-canifetes-cfa.itch.io/the-lord-of-the-bricks
 
 
